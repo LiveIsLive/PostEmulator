@@ -1,0 +1,15 @@
+﻿<Label x:Class="ColdShineSoft.HttpClientPerformer.Controls.FieldTitle"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d">
+	<Label.ContentTemplate>
+		<DataTemplate>
+			<WrapPanel>
+				<ContentPresenter Content="{Binding Path=Content,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+				<TextBlock>：</TextBlock>
+			</WrapPanel>
+		</DataTemplate>
+	</Label.ContentTemplate>
+</Label>

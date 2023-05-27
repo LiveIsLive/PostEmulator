@@ -1,0 +1,32 @@
+﻿<Control x:Class="ColdShineSoft.HttpClientPerformer.Controls.GetDictionaryValue"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d">
+	<Control.Template>
+		<ControlTemplate>
+			<TextBlock Text="{Binding Path=Text,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+		</ControlTemplate>
+	</Control.Template>
+			<!--<ItemsControl ItemsSource="{Binding Path=Dictionary,RelativeSource={RelativeSource Mode=TemplatedParent}}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding Value}">
+							<TextBlock.Style>
+								<Style TargetType="TextBlock">
+									<Style.Setters>
+										<Setter Property="Visibility" Value="Collapsed" />
+									</Style.Setters>
+									<Style.Triggers>
+										<DataTrigger Binding="{Binding Key}" Value="{Binding Path=Key,RelativeSource={RelativeSource Mode=TemplatedParent}}">
+											<Setter Property="Visibility" Value="Visible" />
+										</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</TextBlock.Style>
+						</TextBlock>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>-->
+</Control>

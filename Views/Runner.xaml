@@ -1,0 +1,96 @@
+﻿<mah:MetroWindow x:Class="ColdShineSoft.HttpClientPerformer.Views.Runner"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:ColdShineSoft.HttpClientPerformer.Views"
+		xmlns:viewModels="clr-namespace:ColdShineSoft.HttpClientPerformer.ViewModels;assembly=ColdShineSoft.HttpClientPerformer.ViewModels"
+		xmlns:models="clr-namespace:ColdShineSoft.HttpClientPerformer.Models;assembly=ColdShineSoft.HttpClientPerformer.Models"
+		xmlns:controls="clr-namespace:ColdShineSoft.HttpClientPerformer.Controls;assembly=ColdShineSoft.HttpClientPerformer.Controls"
+		xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+		xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+		xmlns:cal="http://www.caliburnproject.org"
+		xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+		mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=viewModels:Runner}"
+		TitleCharacterCasing="Normal" Title="{Binding Title}" cal:Message.Attach="[Loaded]=[Run];[Closed]=[Stop]">
+	<DockPanel>
+		<ToolBar DockPanel.Dock="Top" Margin="0,5">
+			<controls:IconButton cal:Message.Attach="TryCloseAsync(false)" Visibility="{c:Binding 'Task.Status!=models:TaskStatus.Standby'}" IsEnabled="{c:Binding 'Task.Status!=models:TaskStatus.Done'}" Icon="DebugStop" Margin="10,0,0,0" Content="{Binding Localization.Stop}" />
+			<WrapPanel VerticalAlignment="Center" Margin="20,0,0,0">
+				<TextBlock Text="{Binding Localization.Status}" />
+				<TextBlock>：</TextBlock>
+				<controls:GetDictionaryValue Dictionary="{Binding Localization.TaskStatus}" Key="{Binding Task.Status}" />
+			</WrapPanel>
+		</ToolBar>
+		<StatusBar DockPanel.Dock="Bottom">
+			<StatusBar.ItemsPanel>
+				<ItemsPanelTemplate>
+					<DockPanel />
+				</ItemsPanelTemplate>
+			</StatusBar.ItemsPanel>
+			<StatusBarItem DockPanel.Dock="Left">
+				<WrapPanel>
+					<TextBlock Text="{Binding Task.CopiedFileCount}" />
+					<TextBlock Text="/" />
+					<TextBlock Text="{Binding Path=Task.Files.Length,IsAsync=True}" />
+					<TextBlock Text=" " />
+					<TextBlock Text="{Binding Localization.Files}" />
+				</WrapPanel>
+			</StatusBarItem>
+			<StatusBarItem DockPanel.Dock="Right">
+				<WrapPanel>
+					<TextBlock Text="{Binding Localization.Bytes}" />
+					<TextBlock Text=" " />
+					<TextBlock Text="{Binding Task.CopiedFileSize}" />
+					<TextBlock Text="/" />
+					<TextBlock Text="{Binding Path=Task.TotalFileSize,IsAsync=True}" />
+				</WrapPanel>
+			</StatusBarItem>
+			<StatusBarItem HorizontalContentAlignment="Stretch">
+				<StackPanel>
+					<TextBlock Visibility="{c:Binding 'Task.Status==models:TaskStatus.Done'}" HorizontalAlignment="Center">100%</TextBlock>
+					<ProgressBar Minimum="0" Maximum="{Binding Path=Task.TotalFileSize,IsAsync=True}" Value="{Binding Task.CopiedFileSize}" Visibility="{c:Binding 'Task.Status!=models:TaskStatus.Done'}" />
+				</StackPanel>
+			</StatusBarItem>
+		</StatusBar>
+		<DataGrid ItemsSource="{Binding Path=Task.Files,IsAsync=True}" AutoGenerateColumns="False" IsReadOnly="True">
+			<DataGrid.Columns>
+				<DataGridTextColumn Binding="{Binding Job.Name}">
+					<DataGridTextColumn.Header>
+						<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Job}" />
+					</DataGridTextColumn.Header>
+				</DataGridTextColumn>
+				<DataGridTextColumn Binding="{Binding Path=File.FileInfo.Length,StringFormat={}{0:n0}}">
+					<DataGridTextColumn.Header>
+						<controls:GetDictionaryValue DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext}" Dictionary="{Binding Localization.Properties}" Key="FileSize" />
+					</DataGridTextColumn.Header>
+				</DataGridTextColumn>
+				<DataGridTextColumn Binding="{Binding File.FileInfo.Name}">
+					<DataGridTextColumn.Header>
+						<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Name}" />
+					</DataGridTextColumn.Header>
+				</DataGridTextColumn>
+				<DataGridTextColumn Binding="{Binding File.RelativeDirectoryPath}">
+					<DataGridTextColumn.Header>
+						<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Directory}" />
+					</DataGridTextColumn.Header>
+				</DataGridTextColumn>
+				<DataGridTemplateColumn SortMemberPath="File.Result">
+					<DataGridTemplateColumn.Header>
+						<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Result}" />
+					</DataGridTemplateColumn.Header>
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<controls:GetDictionaryValue Dictionary="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.CopyResult}" Key="{Binding File.Result}" />
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+				<DataGridTextColumn Binding="{Binding File.Error}">
+					<DataGridTextColumn.Header>
+						<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Error}" />
+					</DataGridTextColumn.Header>
+				</DataGridTextColumn>
+			</DataGrid.Columns>
+		</DataGrid>
+	</DockPanel>
+</mah:MetroWindow>
