@@ -321,5 +321,20 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 		{
 			list.RemoveAt(index);
 		}
+
+
+
+
+
+
+		public void AddHeader()
+		{
+			this.Task.HeaderItems.Add(new Models.RequestItem());
+		}
+
+		public void AddCookie()
+		{
+			this.Task.CookieItems.Add(new Models.RequestItem());
+		}
 	}
 }

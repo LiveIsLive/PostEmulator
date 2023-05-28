@@ -65,21 +65,6 @@
 		</mah:WindowCommands>
 	</mah:MetroWindow.RightWindowCommands>
 	<DockPanel>
-		<StackPanel DockPanel.Dock="Top" Margin="5">
-			<DockPanel>
-				<CheckBox IsChecked="{Binding Task.CompressToZipFile}" Content="{Binding Localization.CompressToZipFile}" cal:Message.Attach="[Unchecked]=[UncheckedCompressToZipFile]" />
-				<controls:SaveFileSelector IsEnabled="{Binding Task.CompressToZipFile}" Path="{Binding Path=Task.CompressFilePath,Mode=TwoWay}" OpenButtonText="{Binding Localization.OpenFileDialog}" />
-			</DockPanel>
-			<controls:ErrorReminder Text="{Binding Task.DataErrorInfo.CompressFilePath}" />
-			<WrapPanel Visibility="{c:Binding Task.CompressToZipFile}" Margin="0,5,0,0">
-				<CheckBox IsChecked="{Binding Task.AddNowToCompressFileName}" Content="{Binding Localization.AddNowToCompressFileName}" />
-				<WrapPanel>
-					<controls:FieldTitle Content="{Binding Localization.NowFormatString}" VerticalAlignment="Center" />
-					<TextBox Width="150" Text="{Binding Task.NowFormatString}" />
-					<controls:ErrorReminder Text="{Binding Task.DataErrorInfo.NowFormatString}" />
-				</WrapPanel>
-			</WrapPanel>
-		</StackPanel>
 		<ToolBar DockPanel.Dock="Top" Background="Red">
 			<controls:IconButton cal:Message.Attach="[Click]=[Run]" Icon="Play" Margin="10,0,0,0" Content="{Binding Localization.Run}" BorderThickness="0" />
 			<controls:SaveFileSplitButton SelectedFilePath="{Binding OpeningFilePath}" cal:Message.Attach="[SaveFile]=[Save($this.SelectedFilePath)]" Kind="Save" Text="{Binding Localization.Save}" Margin="10,0,0,0" BorderThickness="0">
@@ -115,7 +100,71 @@
 			</controls:OpenFileSplitButton>
 		</ToolBar>
 		<!--<controls:ErrorReminder DockPanel.Dock="Top" Text="{Binding Task.DataErrorInfo.Job}" />-->
-		<controls:TabControl SelectedItem="{Binding SelectedJob}" IsFocus="{Binding UpdateJobBinding}">
+		<controls:TabControl IsFocus="{Binding UpdateTabBinding}">
+			<mah:MetroTabItem Header="Request Headers">
+				<controls:TabControl>
+					<mah:MetroTabItem Header="Raw">
+						<TextBox Text="{Binding Task.HeaderText}" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
+					</mah:MetroTabItem>
+					<mah:MetroTabItem Header="Headers Editor">
+						<StackPanel>
+							<controls:IconButton Name="AddHeader" Icon="Add" Margin="5,10,0,0" Content="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Add}" />
+							<DataGrid ItemsSource="{Binding Task.HeaderItems}" AutoGenerateColumns="False" IsReadOnly="True">
+								<DataGrid.RowStyle>
+									<Style TargetType="DataGridRow">
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding ShowInEditor}" Value="False">
+												<Setter Property="Visibility" Value="Collapsed" />
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</DataGrid.RowStyle>
+								<DataGrid.Columns>
+									<DataGridCheckBoxColumn Header="选中" Binding="{Binding Selected}" Width="Auto" />
+									<DataGridTemplateColumn Header="Key" Width="*">
+										<DataGridTemplateColumn.CellTemplate>
+											<DataTemplate>
+												<TextBox Text="{Binding Path=Key,UpdateSourceTrigger=LostFocus}" />
+											</DataTemplate>
+										</DataGridTemplateColumn.CellTemplate>
+									</DataGridTemplateColumn>
+									<DataGridTemplateColumn Header="Value" Width="2*">
+										<DataGridTemplateColumn.CellTemplate>
+											<DataTemplate>
+												<TextBox Text="{Binding Path=Value,UpdateSourceTrigger=LostFocus}" />
+											</DataTemplate>
+										</DataGridTemplateColumn.CellTemplate>
+									</DataGridTemplateColumn>
+								</DataGrid.Columns>
+							</DataGrid>
+						</StackPanel>
+					</mah:MetroTabItem>
+					<mah:MetroTabItem Header="Cookies Editor">
+						<StackPanel>
+							<controls:IconButton Name="AddCookie" Icon="Add" Margin="5,10,0,0" Content="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Add}" />
+							<DataGrid ItemsSource="{Binding Task.CookieItems}" AutoGenerateColumns="False" IsReadOnly="True">
+								<DataGrid.Columns>
+									<DataGridCheckBoxColumn Header="选中" Binding="{Binding Selected}" Width="Auto" />
+									<DataGridTemplateColumn Header="Key" Width="*">
+										<DataGridTemplateColumn.CellTemplate>
+											<DataTemplate>
+												<TextBox Text="{Binding Path=Key,UpdateSourceTrigger=LostFocus}" />
+											</DataTemplate>
+										</DataGridTemplateColumn.CellTemplate>
+									</DataGridTemplateColumn>
+									<DataGridTemplateColumn Header="Value" Width="2*">
+										<DataGridTemplateColumn.CellTemplate>
+											<DataTemplate>
+												<TextBox Text="{Binding Path=Value,UpdateSourceTrigger=LostFocus}" />
+											</DataTemplate>
+										</DataGridTemplateColumn.CellTemplate>
+									</DataGridTemplateColumn>
+								</DataGrid.Columns>
+							</DataGrid>
+						</StackPanel>
+					</mah:MetroTabItem>
+				</controls:TabControl>
+			</mah:MetroTabItem>
 		</controls:TabControl>
 	</DockPanel>
 </mah:MetroWindow>

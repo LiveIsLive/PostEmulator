@@ -106,9 +106,7 @@
 	"TaskStatus":
 	{
 		"Standby": "待执行",
-		"CollectingFiles": "正在汇总文件...",
-		"Copying": "正在复制文件...",
-		"Compressing": "正在压缩目标文件夹...",
+		"Performing": "执行中...",
 		"Done": "已完成"
 	},
 	"ValidationError":

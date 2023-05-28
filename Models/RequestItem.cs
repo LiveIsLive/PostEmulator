@@ -6,25 +6,78 @@ using System.Threading.Tasks;
 
 namespace ColdShineSoft.HttpClientPerformer.Models
 {
-	public class RequestItem
+	public class RequestItem : Caliburn.Micro.PropertyChangedBase
 	{
-		public bool Selected { get; set; } = true;
-
-		private string _Name;
-		public string Name
+		private bool _Selected = true;
+		[Newtonsoft.Json.JsonProperty]
+		public bool Selected
 		{
 			get
 			{
-				return this._Name;
+				return this._Selected;
 			}
 			set
 			{
-				this._Name = value;
-				this._IsCookieItem = null;
+				this._Selected = value;
+				this._ShowInRaw = null;
+				this.NotifyOfPropertyChange(() => this.Selected);
+				this.NotifyOfPropertyChange(() => this.ShowInRaw);
 			}
 		}
 
-		public string Value { get; set; }
+		[Newtonsoft.Json.JsonProperty]
+		private string _Key;
+		public string Key
+		{
+			get
+			{
+				return this._Key;
+			}
+			set
+			{
+				this._Key = value;
+				this._IsCookieItem = null;
+				this._ShowInRaw = null;
+				this._ShowInEditor = null;
+				this.NotifyOfPropertyChange(() => this.Key);
+				this.NotifyOfPropertyChange(() => this.ShowInRaw);
+				this.NotifyOfPropertyChange(() => this.ShowInEditor);
+			}
+		}
+
+		private string _Value;
+		[Newtonsoft.Json.JsonProperty]
+		public string Value
+		{
+			get
+			{
+				return this._Value;
+			}
+			set
+			{
+				this._Value = value;
+				this._ShowInRaw = null;
+				this._ShowInEditor = null;
+				this.NotifyOfPropertyChange(() => this.Value);
+				this.NotifyOfPropertyChange(() => this.ShowInRaw);
+				this.NotifyOfPropertyChange(() => this.ShowInEditor);
+				//this.OnValueChanged();
+			}
+		}
+
+		public void SetValueWithoutNotify(string value)
+		{
+			this._Value = value;
+			this._ShowInRaw = null;
+			this._ShowInEditor = null;
+		}
+
+		//public event System.Action<string> ValueChanged;
+		//protected void OnValueChanged()
+		//{
+		//	if (this.ValueChanged != null)
+		//		this.ValueChanged(this.Value);
+		//}
 
 		private bool? _IsCookieItem;
 		public bool IsCookieItem
@@ -32,8 +85,41 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			get
 			{
 				if (this._IsCookieItem == null)
-					this._IsCookieItem = string.Equals(this.Name, "Cookie", StringComparison.OrdinalIgnoreCase);
+					this._IsCookieItem = string.Equals(this.Key, "Cookie", StringComparison.OrdinalIgnoreCase);
 				return this._IsCookieItem.Value;
+			}
+		}
+
+		private bool? _ShowInRaw;
+		public bool ShowInRaw
+		{
+			get
+			{
+				if(this._ShowInRaw==null)
+					if (this.Selected)
+					{
+						bool noValue = string.IsNullOrWhiteSpace(this.Value);
+						if (this.IsCookieItem && noValue)
+							this._ShowInRaw = false;
+						else if (string.IsNullOrWhiteSpace(this.Key) && noValue)
+							this._ShowInRaw = false;
+						else this._ShowInRaw = true;
+					}
+					else this._ShowInRaw = false;
+				return this._ShowInRaw.Value;
+			}
+		}
+
+		private bool? _ShowInEditor;
+		public bool ShowInEditor
+		{
+			get
+			{
+				if (this._ShowInEditor == null)
+					if (this.IsCookieItem && string.IsNullOrWhiteSpace(this.Value))
+						this._ShowInEditor = false;
+					else this._ShowInEditor = true;
+				return this._ShowInEditor.Value;
 			}
 		}
 
@@ -44,13 +130,13 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 
 		public RequestItem(string name)
 		{
-			this._Name = name;
+			this._Key = name;
 		}
 
 		public RequestItem(string name, string value)
 		{
-			this._Name = name;
-			this.Value = value;
+			this._Key = name;
+			this._Value = value;
 		}
 	}
 }

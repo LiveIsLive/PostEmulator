@@ -23,13 +23,24 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 					if (this._HeaderText == null)
 						this._HeaderItems = new System.Collections.ObjectModel.ObservableCollection<RequestItem>();
 					else this._HeaderItems = new System.Collections.ObjectModel.ObservableCollection<RequestItem>(this.StringToHeaderItems(this._HeaderText));
+					foreach(RequestItem item in this._HeaderItems)
+						item.PropertyChanged += HeaderItem_PropertyChanged;
 					this._HeaderItems.CollectionChanged += HeaderItems_CollectionChanged;
 				}
-				return this.HeaderItems;
+				return this._HeaderItems;
 			}
 		}
 
 		private void HeaderItems_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		{
+			this._HeaderText = null;
+			this.NotifyOfPropertyChange(() => this.HeaderText);
+			if(e.NewItems!=null)
+				foreach (RequestItem item in e.NewItems)
+					item.PropertyChanged += HeaderItem_PropertyChanged;
+		}
+
+		private void HeaderItem_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
 			this._HeaderText = null;
 			this.NotifyOfPropertyChange(() => this.HeaderText);
@@ -44,7 +55,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 				{
 					if (this._HeaderItems == null)
 						this._HeaderText = "";
-					else this._HeaderText = string.Join("\r\n", this.HeaderItems.Where(i => i.Selected).Select(i => $"{i.Name}: {i.Value}"));
+					else this._HeaderText = string.Join("\r\n", this.HeaderItems.Where(i => i.ShowInRaw).Select(i => $"{i.Key}: {i.Value}"));
 				}
 				return this._HeaderText;
 			}
@@ -56,25 +67,12 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 				else
 				{
 					RequestItem[] newItems = this.StringToHeaderItems(value).ToArray();
-					List<RequestItem> addItems = new List<RequestItem>();
-					foreach(RequestItem newItem in newItems)
-					{
-						RequestItem oldItem = this._HeaderItems.FirstOrDefault(i => i.Name == newItem.Name);
-						if (oldItem == null)
-							addItems.Add(newItem);
-						else
-						{
-							oldItem.Selected = true;
-							oldItem.Value = newItem.Value;
-						}
-					}
-					for(int i=this._HeaderItems.Count-1;i>=0;i--)
-					{
-						RequestItem oldItem = this._HeaderItems[i];
-						if (oldItem.Selected)
-							if (newItems.All(newItem => newItem.Name != this._HeaderItems[i].Name))
-								this._HeaderItems.RemoveAt(i);
-					}
+					this.ReplaceSelectedOldItems(this._HeaderItems, newItems);
+
+					foreach (RequestItem newItem in newItems)
+						if (newItem.IsCookieItem)
+							if (this._CookieItems != null)
+								this.ReplaceSelectedOldItems(this._CookieItems, this.StringToCookieItems(newItem.Value).ToArray());
 				}
 			}
 		}
@@ -84,7 +82,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			List<RequestItem> addItems = new List<RequestItem>();
 			foreach (RequestItem newItem in newItems)
 			{
-				RequestItem oldItem = oldItems.FirstOrDefault(i => i.Name == newItem.Name);
+				RequestItem oldItem = oldItems.FirstOrDefault(i => i.Key == newItem.Key);
 				if (oldItem == null)
 					addItems.Add(newItem);
 				else
@@ -97,7 +95,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			{
 				RequestItem oldItem = oldItems[i];
 				if (oldItem.Selected)
-					if (newItems.All(newItem => newItem.Name != oldItems[i].Name))
+					if (newItems.All(newItem => newItem.Key != oldItems[i].Key))
 						oldItems.RemoveAt(i);
 			}
 			foreach (RequestItem item in addItems)
@@ -110,10 +108,10 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			{
 				string[] parameters = line.Split(':');
 				RequestItem item = new RequestItem();
-				item.Name = parameters[0].Trim();
+				item.Key = parameters[0].Trim();
 				if (parameters.Length > 1)
 					item.Value = String.Join("", parameters.Skip(1).Select(p => p.Trim())).Trim();
-				if (item.Name == "" && item.Value == "")
+				if (item.Key == "" && item.Value == "")
 					continue;
 				yield return item;
 			}
@@ -129,12 +127,19 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 					this._HeaderCookieItem = this.HeaderItems.FirstOrDefault(i => i.IsCookieItem);
 					if (this._HeaderCookieItem == null)
 					{
-						this._HeaderCookieItem = new RequestItem();
+						this._HeaderCookieItem = new RequestItem("Cookie","");
 						this.HeaderItems.Add(this._HeaderCookieItem);
 					}
+					this._HeaderCookieItem.PropertyChanged += HeaderCookieItem_PropertyChanged;
 				}
 				return this._HeaderCookieItem;
 			}
+		}
+
+		private void HeaderCookieItem_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (this._CookieItems != null)
+				this.ReplaceSelectedOldItems(this._CookieItems, this.StringToCookieItems(this.HeaderCookieItem.Value).ToArray());
 		}
 
 		private System.Collections.ObjectModel.ObservableCollection<RequestItem> _CookieItems;
@@ -144,7 +149,12 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			get
 			{
 				if (this._CookieItems == null)
+				{
 					this._CookieItems = new System.Collections.ObjectModel.ObservableCollection<RequestItem>(this.StringToCookieItems(this.HeaderCookieItem.Value));
+					foreach(RequestItem item in this._CookieItems)
+						item.PropertyChanged += CookieItem_PropertyChanged;
+					this._CookieItems.CollectionChanged += CookieItems_CollectionChanged;
+				}
 				return this._CookieItems;
 			}
 			set
@@ -153,16 +163,31 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			}
 		}
 
+		private void CookieItems_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		{
+			if (e.NewItems != null)
+				foreach (RequestItem item in e.NewItems)
+					item.PropertyChanged += CookieItem_PropertyChanged;
+		}
+
+		private void CookieItem_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			this.HeaderCookieItem.SetValueWithoutNotify(string.Join(";", this.CookieItems.Where(i => i.Selected).Select(i => $"{i.Key}={i.Value}")));
+			this._HeaderText = null;
+			this.NotifyOfPropertyChange(() => this.HeaderText);
+			//this.HeaderCookieItem.NotifyOfPropertyChange(()=>this.HeaderCookieItem.ShowInEditor);
+		}
+
 		protected System.Collections.Generic.IEnumerable<RequestItem>StringToCookieItems(string s)
 		{
 			foreach(string line in s.Split(new char[] { ';' },StringSplitOptions.RemoveEmptyEntries))
 			{
 				string[] parameters = line.Split('=');
 				RequestItem item = new RequestItem();
-				item.Name = parameters[0].Trim();
+				item.Key = parameters[0].Trim();
 				if (parameters.Length > 1)
 					item.Value = String.Join("", parameters.Skip(1).Select(p => p.Trim())).Trim();
-				if (item.Name == "" && item.Value == "")
+				if (item.Key == "" && item.Value == "")
 					continue;
 				yield return item;
 			}

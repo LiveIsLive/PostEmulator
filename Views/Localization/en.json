@@ -106,9 +106,7 @@
 	"TaskStatus":
 	{
 		"Standby": "Standby",
-		"CollectingFiles": "Collecting files...",
-		"Copying": "Copying files...",
-		"Compressing": "Compressing the target directory...",
+		"Performing": "Performing...",
 		"Done": "Done"
 	},
 	"ValidationError":
