@@ -34,7 +34,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 		private void HeaderItems_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
 		{
 			this._HeaderText = null;
-			this.NotifyOfPropertyChange(() => this.HeaderText);
+			//this.NotifyOfPropertyChange(() => this.HeaderText);
 			if(e.NewItems!=null)
 				foreach (RequestItem item in e.NewItems)
 					item.PropertyChanged += HeaderItem_PropertyChanged;
@@ -43,7 +43,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 		private void HeaderItem_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
 			this._HeaderText = null;
-			this.NotifyOfPropertyChange(() => this.HeaderText);
+			//this.NotifyOfPropertyChange(() => this.HeaderText);
 		}
 
 		private string _HeaderText;
@@ -174,7 +174,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 		{
 			this.HeaderCookieItem.SetValueWithoutNotify(string.Join(";", this.CookieItems.Where(i => i.Selected).Select(i => $"{i.Key}={i.Value}")));
 			this._HeaderText = null;
-			this.NotifyOfPropertyChange(() => this.HeaderText);
+			//this.NotifyOfPropertyChange(() => this.HeaderText);
 			//this.HeaderCookieItem.NotifyOfPropertyChange(()=>this.HeaderCookieItem.ShowInEditor);
 		}
 

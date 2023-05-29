@@ -25,6 +25,13 @@
 		<Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}">
 			<Setter Property="FontFamily" Value="微软雅黑" />
 		</Style>
+		<Style TargetType="mah:MetroTabItem">
+			<Style.Triggers>
+				<Trigger Property="IsSelected" Value="False">
+					<Setter Property="Content" Value="{x:Null}" />
+				</Trigger>
+			</Style.Triggers>
+		</Style>
 	</mah:MetroWindow.Resources>
 	<mah:MetroWindow.RightWindowCommands>
 		<mah:WindowCommands>
@@ -104,64 +111,100 @@
 			<mah:MetroTabItem Header="Request Headers">
 				<controls:TabControl>
 					<mah:MetroTabItem Header="Raw">
-						<TextBox Text="{Binding Task.HeaderText}" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
+						<mah:MetroTabItem.Style>
+							<Style TargetType="mah:MetroTabItem">
+								<Style.Triggers>
+									<Trigger Property="IsSelected" Value="True">
+										<Setter Property="Content">
+											<Setter.Value>
+												<TextBox Text="{Binding Task.HeaderText}" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
+											</Setter.Value>
+										</Setter>
+									</Trigger>
+								</Style.Triggers>
+							</Style>
+						</mah:MetroTabItem.Style>
 					</mah:MetroTabItem>
 					<mah:MetroTabItem Header="Headers Editor">
-						<StackPanel>
-							<controls:IconButton Name="AddHeader" Icon="Add" Margin="5,10,0,0" Content="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Add}" />
-							<DataGrid ItemsSource="{Binding Task.HeaderItems}" AutoGenerateColumns="False" IsReadOnly="True">
-								<DataGrid.RowStyle>
-									<Style TargetType="DataGridRow">
-										<Style.Triggers>
-											<DataTrigger Binding="{Binding ShowInEditor}" Value="False">
-												<Setter Property="Visibility" Value="Collapsed" />
-											</DataTrigger>
-										</Style.Triggers>
-									</Style>
-								</DataGrid.RowStyle>
-								<DataGrid.Columns>
-									<DataGridCheckBoxColumn Header="选中" Binding="{Binding Selected}" Width="Auto" />
-									<DataGridTemplateColumn Header="Key" Width="*">
-										<DataGridTemplateColumn.CellTemplate>
-											<DataTemplate>
-												<TextBox Text="{Binding Path=Key,UpdateSourceTrigger=LostFocus}" />
-											</DataTemplate>
-										</DataGridTemplateColumn.CellTemplate>
-									</DataGridTemplateColumn>
-									<DataGridTemplateColumn Header="Value" Width="2*">
-										<DataGridTemplateColumn.CellTemplate>
-											<DataTemplate>
-												<TextBox Text="{Binding Path=Value,UpdateSourceTrigger=LostFocus}" />
-											</DataTemplate>
-										</DataGridTemplateColumn.CellTemplate>
-									</DataGridTemplateColumn>
-								</DataGrid.Columns>
-							</DataGrid>
-						</StackPanel>
+						<mah:MetroTabItem.Style>
+							<Style TargetType="mah:MetroTabItem">
+								<Style.Triggers>
+									<Trigger Property="IsSelected" Value="True">
+										<Setter Property="Content">
+											<Setter.Value>
+												<StackPanel>
+													<controls:IconButton cal:Message.Attach="AddHeader" Icon="Add" Margin="5,10,0,0" Content="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Add}" />
+													<DataGrid ItemsSource="{Binding Task.HeaderItems}" AutoGenerateColumns="False" IsReadOnly="True">
+														<DataGrid.RowStyle>
+															<Style TargetType="DataGridRow">
+																<Style.Triggers>
+																	<DataTrigger Binding="{Binding ShowInEditor}" Value="False">
+																		<Setter Property="Visibility" Value="Collapsed" />
+																	</DataTrigger>
+																</Style.Triggers>
+															</Style>
+														</DataGrid.RowStyle>
+														<DataGrid.Columns>
+															<DataGridCheckBoxColumn Header="选中" Binding="{Binding Selected}" Width="Auto" />
+															<DataGridTemplateColumn Header="Key" Width="*">
+																<DataGridTemplateColumn.CellTemplate>
+																	<DataTemplate>
+																		<TextBox Text="{Binding Path=Key,UpdateSourceTrigger=LostFocus}" />
+																	</DataTemplate>
+																</DataGridTemplateColumn.CellTemplate>
+															</DataGridTemplateColumn>
+															<DataGridTemplateColumn Header="Value" Width="2*">
+																<DataGridTemplateColumn.CellTemplate>
+																	<DataTemplate>
+																		<TextBox Text="{Binding Path=Value,UpdateSourceTrigger=LostFocus}" />
+																	</DataTemplate>
+																</DataGridTemplateColumn.CellTemplate>
+															</DataGridTemplateColumn>
+														</DataGrid.Columns>
+													</DataGrid>
+												</StackPanel>
+											</Setter.Value>
+										</Setter>
+									</Trigger>
+								</Style.Triggers>
+							</Style>
+						</mah:MetroTabItem.Style>
 					</mah:MetroTabItem>
 					<mah:MetroTabItem Header="Cookies Editor">
-						<StackPanel>
-							<controls:IconButton Name="AddCookie" Icon="Add" Margin="5,10,0,0" Content="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Add}" />
-							<DataGrid ItemsSource="{Binding Task.CookieItems}" AutoGenerateColumns="False" IsReadOnly="True">
-								<DataGrid.Columns>
-									<DataGridCheckBoxColumn Header="选中" Binding="{Binding Selected}" Width="Auto" />
-									<DataGridTemplateColumn Header="Key" Width="*">
-										<DataGridTemplateColumn.CellTemplate>
-											<DataTemplate>
-												<TextBox Text="{Binding Path=Key,UpdateSourceTrigger=LostFocus}" />
-											</DataTemplate>
-										</DataGridTemplateColumn.CellTemplate>
-									</DataGridTemplateColumn>
-									<DataGridTemplateColumn Header="Value" Width="2*">
-										<DataGridTemplateColumn.CellTemplate>
-											<DataTemplate>
-												<TextBox Text="{Binding Path=Value,UpdateSourceTrigger=LostFocus}" />
-											</DataTemplate>
-										</DataGridTemplateColumn.CellTemplate>
-									</DataGridTemplateColumn>
-								</DataGrid.Columns>
-							</DataGrid>
-						</StackPanel>
+						<mah:MetroTabItem.Style>
+							<Style TargetType="mah:MetroTabItem">
+								<Style.Triggers>
+									<Trigger Property="IsSelected" Value="True">
+										<Setter Property="Content">
+											<Setter.Value>
+												<StackPanel>
+													<controls:IconButton cal:Message.Attach="AddCookie" Icon="Add" Margin="5,10,0,0" Content="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Add}" />
+													<DataGrid ItemsSource="{Binding Task.CookieItems}" AutoGenerateColumns="False" IsReadOnly="True">
+														<DataGrid.Columns>
+															<DataGridCheckBoxColumn Header="选中" Binding="{Binding Selected}" Width="Auto" />
+															<DataGridTemplateColumn Header="Key" Width="*">
+																<DataGridTemplateColumn.CellTemplate>
+																	<DataTemplate>
+																		<TextBox Text="{Binding Path=Key,UpdateSourceTrigger=LostFocus}" />
+																	</DataTemplate>
+																</DataGridTemplateColumn.CellTemplate>
+															</DataGridTemplateColumn>
+															<DataGridTemplateColumn Header="Value" Width="2*">
+																<DataGridTemplateColumn.CellTemplate>
+																	<DataTemplate>
+																		<TextBox Text="{Binding Path=Value,UpdateSourceTrigger=LostFocus}" />
+																	</DataTemplate>
+																</DataGridTemplateColumn.CellTemplate>
+															</DataGridTemplateColumn>
+														</DataGrid.Columns>
+													</DataGrid>
+												</StackPanel>
+											</Setter.Value>
+										</Setter>
+									</Trigger>
+								</Style.Triggers>
+							</Style>
+						</mah:MetroTabItem.Style>
 					</mah:MetroTabItem>
 				</controls:TabControl>
 			</mah:MetroTabItem>
