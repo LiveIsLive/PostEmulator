@@ -21,13 +21,13 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 				this._Selected = value;
 				this._ShowInRaw = null;
 				this.NotifyOfPropertyChange(() => this.Selected);
-				this.NotifyOfPropertyChange(() => this.ShowInRaw);
+				//this.NotifyOfPropertyChange(() => this.ShowInRaw);
 			}
 		}
 
 		[Newtonsoft.Json.JsonProperty]
 		private string _Key;
-		public string Key
+		public string Name
 		{
 			get
 			{
@@ -38,10 +38,10 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 				this._Key = value;
 				this._IsCookieItem = null;
 				this._ShowInRaw = null;
-				this._ShowInEditor = null;
-				this.NotifyOfPropertyChange(() => this.Key);
-				this.NotifyOfPropertyChange(() => this.ShowInRaw);
-				this.NotifyOfPropertyChange(() => this.ShowInEditor);
+				//this._ShowInEditor = null;
+				this.NotifyOfPropertyChange(() => this.Name);
+				//this.NotifyOfPropertyChange(() => this.ShowInRaw);
+				//this.NotifyOfPropertyChange(() => this.ShowInEditor);
 			}
 		}
 
@@ -57,10 +57,10 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			{
 				this._Value = value;
 				this._ShowInRaw = null;
-				this._ShowInEditor = null;
+				//this._ShowInEditor = null;
 				this.NotifyOfPropertyChange(() => this.Value);
-				this.NotifyOfPropertyChange(() => this.ShowInRaw);
-				this.NotifyOfPropertyChange(() => this.ShowInEditor);
+				//this.NotifyOfPropertyChange(() => this.ShowInRaw);
+				//this.NotifyOfPropertyChange(() => this.ShowInEditor);
 				//this.OnValueChanged();
 			}
 		}
@@ -69,7 +69,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 		{
 			this._Value = value;
 			this._ShowInRaw = null;
-			this._ShowInEditor = null;
+			//this._ShowInEditor = null;
 		}
 
 		//public event System.Action<string> ValueChanged;
@@ -85,7 +85,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			get
 			{
 				if (this._IsCookieItem == null)
-					this._IsCookieItem = string.Equals(this.Key, "Cookie", StringComparison.OrdinalIgnoreCase);
+					this._IsCookieItem = string.Equals(this.Name, "Cookie", StringComparison.OrdinalIgnoreCase);
 				return this._IsCookieItem.Value;
 			}
 		}
@@ -101,7 +101,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 						bool noValue = string.IsNullOrWhiteSpace(this.Value);
 						if (this.IsCookieItem && noValue)
 							this._ShowInRaw = false;
-						else if (string.IsNullOrWhiteSpace(this.Key) && noValue)
+						else if (string.IsNullOrWhiteSpace(this.Name) && noValue)
 							this._ShowInRaw = false;
 						else this._ShowInRaw = true;
 					}
@@ -110,18 +110,18 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			}
 		}
 
-		private bool? _ShowInEditor;
-		public bool ShowInEditor
-		{
-			get
-			{
-				if (this._ShowInEditor == null)
-					if (this.IsCookieItem && string.IsNullOrWhiteSpace(this.Value))
-						this._ShowInEditor = false;
-					else this._ShowInEditor = true;
-				return this._ShowInEditor.Value;
-			}
-		}
+		//private bool? _ShowInEditor;
+		//public bool ShowInEditor
+		//{
+		//	get
+		//	{
+		//		if (this._ShowInEditor == null)
+		//			if (this.IsCookieItem && string.IsNullOrWhiteSpace(this.Value))
+		//				this._ShowInEditor = false;
+		//			else this._ShowInEditor = true;
+		//		return this._ShowInEditor.Value;
+		//	}
+		//}
 
 		public RequestItem()
 		{

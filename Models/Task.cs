@@ -9,8 +9,31 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 {
 	public class Task : Caliburn.Micro.PropertyChangedBase
 	{
+		private string _Url;
 		[Newtonsoft.Json.JsonProperty]
-		public string Url { get; set; }
+		public string Url
+		{
+			get
+			{
+				return this._Url;
+			}
+			set
+			{
+				this._Url = value;
+				this._Uri = null;
+			}
+		}
+
+		private System.Uri _Uri;
+		private System.Uri Uri
+		{
+			get
+			{
+				if (this._Uri == null)
+					this._Uri = new Uri(this.Url);
+				return this._Uri;
+			}
+		}
 
 		private System.Collections.ObjectModel.ObservableCollection<RequestItem> _HeaderItems;
 		[Newtonsoft.Json.JsonProperty]
@@ -38,12 +61,96 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			if(e.NewItems!=null)
 				foreach (RequestItem item in e.NewItems)
 					item.PropertyChanged += HeaderItem_PropertyChanged;
+			//if (!this.HeaderCookieItem.ShowInEditor)
+			//	this.HeaderItems.Move(this.HeaderItems.IndexOf(this.HeaderCookieItem), this.HeaderItems.Count - 1);
+
+			if(e.Action==System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+				if(e.OldItems!=null)
+					if(e.OldItems.Cast<RequestItem>().Any(i=>i.IsCookieItem))
+					{
+						this._HeaderCookieItem = null;
+						if (this.HeaderItems.All(i => !i.IsCookieItem))
+							this._CookieItems = null;
+					}
+
+			this.NotifyOfPropertyChange(() => this.FirstHeader);
+			this.NotifyOfPropertyChange(() => this.LastHeader);
 		}
 
 		private void HeaderItem_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
 			this._HeaderText = null;
 			//this.NotifyOfPropertyChange(() => this.HeaderText);
+			RequestItem item = (RequestItem)sender;
+			if (item.IsCookieItem)
+			{
+				if (this.HeaderCookieItem != item)
+				{
+					if (this._CookieItems != null)
+						this.ReplaceSelectedOldItems(this._CookieItems, this.StringToCookieItems(item.Value).ToArray());
+					this.HeaderItems.Remove(item);
+					this.HeaderCookieItem.SetValueWithoutNotify(item.Value);
+				}
+				if (!this.HeaderItems.Contains(this.HeaderCookieItem))
+					this.HeaderItems.Add(this.HeaderCookieItem);
+				if (this._CookieItems != null)
+					this.ReplaceSelectedOldItems(this._CookieItems, this.StringToCookieItems(this.HeaderCookieItem.Value).ToArray());
+			}
+			else
+			{
+				if (this._HeaderCookieItem == item)
+				{
+					this._HeaderCookieItem = null;
+					this._CookieItems = null;
+				}
+				//else
+				//{
+				//	int index = this.HeaderItems.IndexOf(this.HeaderCookieItem);
+				//	if (index >= 0)
+				//		this.HeaderItems.RemoveAt(index);
+				//	this._HeaderCookieItem = null;
+				//	this._CookieItems = null;
+				//}
+			}
+		}
+
+		//public void AddHeaderItem()
+		//{
+		//	if (this.HeaderCookieItem.ShowInEditor)
+		//		this.HeaderItems.Add(new RequestItem());
+		//	else this.HeaderItems.Insert(this.HeaderItems.IndexOf(this.HeaderCookieItem), new RequestItem());
+		//}
+
+		public RequestItem FirstHeader
+		{
+			get
+			{
+				return this.HeaderItems.FirstOrDefault();
+			}
+		}
+
+		public RequestItem LastHeader
+		{
+			get
+			{
+				return this.HeaderItems.LastOrDefault();
+			}
+		}
+
+		public RequestItem FirstCookie
+		{
+			get
+			{
+				return this.CookieItems.FirstOrDefault();
+			}
+		}
+
+		public RequestItem LastCookie
+		{
+			get
+			{
+				return this.CookieItems.LastOrDefault();
+			}
 		}
 
 		private string _HeaderText;
@@ -55,7 +162,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 				{
 					if (this._HeaderItems == null)
 						this._HeaderText = "";
-					else this._HeaderText = string.Join("\r\n", this.HeaderItems.Where(i => i.ShowInRaw).Select(i => $"{i.Key}: {i.Value}"));
+					else this._HeaderText = string.Join("\r\n", this.HeaderItems.Where(i => i.ShowInRaw).Select(i => $"{i.Name}: {i.Value}"));
 				}
 				return this._HeaderText;
 			}
@@ -82,7 +189,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			List<RequestItem> addItems = new List<RequestItem>();
 			foreach (RequestItem newItem in newItems)
 			{
-				RequestItem oldItem = oldItems.FirstOrDefault(i => i.Key == newItem.Key);
+				RequestItem oldItem = oldItems.FirstOrDefault(i => i.Name == newItem.Name);
 				if (oldItem == null)
 					addItems.Add(newItem);
 				else
@@ -95,8 +202,9 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			{
 				RequestItem oldItem = oldItems[i];
 				if (oldItem.Selected)
-					if (newItems.All(newItem => newItem.Key != oldItems[i].Key))
-						oldItems.RemoveAt(i);
+					if (newItems.All(newItem => newItem.Name != oldItems[i].Name))
+						oldItems[i].Selected = false;
+						//oldItems.RemoveAt(i);
 			}
 			foreach (RequestItem item in addItems)
 				oldItems.Add(item);
@@ -108,10 +216,10 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			{
 				string[] parameters = line.Split(':');
 				RequestItem item = new RequestItem();
-				item.Key = parameters[0].Trim();
+				item.Name = parameters[0].Trim();
 				if (parameters.Length > 1)
 					item.Value = String.Join("", parameters.Skip(1).Select(p => p.Trim())).Trim();
-				if (item.Key == "" && item.Value == "")
+				if (item.Name == "" && item.Value == "")
 					continue;
 				yield return item;
 			}
@@ -128,19 +236,33 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 					if (this._HeaderCookieItem == null)
 					{
 						this._HeaderCookieItem = new RequestItem("Cookie","");
-						this.HeaderItems.Add(this._HeaderCookieItem);
+						//this.HeaderItems.Add(this._HeaderCookieItem);
 					}
-					this._HeaderCookieItem.PropertyChanged += HeaderCookieItem_PropertyChanged;
+					//this._HeaderCookieItem.PropertyChanged += HeaderCookieItem_PropertyChanged;
 				}
 				return this._HeaderCookieItem;
 			}
 		}
 
-		private void HeaderCookieItem_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-		{
-			if (this._CookieItems != null)
-				this.ReplaceSelectedOldItems(this._CookieItems, this.StringToCookieItems(this.HeaderCookieItem.Value).ToArray());
-		}
+		//private void HeaderCookieItem_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		//{
+
+		//	if (this.HeaderCookieItem.IsCookieItem)
+		//	{
+		//		if (!this.HeaderItems.Contains(this.HeaderCookieItem))
+		//			this.HeaderItems.Add(this.HeaderCookieItem);
+		//		if (this._CookieItems != null)
+		//			this.ReplaceSelectedOldItems(this._CookieItems, this.StringToCookieItems(this.HeaderCookieItem.Value).ToArray());
+		//	}
+		//	else
+		//	{
+		//		int index = this.HeaderItems.IndexOf(this.HeaderCookieItem);
+		//		if (index >= 0)
+		//			this.HeaderItems.RemoveAt(index);
+		//		this._HeaderCookieItem = null;
+		//		this._CookieItems = null;
+		//	}
+		//}
 
 		private System.Collections.ObjectModel.ObservableCollection<RequestItem> _CookieItems;
 		[Newtonsoft.Json.JsonProperty]
@@ -168,11 +290,26 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			if (e.NewItems != null)
 				foreach (RequestItem item in e.NewItems)
 					item.PropertyChanged += CookieItem_PropertyChanged;
+
+			this.NotifyOfPropertyChange(() => this.FirstCookie);
+			this.NotifyOfPropertyChange(() => this.LastCookie);
 		}
 
 		private void CookieItem_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
-			this.HeaderCookieItem.SetValueWithoutNotify(string.Join(";", this.CookieItems.Where(i => i.Selected).Select(i => $"{i.Key}={i.Value}")));
+			this.HeaderCookieItem.SetValueWithoutNotify(string.Join(";", this.CookieItems.Where(i => i.Selected).Select(i => $"{i.Name}={i.Value}")));
+			if(string.IsNullOrWhiteSpace(this.HeaderCookieItem.Value))
+			{
+				int index = this.HeaderItems.IndexOf(this.HeaderCookieItem);
+				if (index >= 0)
+					this.HeaderItems.RemoveAt(index);
+			}
+			else
+			{
+				if (!this.HeaderItems.Contains(this.HeaderCookieItem))
+					this.HeaderItems.Add(this.HeaderCookieItem);
+			}
+			//this.HeaderCookieItem.Value=string.Join(";", this.CookieItems.Where(i => i.Selected).Select(i => $"{i.Key}={i.Value}"));
 			this._HeaderText = null;
 			//this.NotifyOfPropertyChange(() => this.HeaderText);
 			//this.HeaderCookieItem.NotifyOfPropertyChange(()=>this.HeaderCookieItem.ShowInEditor);
@@ -184,10 +321,10 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			{
 				string[] parameters = line.Split('=');
 				RequestItem item = new RequestItem();
-				item.Key = parameters[0].Trim();
+				item.Name = parameters[0].Trim();
 				if (parameters.Length > 1)
 					item.Value = String.Join("", parameters.Skip(1).Select(p => p.Trim())).Trim();
-				if (item.Key == "" && item.Value == "")
+				if (item.Name == "" && item.Value == "")
 					continue;
 				yield return item;
 			}
@@ -229,12 +366,35 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 				this.Done();
 		}
 
-		public void Run()
+		protected System.Net.Http.HttpClient HttpClient;
+
+		public async System.Threading.Tasks.Task<Response> Run()
 		{
 			this.Status = TaskStatus.Performing;
-			//if (this.AutoRunWhenFilesFiltered)
-			//	this.CopyFiles();
-			//else this.Status = TaskStatus.Standby;
+			System.Net.Http.HttpRequestMessage request = new System.Net.Http.HttpRequestMessage(System.Net.Http.HttpMethod.Get, this.Url);
+			foreach(RequestItem item in this.HeaderItems)
+				if(item.Selected&&!item.IsCookieItem)
+					request.Headers.Add(item.Name, item.Value);
+			System.Net.CookieContainer cookies = new System.Net.CookieContainer();
+			foreach(RequestItem item in this.CookieItems)
+				if(item.Selected)
+					cookies.Add(new System.Net.Cookie(item.Name, item.Value) { Domain = this.Uri.Host });
+
+			this.HttpClient = new System.Net.Http.HttpClient(new System.Net.Http.HttpClientHandler { CookieContainer = cookies, UseCookies = true, ServerCertificateCustomValidationCallback = (a, b, c, d) => true });
+			System.Net.Http.HttpResponseMessage response = await this.HttpClient.SendAsync(request);
+			try
+			{
+				return new Response(response.Headers.ToString(), await response.Content.ReadAsByteArrayAsync());
+			}
+			finally
+			{
+				this.Status = TaskStatus.Done;
+			}
+		}
+
+		public void CancelPendingRequests()
+		{
+			this.HttpClient?.CancelPendingRequests();
 		}
 
 		public void Save(string path)
@@ -264,6 +424,8 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 		public bool ValidateData(Localization localization)
 		{
 			this.DataErrorInfo = new DataErrorInfos.Task();
+			if (string.IsNullOrWhiteSpace(this.Url))
+				this.DataErrorInfo.Url = "必须录入Url";
 			bool result = true;
 
 			return result;

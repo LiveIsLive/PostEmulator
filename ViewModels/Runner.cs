@@ -12,7 +12,18 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 
 		public string Title { get; protected set; }
 
-		//protected readonly System.Threading.Thread Thread;
+		private Models.Response _Response;
+		public Models.Response Response
+		{
+			get
+			{
+				return this._Response;
+			}
+			set
+			{
+				this._Response = value;
+			}
+		}
 
 		public Runner(Models.Task task, string fileName)
 		{
@@ -23,19 +34,19 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 			//this.Thread.IsBackground = true;
 		}
 
-		public void Run()
+		public async Task Run()
 		{
-			System.Threading.Tasks.Task.Run(this.Task.Run, this.CancellationTokenSource.Token);
+			this.Response = await this.Task.Run();
 			//this.Thread.Start();
 		}
 
 		public void Stop()
 		{
 			//this.Thread.Abort();
-
-			this.CancellationTokenSource.Cancel();
+			this.Task.CancelPendingRequests();
+			//this.CancellationTokenSource.Cancel();
 			//this.Task.Status = Models.TaskStatus.Standby;
-			//this.TryClose();
+			this.TryCloseAsync();
 		}
 	}
 }

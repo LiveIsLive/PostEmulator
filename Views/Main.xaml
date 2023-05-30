@@ -25,13 +25,13 @@
 		<Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}">
 			<Setter Property="FontFamily" Value="微软雅黑" />
 		</Style>
-		<Style TargetType="mah:MetroTabItem">
+		<!--<Style TargetType="mah:MetroTabItem">
 			<Style.Triggers>
 				<Trigger Property="IsSelected" Value="False">
 					<Setter Property="Content" Value="{x:Null}" />
 				</Trigger>
 			</Style.Triggers>
-		</Style>
+		</Style>-->
 	</mah:MetroWindow.Resources>
 	<mah:MetroWindow.RightWindowCommands>
 		<mah:WindowCommands>
@@ -107,6 +107,7 @@
 			</controls:OpenFileSplitButton>
 		</ToolBar>
 		<!--<controls:ErrorReminder DockPanel.Dock="Top" Text="{Binding Task.DataErrorInfo.Job}" />-->
+		<TextBox DockPanel.Dock="Top" Text="{Binding Task.Url}" mah:TextBoxHelper.Watermark="Url" />
 		<controls:TabControl IsFocus="{Binding UpdateTabBinding}">
 			<mah:MetroTabItem Header="Request Headers">
 				<controls:TabControl>
@@ -133,9 +134,9 @@
 										<Setter Property="Content">
 											<Setter.Value>
 												<StackPanel>
-													<controls:IconButton cal:Message.Attach="AddHeader" Icon="Add" Margin="5,10,0,0" Content="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Add}" />
+													<controls:IconButton cal:Message.Attach="AddHeader" Icon="Add" Margin="5,10,0,0" Content="{Binding Localization.Add}" />
 													<DataGrid ItemsSource="{Binding Task.HeaderItems}" AutoGenerateColumns="False" IsReadOnly="True">
-														<DataGrid.RowStyle>
+														<!--<DataGrid.RowStyle>
 															<Style TargetType="DataGridRow">
 																<Style.Triggers>
 																	<DataTrigger Binding="{Binding ShowInEditor}" Value="False">
@@ -143,13 +144,13 @@
 																	</DataTrigger>
 																</Style.Triggers>
 															</Style>
-														</DataGrid.RowStyle>
+														</DataGrid.RowStyle>-->
 														<DataGrid.Columns>
 															<DataGridCheckBoxColumn Header="选中" Binding="{Binding Selected}" Width="Auto" />
-															<DataGridTemplateColumn Header="Key" Width="*">
+															<DataGridTemplateColumn Header="Name" Width="*">
 																<DataGridTemplateColumn.CellTemplate>
 																	<DataTemplate>
-																		<TextBox Text="{Binding Path=Key,UpdateSourceTrigger=LostFocus}" />
+																		<TextBox Text="{Binding Path=Name,UpdateSourceTrigger=LostFocus}" />
 																	</DataTemplate>
 																</DataGridTemplateColumn.CellTemplate>
 															</DataGridTemplateColumn>
@@ -157,6 +158,23 @@
 																<DataGridTemplateColumn.CellTemplate>
 																	<DataTemplate>
 																		<TextBox Text="{Binding Path=Value,UpdateSourceTrigger=LostFocus}" />
+																	</DataTemplate>
+																</DataGridTemplateColumn.CellTemplate>
+															</DataGridTemplateColumn>
+															<DataGridTemplateColumn Width="100">
+																<DataGridTemplateColumn.CellTemplate>
+																	<DataTemplate>
+																		<WrapPanel>
+																			<WrapPanel.Resources>
+																				<Style TargetType="controls:IconButton">
+																					<Setter Property="BorderThickness" Value="0" />
+																					<Setter Property="Background" Value="Transparent" />
+																				</Style>
+																			</WrapPanel.Resources>
+																			<controls:IconButton cal:Message.Attach="MoveUpHeader($this.DataContext)" Tag="{Binding Path=DataContext.Task,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="ArrowUp" Visibility="{c:Binding 'Tag.FirstHeader!=DataContext', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
+																			<controls:IconButton cal:Message.Attach="MoveDownHeader($this.DataContext)" Tag="{Binding Path=DataContext.Task,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="ArrowDown" Visibility="{c:Binding 'Tag.LastHeader!=DataContext', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
+																			<controls:IconButton cal:Message.Attach="RemoveHeader($this.DataContext)" Tag="{Binding Path=DataContext.Task,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="Close" BorderThickness="0" Background="Transparent" />
+																		</WrapPanel>
 																	</DataTemplate>
 																</DataGridTemplateColumn.CellTemplate>
 															</DataGridTemplateColumn>
@@ -178,14 +196,14 @@
 										<Setter Property="Content">
 											<Setter.Value>
 												<StackPanel>
-													<controls:IconButton cal:Message.Attach="AddCookie" Icon="Add" Margin="5,10,0,0" Content="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Add}" />
+													<controls:IconButton cal:Message.Attach="AddCookie" Icon="Add" Margin="5,10,0,0" Content="{Binding Localization.Add}" />
 													<DataGrid ItemsSource="{Binding Task.CookieItems}" AutoGenerateColumns="False" IsReadOnly="True">
 														<DataGrid.Columns>
 															<DataGridCheckBoxColumn Header="选中" Binding="{Binding Selected}" Width="Auto" />
-															<DataGridTemplateColumn Header="Key" Width="*">
+															<DataGridTemplateColumn Header="Name" Width="*">
 																<DataGridTemplateColumn.CellTemplate>
 																	<DataTemplate>
-																		<TextBox Text="{Binding Path=Key,UpdateSourceTrigger=LostFocus}" />
+																		<TextBox Text="{Binding Path=Name,UpdateSourceTrigger=LostFocus}" />
 																	</DataTemplate>
 																</DataGridTemplateColumn.CellTemplate>
 															</DataGridTemplateColumn>
@@ -193,6 +211,23 @@
 																<DataGridTemplateColumn.CellTemplate>
 																	<DataTemplate>
 																		<TextBox Text="{Binding Path=Value,UpdateSourceTrigger=LostFocus}" />
+																	</DataTemplate>
+																</DataGridTemplateColumn.CellTemplate>
+															</DataGridTemplateColumn>
+															<DataGridTemplateColumn Width="100">
+																<DataGridTemplateColumn.CellTemplate>
+																	<DataTemplate>
+																		<WrapPanel>
+																			<WrapPanel.Resources>
+																				<Style TargetType="controls:IconButton">
+																					<Setter Property="BorderThickness" Value="0" />
+																					<Setter Property="Background" Value="Transparent" />
+																				</Style>
+																			</WrapPanel.Resources>
+																			<controls:IconButton cal:Message.Attach="MoveUpCookie($this.DataContext)" Tag="{Binding Path=DataContext.Task,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="ArrowUp" Visibility="{c:Binding 'Tag.FirstCookie!=DataContext', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
+																			<controls:IconButton cal:Message.Attach="MoveDownCookie($this.DataContext)" Tag="{Binding Path=DataContext.Task,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="ArrowDown" Visibility="{c:Binding 'Tag.LastCookie!=DataContext', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
+																			<controls:IconButton cal:Message.Attach="RemoveCookie($this.DataContext)" Tag="{Binding Path=DataContext.Task,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="Close" BorderThickness="0" Background="Transparent" />
+																		</WrapPanel>
 																	</DataTemplate>
 																</DataGridTemplateColumn.CellTemplate>
 															</DataGridTemplateColumn>

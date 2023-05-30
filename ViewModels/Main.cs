@@ -241,11 +241,12 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 
 		public bool ValidateData()
 		{
+			return this.Task.ValidateData(this.Localization);
 			//if (this.Task.ValidateData(this.Localization))
 			//	return true;
 			//if (this.Task.DataErrorInfo.LastInvalidJob != null)
 			//	this.SelectedJob = this.Task.DataErrorInfo.LastInvalidJob;
-			return false;
+			//return false;
 		}
 
 		//public void EnsureJobBinding()
@@ -332,9 +333,48 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 			this.Task.HeaderItems.Add(new Models.RequestItem());
 		}
 
+		public void MoveUpHeader(Models.RequestItem item)
+		{
+			int index = this.Task.HeaderItems.IndexOf(item);
+			if (index > 0)
+				this.Task.HeaderItems.Move(index, index - 1);
+		}
+
+		public void MoveDownHeader(Models.RequestItem item)
+		{
+			int index = this.Task.HeaderItems.IndexOf(item);
+			if (index < this.Task.HeaderItems.Count - 1)
+				this.Task.HeaderItems.Move(index, index + 1);
+		}
+
+		public void RemoveHeader(Models.RequestItem item)
+		{
+			this.Task.HeaderItems.Remove(item);
+		}
+
+
 		public void AddCookie()
 		{
 			this.Task.CookieItems.Add(new Models.RequestItem());
+		}
+
+		public void MoveUpCookie(Models.RequestItem item)
+		{
+			int index = this.Task.CookieItems.IndexOf(item);
+			if (index > 0)
+				this.Task.CookieItems.Move(index, index - 1);
+		}
+
+		public void MoveDownCookie(Models.RequestItem item)
+		{
+			int index = this.Task.CookieItems.IndexOf(item);
+			if (index < this.Task.CookieItems.Count - 1)
+				this.Task.CookieItems.Move(index, index + 1);
+		}
+
+		public void RemoveCookie(Models.RequestItem item)
+		{
+			this.Task.CookieItems.Remove(item);
 		}
 	}
 }
