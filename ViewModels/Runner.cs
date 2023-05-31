@@ -22,6 +22,7 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 			set
 			{
 				this._Response = value;
+				this.NotifyOfPropertyChange(() => this.Response);
 			}
 		}
 

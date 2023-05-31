@@ -22,6 +22,6 @@
 				<controls:GetDictionaryValue Dictionary="{Binding Localization.TaskStatus}" Key="{Binding Task.Status}" />
 			</WrapPanel>
 		</ToolBar>
-		<TextBox Text="{Binding Response.TextContent}" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
+		<TextBox Text="{Binding Path=Response.TextContent,Mode=OneWay}" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
 	</DockPanel>
 </mah:MetroWindow>

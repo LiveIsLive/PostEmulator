@@ -214,11 +214,11 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 		{
 			foreach(string line in s.Split(new char[] { '\r', '\n' },StringSplitOptions.RemoveEmptyEntries))
 			{
-				string[] parameters = line.Split(':');
+				string[] parameters = line.Split(new char[] { ':' },2);
 				RequestItem item = new RequestItem();
 				item.Name = parameters[0].Trim();
 				if (parameters.Length > 1)
-					item.Value = String.Join("", parameters.Skip(1).Select(p => p.Trim())).Trim();
+					item.Value = parameters[1].Trim();
 				if (item.Name == "" && item.Value == "")
 					continue;
 				yield return item;
@@ -319,11 +319,11 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 		{
 			foreach(string line in s.Split(new char[] { ';' },StringSplitOptions.RemoveEmptyEntries))
 			{
-				string[] parameters = line.Split('=');
+				string[] parameters = line.Split(new char[] { '=' },2);
 				RequestItem item = new RequestItem();
 				item.Name = parameters[0].Trim();
 				if (parameters.Length > 1)
-					item.Value = String.Join("", parameters.Skip(1).Select(p => p.Trim())).Trim();
+					item.Value = parameters[1].Trim();
 				if (item.Name == "" && item.Value == "")
 					continue;
 				yield return item;
@@ -380,14 +380,32 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 				if(item.Selected)
 					cookies.Add(new System.Net.Cookie(item.Name, item.Value) { Domain = this.Uri.Host });
 
-			this.HttpClient = new System.Net.Http.HttpClient(new System.Net.Http.HttpClientHandler { CookieContainer = cookies, UseCookies = true, ServerCertificateCustomValidationCallback = (a, b, c, d) => true });
+			this.HttpClient = new System.Net.Http.HttpClient(new System.Net.Http.HttpClientHandler
+			{
+				CookieContainer = cookies,
+				UseCookies = true,
+				//AutomaticDecompression = System.Net.DecompressionMethods.Deflate,
+				ServerCertificateCustomValidationCallback = (a, b, c, d) => true
+			});
 			System.Net.Http.HttpResponseMessage response = await this.HttpClient.SendAsync(request);
+			string headers = response.ToString();
+			headers = headers.Substring(headers.IndexOf("{") + 1);
+			headers = headers.Substring(0, headers.LastIndexOf("}"));
+			bool brotliContent = new string[] {"br", "brotli" }.Contains(response.Content.Headers.FirstOrDefault(h => h.Key == "Content-Encoding").Value?.FirstOrDefault()?.ToLower());
 			try
 			{
-				return new Response(response.Headers.ToString(), await response.Content.ReadAsByteArrayAsync());
+				if(brotliContent)
+				{
+					System.IO.MemoryStream memoryStream = new System.IO.MemoryStream();
+					await new BrotliSharpLib.BrotliStream(await response.Content.ReadAsStreamAsync(), CompressionMode.Decompress).CopyToAsync(memoryStream);
+					memoryStream.Position = 0;
+					return new Response(headers, memoryStream.ToArray());
+				}
+				return new Response(headers, await response.Content.ReadAsByteArrayAsync());
 			}
 			finally
 			{
+				//var myTest = response.Headers.FirstOrDefault(h => h.Key == "Content-Encoding");
 				this.Status = TaskStatus.Done;
 			}
 		}
