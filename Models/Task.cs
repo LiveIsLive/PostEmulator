@@ -391,6 +391,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			string headers = response.ToString();
 			headers = headers.Substring(headers.IndexOf("{") + 1);
 			headers = headers.Substring(0, headers.LastIndexOf("}"));
+			headers = string.Join("\r\n",headers.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Select(h=>h.Trim()));
 			bool brotliContent = new string[] {"br", "brotli" }.Contains(response.Content.Headers.FirstOrDefault(h => h.Key == "Content-Encoding").Value?.FirstOrDefault()?.ToLower());
 			try
 			{

@@ -93,7 +93,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			}
 		}
 
-		protected static readonly string SavePath = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Cold-Shine-Soft.Com" ,"Custom File Copier", "Setting.json");
+		protected static readonly string SavePath = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Cold-Shine-Soft.Com" , "HttpClient Performer", "Setting.json");
 
 		private static Setting _Instance;
 		public static Setting Instance
