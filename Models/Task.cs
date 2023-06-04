@@ -366,6 +366,14 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 				this.Done();
 		}
 
+		protected async Task<byte[]> StreamToBytes(System.IO.Stream stream)
+		{
+			System.IO.MemoryStream memory = new System.IO.MemoryStream();
+			await stream.CopyToAsync(memory);
+			memory.Position = 0;
+			return memory.ToArray();
+		}
+
 		protected System.Net.Http.HttpClient HttpClient;
 
 		public async System.Threading.Tasks.Task<Response> Run()
@@ -384,7 +392,8 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			{
 				CookieContainer = cookies,
 				UseCookies = true,
-				//AutomaticDecompression = System.Net.DecompressionMethods.Deflate,
+				//如果设置自动解压，会导致Headers里面丢失Content-Encoding
+				//AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate,
 				ServerCertificateCustomValidationCallback = (a, b, c, d) => true
 			});
 			System.Net.Http.HttpResponseMessage response = await this.HttpClient.SendAsync(request);
@@ -392,17 +401,19 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			headers = headers.Substring(headers.IndexOf("{") + 1);
 			headers = headers.Substring(0, headers.LastIndexOf("}"));
 			headers = string.Join("\r\n",headers.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Select(h=>h.Trim()));
-			bool brotliContent = new string[] {"br", "brotli" }.Contains(response.Content.Headers.FirstOrDefault(h => h.Key == "Content-Encoding").Value?.FirstOrDefault()?.ToLower());
+			string contentEncoding = response.Content.Headers.ContentEncoding.FirstOrDefault()?.ToLower();
+			byte[] content;
 			try
 			{
-				if(brotliContent)
-				{
-					System.IO.MemoryStream memoryStream = new System.IO.MemoryStream();
-					await new BrotliSharpLib.BrotliStream(await response.Content.ReadAsStreamAsync(), CompressionMode.Decompress).CopyToAsync(memoryStream);
-					memoryStream.Position = 0;
-					return new Response(headers, memoryStream.ToArray());
-				}
-				return new Response(headers, await response.Content.ReadAsByteArrayAsync());
+				if(new string[] { "br", "brotli" }.Contains(contentEncoding))
+					content = await this.StreamToBytes(new BrotliSharpLib.BrotliStream(await response.Content.ReadAsStreamAsync(), CompressionMode.Decompress));
+				else if (contentEncoding == "gzip")
+					content = await this.StreamToBytes(new System.IO.Compression.GZipStream(await response.Content.ReadAsStreamAsync(), CompressionMode.Decompress));
+				else if (contentEncoding == "deflate")
+					content = await this.StreamToBytes(new System.IO.Compression.DeflateStream(await response.Content.ReadAsStreamAsync(), CompressionMode.Decompress));
+				else content = await response.Content.ReadAsByteArrayAsync();
+
+				return new Response(headers, content, response.Content.Headers.ContentType?.MediaType, response.Content.Headers.ContentType?.CharSet, response.Content.Headers.ContentDisposition?.FileName);
 			}
 			finally
 			{

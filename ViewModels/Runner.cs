@@ -23,6 +23,23 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 			{
 				this._Response = value;
 				this.NotifyOfPropertyChange(() => this.Response);
+				this._TextDocument = null;
+				this.NotifyOfPropertyChange(() => this.TextDocument);
+			}
+		}
+
+		private ICSharpCode.AvalonEdit.Document.TextDocument _TextDocument;
+		public ICSharpCode.AvalonEdit.Document.TextDocument TextDocument
+		{
+			get
+			{
+				if (this._TextDocument == null)
+				{
+					if (this.Response == null)
+						return null;
+					this._TextDocument = new ICSharpCode.AvalonEdit.Document.TextDocument(this.Response.TextContent);
+				}
+				return this._TextDocument;
 			}
 		}
 

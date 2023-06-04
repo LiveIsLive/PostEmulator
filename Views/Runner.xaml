@@ -11,7 +11,9 @@
 		xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
 		xmlns:cal="http://www.caliburnproject.org"
 		xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
-		mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=viewModels:Runner}"
+		xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+		xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit" 
+				 mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=viewModels:Runner}"
 		TitleCharacterCasing="Normal" Title="{Binding Title}" cal:Message.Attach="[Loaded]=[Run];[Closed]=[Stop]">
 	<DockPanel>
 		<ToolBar DockPanel.Dock="Top" Margin="0,5">
@@ -24,7 +26,8 @@
 		</ToolBar>
 		<mah:MetroTabControl>
 			<mah:MetroTabItem Header="Response Body">
-				<TextBox Text="{Binding Path=Response.TextContent,Mode=OneWay}" AcceptsReturn="True" IsReadOnly="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
+				<avalonEdit:TextEditor ShowLineNumbers="True" WordWrap="False" SyntaxHighlighting="Json" Document="{Binding Path=TextDocument,Mode=OneWay}" />
+				<!--<TextBox Text="{Binding Path=Response.TextContent,Mode=OneWay}" AcceptsReturn="True" IsReadOnly="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />-->
 			</mah:MetroTabItem>
 			<mah:MetroTabItem Header="Response Headers">
 				<TextBox Text="{Binding Path=Response.Headers,Mode=OneWay}" AcceptsReturn="True" IsReadOnly="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />

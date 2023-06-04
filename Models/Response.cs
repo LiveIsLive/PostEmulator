@@ -12,7 +12,29 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 
 		public byte[] Content { get; protected set; }
 
-		public System.Text.Encoding Encoding { get; set; } = System.Text.Encoding.UTF8;
+		protected readonly string MediaType;
+
+		protected readonly string CharSet;
+
+		protected readonly string FileName;
+
+		private System.Text.Encoding _Encoding;
+		public System.Text.Encoding Encoding
+		{
+			get
+			{
+				if(this._Encoding==null)
+					try
+					{
+						this._Encoding = System.Text.Encoding.GetEncoding(this.CharSet);
+					}
+					catch
+					{
+						this._Encoding = System.Text.Encoding.UTF8;
+					}
+				return this._Encoding;
+			}
+		}
 
 		private string _TextContent;
 		public string TextContent
@@ -25,10 +47,36 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			}
 		}
 
-		public Response(string headers, byte[] content)
+		private ContentType? _ContentType;
+		public ContentType? ContentType
+		{
+			get
+			{
+				if (this._ContentType == null)
+					if (this.MediaType == null)
+						this._ContentType = Models.ContentType.Binary;
+					else if (this.MediaType.Contains("html"))
+						this._ContentType = Models.ContentType.Html;
+					else if (this.MediaType.Contains("json"))
+						this._ContentType = Models.ContentType.Json;
+					else if(this.MediaType.Contains("xml"))
+						this._ContentType = Models.ContentType.Xml;
+					else if(this.MediaType.Contains("image"))
+						this._ContentType = Models.ContentType.Image;
+					else if(this.MediaType.Contains("text"))
+						this._ContentType = Models.ContentType.Image;
+					else this._ContentType = Models.ContentType.Binary;
+				return this._ContentType;
+			}
+		}
+
+		public Response(string headers, byte[] content,string mediaType,string charSet,string fileName)
 		{
 			this.Headers = headers;
 			this.Content = content;
+			this.MediaType = mediaType?.ToLower();
+			this.CharSet = charSet;
+			this.FileName = fileName;
 		}
 	}
 }
