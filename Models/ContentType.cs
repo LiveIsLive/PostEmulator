@@ -10,11 +10,11 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 	{
 		Binary,
 		PlainText,
-		Html,
-		Css,
+		HTML,
+		CSS,
 		JavaScript,
 		Json,
-		Xml,
+		XML,
 		Image
 	}
 }

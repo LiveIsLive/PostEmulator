@@ -413,7 +413,17 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 					content = await this.StreamToBytes(new System.IO.Compression.DeflateStream(await response.Content.ReadAsStreamAsync(), CompressionMode.Decompress));
 				else content = await response.Content.ReadAsByteArrayAsync();
 
-				return new Response(headers, content, response.Content.Headers.ContentType?.MediaType, response.Content.Headers.ContentType?.CharSet, response.Content.Headers.ContentDisposition?.FileName);
+				string fileName;
+				try
+				{
+					fileName = response.Content.Headers.ContentDisposition?.FileName;
+				}
+				catch
+				{
+					fileName = null;
+				}
+
+				return new Response(headers, content, response.Content.Headers.ContentType?.MediaType, response.Content.Headers.ContentType?.CharSet, fileName);
 			}
 			finally
 			{

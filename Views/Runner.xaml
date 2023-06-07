@@ -12,7 +12,8 @@
 		xmlns:cal="http://www.caliburnproject.org"
 		xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
 		xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-		xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit" 
+		xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+				 xmlns:control="clr-namespace:WpfHexaEditor;assembly=WPFHexaEditor"
 				 mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=viewModels:Runner}"
 		TitleCharacterCasing="Normal" Title="{Binding Title}" cal:Message.Attach="[Loaded]=[Run];[Closed]=[Stop]">
 	<DockPanel>
@@ -26,7 +27,16 @@
 		</ToolBar>
 		<mah:MetroTabControl>
 			<mah:MetroTabItem Header="Response Body">
-				<avalonEdit:TextEditor ShowLineNumbers="True" WordWrap="False" SyntaxHighlighting="Json" Document="{Binding Path=TextDocument,Mode=OneWay}" />
+				<mah:MetroTabControl SelectedIndex="-1">
+					<mah:MetroTabItem />
+					<mah:MetroTabItem Header="Plain Text">
+						<TextBox Text="{Binding Path=Response.FormattedContentCode,Mode=OneWay}" AcceptsReturn="True" IsReadOnly="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
+					</mah:MetroTabItem>
+				</mah:MetroTabControl>
+				
+				<!--<control:HexEditor Stream="{Binding Response.ContentStream}" />-->
+				<!--<controls:ImageViewer Source="{Binding Response.Content}" />-->
+				<!--<avalonEdit:TextEditor ShowLineNumbers="True" WordWrap="False" SyntaxHighlighting="Json" Document="{Binding Path=TextDocument,Mode=OneWay}" />-->
 				<!--<TextBox Text="{Binding Path=Response.TextContent,Mode=OneWay}" AcceptsReturn="True" IsReadOnly="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />-->
 			</mah:MetroTabItem>
 			<mah:MetroTabItem Header="Response Headers">
