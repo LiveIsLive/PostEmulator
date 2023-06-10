@@ -37,9 +37,20 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 				{
 					if (this.Response == null)
 						return null;
-					this._TextDocument = new ICSharpCode.AvalonEdit.Document.TextDocument(this.Response.TextContent);
+					this._TextDocument = new ICSharpCode.AvalonEdit.Document.TextDocument(this.Response.FormattedContentCode);
 				}
 				return this._TextDocument;
+			}
+		}
+
+		private ICSharpCode.AvalonEdit.Highlighting.IHighlightingDefinition _Highlighting;
+		public ICSharpCode.AvalonEdit.Highlighting.IHighlightingDefinition Highlighting
+		{
+			get
+			{
+				if(this._Highlighting==null)
+					this._Highlighting= ICSharpCode.AvalonEdit.Highlighting.HighlightingManager.Instance.GetDefinition(this.Response.ContentType.ToString());
+				return this._Highlighting;
 			}
 		}
 

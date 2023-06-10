@@ -146,7 +146,13 @@
 															</Style>
 														</DataGrid.RowStyle>-->
 														<DataGrid.Columns>
-															<DataGridCheckBoxColumn Header="选中" Binding="{Binding Selected}" Width="Auto" />
+															<DataGridTemplateColumn Header="选中" Width="Auto">
+																<DataGridTemplateColumn.CellTemplate>
+																	<DataTemplate>
+																		<CheckBox IsChecked="{Binding Selected}" HorizontalAlignment="Center" />
+																	</DataTemplate>
+																</DataGridTemplateColumn.CellTemplate>
+															</DataGridTemplateColumn>
 															<DataGridTemplateColumn Header="Name" Width="*">
 																<DataGridTemplateColumn.CellTemplate>
 																	<DataTemplate>
@@ -199,7 +205,13 @@
 													<controls:IconButton cal:Message.Attach="AddCookie" Icon="Add" Margin="5,10,0,0" Content="{Binding Localization.Add}" />
 													<DataGrid ItemsSource="{Binding Task.CookieItems}" AutoGenerateColumns="False" IsReadOnly="True">
 														<DataGrid.Columns>
-															<DataGridCheckBoxColumn Header="选中" Binding="{Binding Selected}" Width="Auto" />
+															<DataGridTemplateColumn Header="选中" Width="Auto">
+																<DataGridTemplateColumn.CellTemplate>
+																	<DataTemplate>
+																		<CheckBox IsChecked="{Binding Selected}" HorizontalAlignment="Center" />
+																	</DataTemplate>
+																</DataGridTemplateColumn.CellTemplate>
+															</DataGridTemplateColumn>
 															<DataGridTemplateColumn Header="Name" Width="*">
 																<DataGridTemplateColumn.CellTemplate>
 																	<DataTemplate>

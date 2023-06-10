@@ -12,6 +12,7 @@
 		xmlns:cal="http://www.caliburnproject.org"
 		xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
 		xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+		xmlns:jsonControls="clr-namespace:JsonControls;assembly=JsonControls"
 		xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
 				 xmlns:control="clr-namespace:WpfHexaEditor;assembly=WPFHexaEditor"
 				 mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=viewModels:Runner}"
@@ -25,14 +26,112 @@
 				<controls:GetDictionaryValue Dictionary="{Binding Localization.TaskStatus}" Key="{Binding Task.Status}" />
 			</WrapPanel>
 		</ToolBar>
-		<mah:MetroTabControl>
+		<mah:MetroTabControl Visibility="{c:Binding 'Response!=null'}">
 			<mah:MetroTabItem Header="Response Body">
-				<mah:MetroTabControl SelectedIndex="-1">
-					<mah:MetroTabItem />
-					<mah:MetroTabItem Header="Plain Text">
-						<TextBox Text="{Binding Path=Response.FormattedContentCode,Mode=OneWay}" AcceptsReturn="True" IsReadOnly="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
-					</mah:MetroTabItem>
-				</mah:MetroTabControl>
+				<mah:MetroTabItem.Style>
+					<Style TargetType="mah:MetroTabItem">
+						<Style.Triggers>
+							<Trigger Property="IsSelected" Value="True">
+								<Setter Property="Content">
+									<Setter.Value>
+										<mah:MetroTabControl>
+											<mah:MetroTabItem Header="Plain Text" IsSelected="{c:Binding 'Response.ContentType==models:ContentType.PlainText',Mode=OneWay}">
+												<mah:MetroTabItem.Style>
+													<Style TargetType="mah:MetroTabItem">
+														<Style.Triggers>
+															<Trigger Property="IsSelected" Value="True">
+																<Setter Property="Content">
+																	<Setter.Value>
+																		<TextBox Text="{Binding Path=Response.TextContent,Mode=OneWay}" AcceptsReturn="True" IsReadOnly="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
+																	</Setter.Value>
+																</Setter>
+															</Trigger>
+														</Style.Triggers>
+													</Style>
+												</mah:MetroTabItem.Style>
+											</mah:MetroTabItem>
+											<mah:MetroTabItem Header="Json" IsSelected="{c:Binding 'Response.ContentType==models:ContentType.Json',Mode=OneWay}">
+												<mah:MetroTabItem.Style>
+													<Style TargetType="mah:MetroTabItem">
+														<Style.Triggers>
+															<Trigger Property="IsSelected" Value="True">
+																<Setter Property="Content">
+																	<Setter.Value>
+																		<jsonControls:JsonViewer Data="{Binding Response.TextContent}" />
+																	</Setter.Value>
+																</Setter>
+															</Trigger>
+														</Style.Triggers>
+													</Style>
+												</mah:MetroTabItem.Style>
+											</mah:MetroTabItem>
+											<mah:MetroTabItem Header="XML" IsSelected="{c:Binding 'Response.ContentType==models:ContentType.XML',Mode=OneWay}">
+												<mah:MetroTabItem.Style>
+													<Style TargetType="mah:MetroTabItem">
+														<Style.Triggers>
+															<Trigger Property="IsSelected" Value="True">
+																<Setter Property="Content">
+																	<Setter.Value>
+																		<jsonControls:JsonViewer Data="{Binding Response.TextContent}" />
+																	</Setter.Value>
+																</Setter>
+															</Trigger>
+														</Style.Triggers>
+													</Style>
+												</mah:MetroTabItem.Style>
+											</mah:MetroTabItem>
+											<mah:MetroTabItem Header="Code View">
+												<mah:MetroTabItem.Style>
+													<Style TargetType="mah:MetroTabItem">
+														<Style.Triggers>
+															<Trigger Property="IsSelected" Value="True">
+																<Setter Property="Content">
+																	<Setter.Value>
+																		<avalonEdit:TextEditor ShowLineNumbers="True" WordWrap="False" SyntaxHighlighting="{Binding Highlighting}" Document="{Binding Path=TextDocument,Mode=OneWay}" />
+																	</Setter.Value>
+																</Setter>
+															</Trigger>
+														</Style.Triggers>
+													</Style>
+												</mah:MetroTabItem.Style>
+											</mah:MetroTabItem>
+											<mah:MetroTabItem Header="Image" IsSelected="{c:Binding 'Response.ContentType==models:ContentType.Image',Mode=OneWay}">
+												<mah:MetroTabItem.Style>
+													<Style TargetType="mah:MetroTabItem">
+														<Style.Triggers>
+															<Trigger Property="IsSelected" Value="True">
+																<Setter Property="Content">
+																	<Setter.Value>
+																		<controls:ImageViewer Source="{Binding Response.Content}" />
+																	</Setter.Value>
+																</Setter>
+															</Trigger>
+														</Style.Triggers>
+													</Style>
+												</mah:MetroTabItem.Style>
+											</mah:MetroTabItem>
+											<mah:MetroTabItem Header="Binary" IsSelected="{c:Binding 'Response.ContentType==models:ContentType.Binary',Mode=OneWay}">
+												<mah:MetroTabItem.Style>
+													<Style TargetType="mah:MetroTabItem">
+														<Style.Triggers>
+															<Trigger Property="IsSelected" Value="True">
+																<Setter Property="Content">
+																	<Setter.Value>
+																		<control:HexEditor Stream="{Binding Response.ContentStream}" />
+																	</Setter.Value>
+																</Setter>
+															</Trigger>
+														</Style.Triggers>
+													</Style>
+												</mah:MetroTabItem.Style>
+											</mah:MetroTabItem>
+										</mah:MetroTabControl>
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</mah:MetroTabItem.Style>
 				
 				<!--<control:HexEditor Stream="{Binding Response.ContentStream}" />-->
 				<!--<controls:ImageViewer Source="{Binding Response.Content}" />-->
@@ -40,7 +139,19 @@
 				<!--<TextBox Text="{Binding Path=Response.TextContent,Mode=OneWay}" AcceptsReturn="True" IsReadOnly="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />-->
 			</mah:MetroTabItem>
 			<mah:MetroTabItem Header="Response Headers">
-				<TextBox Text="{Binding Path=Response.Headers,Mode=OneWay}" AcceptsReturn="True" IsReadOnly="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
+				<mah:MetroTabItem.Style>
+					<Style TargetType="mah:MetroTabItem">
+						<Style.Triggers>
+							<Trigger Property="IsSelected" Value="True">
+								<Setter Property="Content">
+									<Setter.Value>
+										<TextBox Text="{Binding Path=Response.Headers,Mode=OneWay}" AcceptsReturn="True" IsReadOnly="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</mah:MetroTabItem.Style>
 			</mah:MetroTabItem>
 		</mah:MetroTabControl>
 	</DockPanel>
