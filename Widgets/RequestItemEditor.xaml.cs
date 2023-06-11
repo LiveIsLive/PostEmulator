@@ -59,7 +59,7 @@ namespace ColdShineSoft.HttpClientPerformer.Widgets
 
 		private void MoveUp_Click(object sender, RoutedEventArgs e)
 		{
-			Models.RequestItem item = (Models.RequestItem)((Controls.IconButton)sender).Tag;
+			Models.RequestItem item = (Models.RequestItem)((Controls.IconButton)sender).DataContext;
 			int index = this.Items.IndexOf(item);
 			if (index > 0)
 				this.Items.Move(index, index - 1);
@@ -67,7 +67,7 @@ namespace ColdShineSoft.HttpClientPerformer.Widgets
 
 		private void MoveDown_Click(object sender, RoutedEventArgs e)
 		{
-			Models.RequestItem item = (Models.RequestItem)((Controls.IconButton)sender).Tag;
+			Models.RequestItem item = (Models.RequestItem)((Controls.IconButton)sender).DataContext;
 			int index = this.Items.IndexOf(item);
 			if (index < this.Items.Count - 1)
 				this.Items.Move(index, index + 1);
@@ -75,7 +75,7 @@ namespace ColdShineSoft.HttpClientPerformer.Widgets
 
 		private void Remove_Click(object sender, RoutedEventArgs e)
 		{
-			this.Items.Remove((Models.RequestItem)((Controls.IconButton)sender).Tag);
+			this.Items.Remove((Models.RequestItem)((Controls.IconButton)sender).DataContext);
 		}
 	}
 }

@@ -161,6 +161,10 @@
       <Project>{0c7296aa-3d93-40c4-a791-f70b367dc0e9}</Project>
       <Name>ViewModels</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Widgets\Widgets.csproj">
+      <Project>{d30945d8-cf5a-4059-a234-fa786a65e6ad}</Project>
+      <Name>Widgets</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Page Include="About.xaml">

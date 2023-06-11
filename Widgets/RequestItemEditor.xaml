@@ -15,21 +15,21 @@
 						<DataGridTemplateColumn Header="选中" Width="Auto">
 							<DataGridTemplateColumn.CellTemplate>
 								<DataTemplate>
-									<CheckBox IsChecked="{Binding Selected}" HorizontalAlignment="Center" />
+									<CheckBox IsChecked="{Binding Path=Selected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" />
 								</DataTemplate>
 							</DataGridTemplateColumn.CellTemplate>
 						</DataGridTemplateColumn>
 						<DataGridTemplateColumn Header="Name" Width="*">
 							<DataGridTemplateColumn.CellTemplate>
 								<DataTemplate>
-									<TextBox Text="{Binding Path=Name,UpdateSourceTrigger=LostFocus}" />
+									<TextBox Text="{Binding Path=Name,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" />
 								</DataTemplate>
 							</DataGridTemplateColumn.CellTemplate>
 						</DataGridTemplateColumn>
 						<DataGridTemplateColumn Header="Value" Width="2*">
 							<DataGridTemplateColumn.CellTemplate>
 								<DataTemplate>
-									<TextBox Text="{Binding Path=Value,UpdateSourceTrigger=LostFocus}" />
+									<TextBox Text="{Binding Path=Value,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" />
 								</DataTemplate>
 							</DataGridTemplateColumn.CellTemplate>
 						</DataGridTemplateColumn>
@@ -43,8 +43,8 @@
 												<Setter Property="Background" Value="Transparent" />
 											</Style>
 										</WrapPanel.Resources>
-										<controls:IconButton Click="MoveUp_Click" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="ArrowUp" Visibility="{c:Binding 'Tag.FirstHeader!=DataContext', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
-										<controls:IconButton Click="MoveDown_Click" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="ArrowDown" Visibility="{c:Binding 'Tag.LastHeader!=DataContext', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
+										<controls:IconButton Click="MoveUp_Click" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="ArrowUp" Visibility="{c:Binding 'Tag.FirstItem!=DataContext', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
+										<controls:IconButton Click="MoveDown_Click" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="ArrowDown" Visibility="{c:Binding 'Tag.LastItem!=DataContext', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
 										<controls:IconButton Click="Remove_Click" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="Close" BorderThickness="0" Background="Transparent" />
 									</WrapPanel>
 								</DataTemplate>

@@ -7,6 +7,7 @@
 		xmlns:viewModels="clr-namespace:ColdShineSoft.HttpClientPerformer.ViewModels;assembly=ColdShineSoft.HttpClientPerformer.ViewModels"
 		xmlns:models="clr-namespace:ColdShineSoft.HttpClientPerformer.Models;assembly=ColdShineSoft.HttpClientPerformer.Models"
 		xmlns:controls="clr-namespace:ColdShineSoft.HttpClientPerformer.Controls;assembly=ColdShineSoft.HttpClientPerformer.Controls"
+		xmlns:widgets="clr-namespace:ColdShineSoft.HttpClientPerformer.Widgets;assembly=ColdShineSoft.HttpClientPerformer.Widgets"
 		xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
 		xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
 		xmlns:cal="http://www.caliburnproject.org"
@@ -109,9 +110,24 @@
 		<!--<controls:ErrorReminder DockPanel.Dock="Top" Text="{Binding Task.DataErrorInfo.Job}" />-->
 		<DockPanel DockPanel.Dock="Top">
 			<ComboBox ItemsSource="{Binding HttpMethods}" SelectedItem="{Binding Task.HttpMethod}" />
-			<TextBox Text="{Binding Task.Url}" mah:TextBoxHelper.Watermark="Url" />
+			<TextBox Text="{Binding Path=Task.Url,Mode=TwoWay}" mah:TextBoxHelper.Watermark="Url" />
 		</DockPanel>
 		<controls:TabControl IsFocus="{Binding UpdateTabBinding}">
+			<mah:MetroTabItem Header="Url Parameters">
+				<mah:MetroTabItem.Style>
+					<Style TargetType="mah:MetroTabItem">
+						<Style.Triggers>
+							<Trigger Property="IsSelected" Value="True">
+								<Setter Property="Content">
+									<Setter.Value>
+										<widgets:RequestItemEditor Items="{Binding Task.UrlParameters}" />
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</mah:MetroTabItem.Style>
+			</mah:MetroTabItem>
 			<mah:MetroTabItem Header="Request Headers">
 				<controls:TabControl>
 					<mah:MetroTabItem Header="Raw">
@@ -136,60 +152,7 @@
 									<Trigger Property="IsSelected" Value="True">
 										<Setter Property="Content">
 											<Setter.Value>
-												<DockPanel>
-													<controls:IconButton DockPanel.Dock="Top" cal:Message.Attach="AddHeader" Icon="Add" Margin="5,10,0,0" Content="{Binding Localization.Add}" />
-													<DataGrid ItemsSource="{Binding Task.HeaderItems}" AutoGenerateColumns="False" IsReadOnly="True">
-														<!--<DataGrid.RowStyle>
-															<Style TargetType="DataGridRow">
-																<Style.Triggers>
-																	<DataTrigger Binding="{Binding ShowInEditor}" Value="False">
-																		<Setter Property="Visibility" Value="Collapsed" />
-																	</DataTrigger>
-																</Style.Triggers>
-															</Style>
-														</DataGrid.RowStyle>-->
-														<DataGrid.Columns>
-															<DataGridTemplateColumn Header="选中" Width="Auto">
-																<DataGridTemplateColumn.CellTemplate>
-																	<DataTemplate>
-																		<CheckBox IsChecked="{Binding Selected}" HorizontalAlignment="Center" />
-																	</DataTemplate>
-																</DataGridTemplateColumn.CellTemplate>
-															</DataGridTemplateColumn>
-															<DataGridTemplateColumn Header="Name" Width="*">
-																<DataGridTemplateColumn.CellTemplate>
-																	<DataTemplate>
-																		<TextBox Text="{Binding Path=Name,UpdateSourceTrigger=LostFocus}" />
-																	</DataTemplate>
-																</DataGridTemplateColumn.CellTemplate>
-															</DataGridTemplateColumn>
-															<DataGridTemplateColumn Header="Value" Width="2*">
-																<DataGridTemplateColumn.CellTemplate>
-																	<DataTemplate>
-																		<TextBox Text="{Binding Path=Value,UpdateSourceTrigger=LostFocus}" />
-																	</DataTemplate>
-																</DataGridTemplateColumn.CellTemplate>
-															</DataGridTemplateColumn>
-															<DataGridTemplateColumn Width="100">
-																<DataGridTemplateColumn.CellTemplate>
-																	<DataTemplate>
-																		<WrapPanel>
-																			<WrapPanel.Resources>
-																				<Style TargetType="controls:IconButton">
-																					<Setter Property="BorderThickness" Value="0" />
-																					<Setter Property="Background" Value="Transparent" />
-																				</Style>
-																			</WrapPanel.Resources>
-																			<controls:IconButton cal:Message.Attach="MoveUpHeader($this.DataContext)" Tag="{Binding Path=DataContext.Task,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="ArrowUp" Visibility="{c:Binding 'Tag.FirstHeader!=DataContext', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
-																			<controls:IconButton cal:Message.Attach="MoveDownHeader($this.DataContext)" Tag="{Binding Path=DataContext.Task,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="ArrowDown" Visibility="{c:Binding 'Tag.LastHeader!=DataContext', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
-																			<controls:IconButton cal:Message.Attach="RemoveHeader($this.DataContext)" Tag="{Binding Path=DataContext.Task,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="Close" BorderThickness="0" Background="Transparent" />
-																		</WrapPanel>
-																	</DataTemplate>
-																</DataGridTemplateColumn.CellTemplate>
-															</DataGridTemplateColumn>
-														</DataGrid.Columns>
-													</DataGrid>
-												</DockPanel>
+												<widgets:RequestItemEditor Items="{Binding Task.HeaderItems}" />
 											</Setter.Value>
 										</Setter>
 									</Trigger>
@@ -204,51 +167,7 @@
 									<Trigger Property="IsSelected" Value="True">
 										<Setter Property="Content">
 											<Setter.Value>
-												<DockPanel>
-													<controls:IconButton DockPanel.Dock="Top" cal:Message.Attach="AddCookie" Icon="Add" Margin="5,10,0,0" Content="{Binding Localization.Add}" />
-													<DataGrid ItemsSource="{Binding Task.CookieItems}" AutoGenerateColumns="False" IsReadOnly="True">
-														<DataGrid.Columns>
-															<DataGridTemplateColumn Header="选中" Width="Auto">
-																<DataGridTemplateColumn.CellTemplate>
-																	<DataTemplate>
-																		<CheckBox IsChecked="{Binding Selected}" HorizontalAlignment="Center" />
-																	</DataTemplate>
-																</DataGridTemplateColumn.CellTemplate>
-															</DataGridTemplateColumn>
-															<DataGridTemplateColumn Header="Name" Width="*">
-																<DataGridTemplateColumn.CellTemplate>
-																	<DataTemplate>
-																		<TextBox Text="{Binding Path=Name,UpdateSourceTrigger=LostFocus}" />
-																	</DataTemplate>
-																</DataGridTemplateColumn.CellTemplate>
-															</DataGridTemplateColumn>
-															<DataGridTemplateColumn Header="Value" Width="2*">
-																<DataGridTemplateColumn.CellTemplate>
-																	<DataTemplate>
-																		<TextBox Text="{Binding Path=Value,UpdateSourceTrigger=LostFocus}" />
-																	</DataTemplate>
-																</DataGridTemplateColumn.CellTemplate>
-															</DataGridTemplateColumn>
-															<DataGridTemplateColumn Width="100">
-																<DataGridTemplateColumn.CellTemplate>
-																	<DataTemplate>
-																		<WrapPanel>
-																			<WrapPanel.Resources>
-																				<Style TargetType="controls:IconButton">
-																					<Setter Property="BorderThickness" Value="0" />
-																					<Setter Property="Background" Value="Transparent" />
-																				</Style>
-																			</WrapPanel.Resources>
-																			<controls:IconButton cal:Message.Attach="MoveUpCookie($this.DataContext)" Tag="{Binding Path=DataContext.Task,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="ArrowUp" Visibility="{c:Binding 'Tag.FirstCookie!=DataContext', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
-																			<controls:IconButton cal:Message.Attach="MoveDownCookie($this.DataContext)" Tag="{Binding Path=DataContext.Task,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="ArrowDown" Visibility="{c:Binding 'Tag.LastCookie!=DataContext', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
-																			<controls:IconButton cal:Message.Attach="RemoveCookie($this.DataContext)" Tag="{Binding Path=DataContext.Task,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="Close" BorderThickness="0" Background="Transparent" />
-																		</WrapPanel>
-																	</DataTemplate>
-																</DataGridTemplateColumn.CellTemplate>
-															</DataGridTemplateColumn>
-														</DataGrid.Columns>
-													</DataGrid>
-												</DockPanel>
+												<widgets:RequestItemEditor Items="{Binding Task.CookieItems}" />
 											</Setter.Value>
 										</Setter>
 									</Trigger>

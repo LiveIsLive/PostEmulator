@@ -26,7 +26,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 					return;
 				int index = this._Url.IndexOf("?");
 				if (index >= 0)
-					this.ReplaceSelectedOldItems(this._UrlParameters, this.StringToUrlParameters(this._Url.Substring(0, index + 1)).ToArray());
+					this.ReplaceSelectedOldItems(this._UrlParameters, this.StringToUrlParameters(this._Url.Substring(index + 1)).ToArray());
 				else foreach (RequestItem parameter in this._UrlParameters)
 						parameter.Selected = false;
 			}
@@ -92,7 +92,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			int index = this._Url.IndexOf("?");
 			if (index == -1)
 				this._Url += "?";
-			else this._Url = this._Url.Substring(index + 1);
+			else this._Url = this._Url.Substring(0,index + 1);
 			RequestItem[] parameters = this.UrlParameters.Where(p => p.Selected).ToArray();
 			if (parameters.Length == 0)
 				this._Url = this._Url.Substring(0, this._Url.Length - 1);
@@ -103,9 +103,12 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 
 		protected System.Collections.Generic.IEnumerable<RequestItem> StringToUrlParameters(string s)
 		{
-			System.Collections.Generic.IEnumerable<RequestItem> parameters = this.StringToRequestItems(s, '&', '=');
+			RequestItem[] parameters = this.StringToRequestItems(s, '&', '=').ToArray();
 			foreach (RequestItem parameter in parameters)
+			{
 				parameter.Value = System.Net.WebUtility.UrlDecode(parameter.Value);
+				parameter.ToString();
+			}
 			return parameters;
 		}
 
