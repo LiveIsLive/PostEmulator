@@ -109,6 +109,8 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 						this._ContentType = Models.ContentType.HTML;
 					else if (this.MediaType.Contains("json"))
 						this._ContentType = Models.ContentType.Json;
+					else if (this.MediaType.Contains("javascript"))
+						this._ContentType = Models.ContentType.JavaScript;
 					else if(this.MediaType.Contains("xml"))
 						this._ContentType = Models.ContentType.XML;
 					else if(this.MediaType.Contains("image"))

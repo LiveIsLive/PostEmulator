@@ -80,9 +80,6 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			if (e.NewItems != null)
 				foreach (RequestItem item in e.NewItems)
 					item.PropertyChanged += UrlParameter_PropertyChanged;
-
-			this.NotifyOfPropertyChange(() => this.FirstUrlParameter);
-			this.NotifyOfPropertyChange(() => this.LastUrlParameter);
 		}
 
 		private void UrlParameter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -156,9 +153,6 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 						if (this.HeaderItems.All(i => !i.IsCookieItem))
 							this._CookieItems = null;
 					}
-
-			this.NotifyOfPropertyChange(() => this.FirstHeader);
-			this.NotifyOfPropertyChange(() => this.LastHeader);
 		}
 
 		private void HeaderItem_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -185,7 +179,10 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 				if (this._HeaderCookieItem == item)
 				{
 					this._HeaderCookieItem = null;
-					this._CookieItems = null;
+					//this._CookieItems = null;
+					if (this._CookieItems != null)
+						foreach (Models.RequestItem cookieItem in this._CookieItems)
+							cookieItem.Selected = false;
 				}
 				//else
 				//{
@@ -205,53 +202,6 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 		//	else this.HeaderItems.Insert(this.HeaderItems.IndexOf(this.HeaderCookieItem), new RequestItem());
 		//}
 
-		public RequestItem FirstHeader
-		{
-			get
-			{
-				return this.HeaderItems.FirstOrDefault();
-			}
-		}
-
-		public RequestItem LastHeader
-		{
-			get
-			{
-				return this.HeaderItems.LastOrDefault();
-			}
-		}
-
-		public RequestItem FirstCookie
-		{
-			get
-			{
-				return this.CookieItems.FirstOrDefault();
-			}
-		}
-
-		public RequestItem LastCookie
-		{
-			get
-			{
-				return this.CookieItems.LastOrDefault();
-			}
-		}
-
-		public RequestItem FirstUrlParameter
-		{
-			get
-			{
-				return this.UrlParameters.FirstOrDefault();
-			}
-		}
-
-		public RequestItem LastUrlParameter
-		{
-			get
-			{
-				return this.UrlParameters.LastOrDefault();
-			}
-		}
 
 		private string _HeaderText;
 		public string HeaderText
@@ -403,9 +353,6 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			if (e.NewItems != null)
 				foreach (RequestItem item in e.NewItems)
 					item.PropertyChanged += CookieItem_PropertyChanged;
-
-			this.NotifyOfPropertyChange(() => this.FirstCookie);
-			this.NotifyOfPropertyChange(() => this.LastCookie);
 		}
 
 		private void CookieItem_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

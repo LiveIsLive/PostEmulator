@@ -152,7 +152,7 @@
 									<Trigger Property="IsSelected" Value="True">
 										<Setter Property="Content">
 											<Setter.Value>
-												<widgets:RequestItemEditor Items="{Binding Task.HeaderItems}" />
+												<widgets:RequestItemEditor Names="{Binding CommonHeaderNames}" Items="{Binding Task.HeaderItems}" />
 											</Setter.Value>
 										</Setter>
 									</Trigger>

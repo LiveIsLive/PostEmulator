@@ -72,7 +72,7 @@
 															<Trigger Property="IsSelected" Value="True">
 																<Setter Property="Content">
 																	<Setter.Value>
-																		<jsonControls:JsonViewer Data="{Binding Response.TextContent}" />
+																		<jsonControls:JsonViewer DataType="Xml"  Data="{Binding Response.TextContent}" />
 																	</Setter.Value>
 																</Setter>
 															</Trigger>

@@ -21,6 +21,9 @@ namespace ColdShineSoft.HttpClientPerformer.Widgets
 	public partial class RequestItemEditor : Control
 	{
 		[Bindables.DependencyProperty]
+		public object Names { get; set; }
+
+		[Bindables.DependencyProperty]
 		public System.Collections.ObjectModel.ObservableCollection<Models.RequestItem> Items { get; set; }
 
 		[Bindables.DependencyProperty]
@@ -33,8 +36,8 @@ namespace ColdShineSoft.HttpClientPerformer.Widgets
 		{
 			if (e.Property.Name == nameof(this.Items) && this.Items != null)
 			{
-				this.FirstItem = this.Items.FirstOrDefault();
-				this.LastItem = this.Items.LastOrDefault();
+				this.FirstItem = this.Items?.FirstOrDefault();
+				this.LastItem = this.Items?.LastOrDefault();
 				this.Items.CollectionChanged += Items_CollectionChanged;
 			}
 
@@ -43,8 +46,8 @@ namespace ColdShineSoft.HttpClientPerformer.Widgets
 
 		private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
 		{
-			this.FirstItem = this.Items.FirstOrDefault();
-			this.LastItem = this.Items.LastOrDefault();
+			this.FirstItem = this.Items?.FirstOrDefault();
+			this.LastItem = this.Items?.LastOrDefault();
 		}
 
 		public RequestItemEditor()
