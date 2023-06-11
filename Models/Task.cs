@@ -21,6 +21,14 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			{
 				this._Url = value;
 				this._Uri = null;
+
+				if (this._UrlParameters == null)
+					return;
+				int index = this._Url.IndexOf("?");
+				if (index >= 0)
+					this.ReplaceSelectedOldItems(this._UrlParameters, this.StringToUrlParameters(this._Url.Substring(0, index + 1)).ToArray());
+				else foreach (RequestItem parameter in this._UrlParameters)
+						parameter.Selected = false;
 			}
 		}
 
@@ -35,8 +43,74 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			}
 		}
 
+		private System.Collections.ObjectModel.ObservableCollection<RequestItem> _UrlParameters;
+		[Newtonsoft.Json.JsonProperty(ObjectCreationHandling = Newtonsoft.Json.ObjectCreationHandling.Replace)]
+		public System.Collections.ObjectModel.ObservableCollection<RequestItem> UrlParameters
+		{
+			get
+			{
+				if (this._UrlParameters == null)
+				{
+					if(this._Url==null)
+						this._UrlParameters = new System.Collections.ObjectModel.ObservableCollection<RequestItem>();
+					else
+					{
+						int index = this.Url.IndexOf("?");
+						if (index >= 0)
+							this._UrlParameters = new System.Collections.ObjectModel.ObservableCollection<RequestItem>(this.StringToUrlParameters(this._Url.Substring(index + 1)));
+						else this._UrlParameters = new System.Collections.ObjectModel.ObservableCollection<RequestItem>();
+						foreach (RequestItem item in this._UrlParameters)
+							item.PropertyChanged += UrlParameter_PropertyChanged;
+					}
+					this._UrlParameters.CollectionChanged += UrlParameters_CollectionChanged;
+				}
+				return this._UrlParameters;
+			}
+			set
+			{
+				this._UrlParameters = value;
+				foreach (RequestItem item in this._UrlParameters)
+					item.PropertyChanged += UrlParameter_PropertyChanged;
+				this._UrlParameters.CollectionChanged += UrlParameters_CollectionChanged;
+			}
+		}
+
+		private void UrlParameters_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		{
+			if (e.NewItems != null)
+				foreach (RequestItem item in e.NewItems)
+					item.PropertyChanged += UrlParameter_PropertyChanged;
+
+			this.NotifyOfPropertyChange(() => this.FirstUrlParameter);
+			this.NotifyOfPropertyChange(() => this.LastUrlParameter);
+		}
+
+		private void UrlParameter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (this._Url == null)
+				return;
+			int index = this._Url.IndexOf("?");
+			if (index == -1)
+				this._Url += "?";
+			else this._Url = this._Url.Substring(index + 1);
+			RequestItem[] parameters = this.UrlParameters.Where(p => p.Selected).ToArray();
+			if (parameters.Length == 0)
+				this._Url = this._Url.Substring(0, this._Url.Length - 1);
+			else this._Url += string.Join("&", parameters.Select(i => $"{i.Name}={System.Net.WebUtility.UrlEncode(i.Value)}"));
+
+			this.NotifyOfPropertyChange(() => this.Url);
+		}
+
+		protected System.Collections.Generic.IEnumerable<RequestItem> StringToUrlParameters(string s)
+		{
+			System.Collections.Generic.IEnumerable<RequestItem> parameters = this.StringToRequestItems(s, '&', '=');
+			foreach (RequestItem parameter in parameters)
+				parameter.Value = System.Net.WebUtility.UrlDecode(parameter.Value);
+			return parameters;
+		}
+
 		private System.Collections.ObjectModel.ObservableCollection<RequestItem> _HeaderItems;
-		[Newtonsoft.Json.JsonProperty]
+		[Newtonsoft.Json.JsonProperty(ObjectCreationHandling = Newtonsoft.Json.ObjectCreationHandling.Replace)]
 		public System.Collections.ObjectModel.ObservableCollection<RequestItem> HeaderItems
 		{
 			get
@@ -51,6 +125,13 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 					this._HeaderItems.CollectionChanged += HeaderItems_CollectionChanged;
 				}
 				return this._HeaderItems;
+			}
+			set
+			{
+				this._HeaderItems = value;
+				foreach(RequestItem item in this._HeaderItems)
+					item.PropertyChanged += HeaderItem_PropertyChanged;
+				this._HeaderItems.CollectionChanged += HeaderItems_CollectionChanged;
 			}
 		}
 
@@ -153,6 +234,22 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			}
 		}
 
+		public RequestItem FirstUrlParameter
+		{
+			get
+			{
+				return this.UrlParameters.FirstOrDefault();
+			}
+		}
+
+		public RequestItem LastUrlParameter
+		{
+			get
+			{
+				return this.UrlParameters.LastOrDefault();
+			}
+		}
+
 		private string _HeaderText;
 		public string HeaderText
 		{
@@ -212,9 +309,14 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 
 		protected System.Collections.Generic.IEnumerable<RequestItem>StringToHeaderItems(string s)
 		{
-			foreach(string line in s.Split(new char[] { '\r', '\n' },StringSplitOptions.RemoveEmptyEntries))
+			return this.StringToRequestItems(s, new char[] { '\r', '\n' }, ':');
+		}
+
+		protected System.Collections.Generic.IEnumerable<RequestItem>StringToRequestItems(string s, char[] itemSeparator,char vluaeSeparator)
+		{
+			foreach(string line in s.Split(itemSeparator, StringSplitOptions.RemoveEmptyEntries))
 			{
-				string[] parameters = line.Split(new char[] { ':' },2);
+				string[] parameters = line.Split(new char[] { vluaeSeparator },2);
 				RequestItem item = new RequestItem();
 				item.Name = parameters[0].Trim();
 				if (parameters.Length > 1)
@@ -223,6 +325,11 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 					continue;
 				yield return item;
 			}
+		}
+
+		protected System.Collections.Generic.IEnumerable<RequestItem>StringToRequestItems(string s, char itemSeparator,char vluaeSeparator)
+		{
+			return this.StringToRequestItems(s, new char[] { itemSeparator }, vluaeSeparator);
 		}
 
 		private RequestItem _HeaderCookieItem;
@@ -265,7 +372,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 		//}
 
 		private System.Collections.ObjectModel.ObservableCollection<RequestItem> _CookieItems;
-		[Newtonsoft.Json.JsonProperty]
+		[Newtonsoft.Json.JsonProperty(ObjectCreationHandling = Newtonsoft.Json.ObjectCreationHandling.Replace)]
 		public System.Collections.ObjectModel.ObservableCollection<RequestItem> CookieItems
 		{
 			get
@@ -282,6 +389,9 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			set
 			{
 				this._CookieItems = value;
+				foreach(RequestItem item in this._CookieItems)
+					item.PropertyChanged += CookieItem_PropertyChanged;
+				this._CookieItems.CollectionChanged += CookieItems_CollectionChanged;
 			}
 		}
 
@@ -317,16 +427,23 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 
 		protected System.Collections.Generic.IEnumerable<RequestItem>StringToCookieItems(string s)
 		{
-			foreach(string line in s.Split(new char[] { ';' },StringSplitOptions.RemoveEmptyEntries))
+			return this.StringToRequestItems(s, ';', '=');
+		}
+
+		private System.Net.Http.HttpMethod _HttpMethod;
+		[Newtonsoft.Json.JsonProperty]
+		[Newtonsoft.Json.JsonConverter(typeof(Converters.HttpMethodConverter))]
+		public System.Net.Http.HttpMethod HttpMethod
+		{
+			get
 			{
-				string[] parameters = line.Split(new char[] { '=' },2);
-				RequestItem item = new RequestItem();
-				item.Name = parameters[0].Trim();
-				if (parameters.Length > 1)
-					item.Value = parameters[1].Trim();
-				if (item.Name == "" && item.Value == "")
-					continue;
-				yield return item;
+				if (this._HttpMethod == null)
+					this._HttpMethod = System.Net.Http.HttpMethod.Get;
+				return this._HttpMethod;
+			}
+			set
+			{
+				this._HttpMethod = value;
 			}
 		}
 
@@ -374,28 +491,54 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			return memory.ToArray();
 		}
 
-		protected System.Net.Http.HttpClient HttpClient;
+		private System.Net.CookieContainer _CookieContainer;
+		public System.Net.CookieContainer CookieContainer
+		{
+			get
+			{
+				if(this._CookieContainer==null)
+				{
+					this._CookieContainer = new System.Net.CookieContainer();
+					foreach(RequestItem item in this.CookieItems)
+						if(item.Selected)
+							this._CookieContainer.Add(new System.Net.Cookie(item.Name, item.Value) { Domain = this.Uri.Host });
+				}
+				return this._CookieContainer;
+			}
+		}
+
+		private System.Net.Http.HttpClient _HttpClient;
+		public System.Net.Http.HttpClient HttpClient
+		{
+			get
+			{
+				if(this._HttpClient==null)
+				{
+
+					this._HttpClient = new System.Net.Http.HttpClient(new System.Net.Http.HttpClientHandler
+					{
+						CookieContainer = this.CookieContainer,
+						UseCookies = true,
+						//如果设置自动解压，会导致Headers里面丢失Content-Encoding
+						//AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate,
+						ServerCertificateCustomValidationCallback = (a, b, c, d) => true
+					});
+
+				}
+				return this._HttpClient;
+			}
+		}
 
 		public async System.Threading.Tasks.Task<Response> Run()
 		{
-			this.Status = TaskStatus.Performing;
-			System.Net.Http.HttpRequestMessage request = new System.Net.Http.HttpRequestMessage(System.Net.Http.HttpMethod.Get, this.Url);
+			this._CookieContainer = null;
+			this._HttpClient = null;
+
+			System.Net.Http.HttpRequestMessage request = new System.Net.Http.HttpRequestMessage(this.HttpMethod, this.Url);
 			foreach(RequestItem item in this.HeaderItems)
 				if(item.Selected&&!item.IsCookieItem)
 					request.Headers.Add(item.Name, item.Value);
-			System.Net.CookieContainer cookies = new System.Net.CookieContainer();
-			foreach(RequestItem item in this.CookieItems)
-				if(item.Selected)
-					cookies.Add(new System.Net.Cookie(item.Name, item.Value) { Domain = this.Uri.Host });
-
-			this.HttpClient = new System.Net.Http.HttpClient(new System.Net.Http.HttpClientHandler
-			{
-				CookieContainer = cookies,
-				UseCookies = true,
-				//如果设置自动解压，会导致Headers里面丢失Content-Encoding
-				//AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate,
-				ServerCertificateCustomValidationCallback = (a, b, c, d) => true
-			});
+			this.Status = TaskStatus.Performing;
 			System.Net.Http.HttpResponseMessage response = await this.HttpClient.SendAsync(request);
 			string headers = response.ToString();
 			headers = headers.Substring(headers.IndexOf("{") + 1);

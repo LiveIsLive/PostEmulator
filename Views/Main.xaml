@@ -107,7 +107,10 @@
 			</controls:OpenFileSplitButton>
 		</ToolBar>
 		<!--<controls:ErrorReminder DockPanel.Dock="Top" Text="{Binding Task.DataErrorInfo.Job}" />-->
-		<TextBox DockPanel.Dock="Top" Text="{Binding Task.Url}" mah:TextBoxHelper.Watermark="Url" />
+		<DockPanel DockPanel.Dock="Top">
+			<ComboBox ItemsSource="{Binding HttpMethods}" SelectedItem="{Binding Task.HttpMethod}" />
+			<TextBox Text="{Binding Task.Url}" mah:TextBoxHelper.Watermark="Url" />
+		</DockPanel>
 		<controls:TabControl IsFocus="{Binding UpdateTabBinding}">
 			<mah:MetroTabItem Header="Request Headers">
 				<controls:TabControl>
@@ -133,8 +136,8 @@
 									<Trigger Property="IsSelected" Value="True">
 										<Setter Property="Content">
 											<Setter.Value>
-												<StackPanel>
-													<controls:IconButton cal:Message.Attach="AddHeader" Icon="Add" Margin="5,10,0,0" Content="{Binding Localization.Add}" />
+												<DockPanel>
+													<controls:IconButton DockPanel.Dock="Top" cal:Message.Attach="AddHeader" Icon="Add" Margin="5,10,0,0" Content="{Binding Localization.Add}" />
 													<DataGrid ItemsSource="{Binding Task.HeaderItems}" AutoGenerateColumns="False" IsReadOnly="True">
 														<!--<DataGrid.RowStyle>
 															<Style TargetType="DataGridRow">
@@ -186,7 +189,7 @@
 															</DataGridTemplateColumn>
 														</DataGrid.Columns>
 													</DataGrid>
-												</StackPanel>
+												</DockPanel>
 											</Setter.Value>
 										</Setter>
 									</Trigger>
@@ -201,8 +204,8 @@
 									<Trigger Property="IsSelected" Value="True">
 										<Setter Property="Content">
 											<Setter.Value>
-												<StackPanel>
-													<controls:IconButton cal:Message.Attach="AddCookie" Icon="Add" Margin="5,10,0,0" Content="{Binding Localization.Add}" />
+												<DockPanel>
+													<controls:IconButton DockPanel.Dock="Top" cal:Message.Attach="AddCookie" Icon="Add" Margin="5,10,0,0" Content="{Binding Localization.Add}" />
 													<DataGrid ItemsSource="{Binding Task.CookieItems}" AutoGenerateColumns="False" IsReadOnly="True">
 														<DataGrid.Columns>
 															<DataGridTemplateColumn Header="选中" Width="Auto">
@@ -245,7 +248,7 @@
 															</DataGridTemplateColumn>
 														</DataGrid.Columns>
 													</DataGrid>
-												</StackPanel>
+												</DockPanel>
 											</Setter.Value>
 										</Setter>
 									</Trigger>

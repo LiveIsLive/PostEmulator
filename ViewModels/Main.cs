@@ -111,6 +111,22 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 			}
 		}
 
+		private System.Net.Http.HttpMethod[] _HttpMethods;
+		public System.Net.Http.HttpMethod[] HttpMethods
+		{
+			get
+			{
+				if(this._HttpMethods==null)
+				{
+					System.Collections.ObjectModel.ObservableCollection<System.Net.Http.HttpMethod> methods = new System.Collections.ObjectModel.ObservableCollection<System.Net.Http.HttpMethod>();
+					foreach (System.Reflection.PropertyInfo property in typeof(System.Net.Http.HttpMethod).GetProperties(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public))
+						methods.Add((System.Net.Http.HttpMethod)property.GetValue(null));
+					methods.Move(methods.IndexOf(System.Net.Http.HttpMethod.Post), 1);
+					this._HttpMethods = methods.ToArray();
+				}
+				return this._HttpMethods;
+			}
+		}
 
 		public void Save(string path)
 		{
