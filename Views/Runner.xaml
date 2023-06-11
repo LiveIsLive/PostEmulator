@@ -35,7 +35,7 @@
 								<Setter Property="Content">
 									<Setter.Value>
 										<mah:MetroTabControl>
-											<mah:MetroTabItem Header="Plain Text" IsSelected="{c:Binding 'Response.ContentType==models:ContentType.PlainText',Mode=OneWay}">
+											<mah:MetroTabItem Header="Plain Text" IsSelected="{c:Binding 'Response.ContentType==models:ResponseContentType.PlainText',Mode=OneWay}">
 												<mah:MetroTabItem.Style>
 													<Style TargetType="mah:MetroTabItem">
 														<Style.Triggers>
@@ -50,7 +50,7 @@
 													</Style>
 												</mah:MetroTabItem.Style>
 											</mah:MetroTabItem>
-											<mah:MetroTabItem Header="Json" IsSelected="{c:Binding 'Response.ContentType==models:ContentType.Json',Mode=OneWay}">
+											<mah:MetroTabItem Header="Json" IsSelected="{c:Binding 'Response.ContentType==models:ResponseContentType.Json',Mode=OneWay}">
 												<mah:MetroTabItem.Style>
 													<Style TargetType="mah:MetroTabItem">
 														<Style.Triggers>
@@ -65,7 +65,7 @@
 													</Style>
 												</mah:MetroTabItem.Style>
 											</mah:MetroTabItem>
-											<mah:MetroTabItem Header="XML" IsSelected="{c:Binding 'Response.ContentType==models:ContentType.XML',Mode=OneWay}">
+											<mah:MetroTabItem Header="XML" IsSelected="{c:Binding 'Response.ContentType==models:ResponseContentType.XML',Mode=OneWay}">
 												<mah:MetroTabItem.Style>
 													<Style TargetType="mah:MetroTabItem">
 														<Style.Triggers>
@@ -95,7 +95,7 @@
 													</Style>
 												</mah:MetroTabItem.Style>
 											</mah:MetroTabItem>
-											<mah:MetroTabItem Header="Image" IsSelected="{c:Binding 'Response.ContentType==models:ContentType.Image',Mode=OneWay}">
+											<mah:MetroTabItem Header="Image" IsSelected="{c:Binding 'Response.ContentType==models:ResponseContentType.Image',Mode=OneWay}">
 												<mah:MetroTabItem.Style>
 													<Style TargetType="mah:MetroTabItem">
 														<Style.Triggers>
@@ -110,7 +110,7 @@
 													</Style>
 												</mah:MetroTabItem.Style>
 											</mah:MetroTabItem>
-											<mah:MetroTabItem Header="Binary" IsSelected="{c:Binding 'Response.ContentType==models:ContentType.Binary',Mode=OneWay}">
+											<mah:MetroTabItem Header="Binary" IsSelected="{c:Binding 'Response.ContentType==models:ResponseContentType.Binary',Mode=OneWay}">
 												<mah:MetroTabItem.Style>
 													<Style TargetType="mah:MetroTabItem">
 														<Style.Triggers>

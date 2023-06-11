@@ -76,7 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContentType.cs" />
+    <Compile Include="ResponseContentType.cs" />
     <Compile Include="Converters\HttpMethodConverter.cs" />
     <Compile Include="DataErrorInfos\Task.cs" />
     <Compile Include="Global.cs" />

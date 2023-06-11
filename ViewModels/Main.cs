@@ -130,6 +130,8 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 
 		public string[] CommonHeaderNames { get; } = new string[] { "Accept", "Accept-Charset", "Accept-Encoding", "Accept-Language", "Accept-Ranges", "Authorization", "Cache-Control", "Connection", "Cookie", "Content-Type", "Date", "Expect", "From", "Host", "If-Match", "If-Modified-Since", "If-None-Match", "If-Range", "If-Unmodified-Since", "Max-Forwards", "Pragma", "Proxy-Authorization", "Range", "Referer", "TE", "Upgrade", "User-Agent", "Via", "Warning" };
 
+		public string[] CommonContentType { get; } = new string[] { "application/x-www-form-urlencoded", "application/json", "application/xml", "multipart/form-data" };
+
 		public void Save(string path)
 		{
 			this.UpdateTabBinding = true;

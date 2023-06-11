@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ColdShineSoft.HttpClientPerformer.Models
 {
-	public enum ContentType
+	public enum ResponseContentType
 	{
 		Binary,
 		PlainText,

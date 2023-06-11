@@ -55,7 +55,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 				if (this._FormattedContentCode == null)
 					switch (this.ContentType)
 					{
-						case ContentType.HTML:
+						case ResponseContentType.HTML:
 						{
 							AngleSharp.Html.Parser.HtmlParser parser = new AngleSharp.Html.Parser.HtmlParser();
 							AngleSharp.Html.Dom.IHtmlDocument document = parser.ParseDocument(this.TextContent);
@@ -64,12 +64,12 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 							this._FormattedContentCode = writer.ToString();
 							break;
 						}
-						case ContentType.Json:
+						case ResponseContentType.Json:
 						{
 							this._FormattedContentCode = Newtonsoft.Json.JsonConvert.DeserializeObject(this.TextContent).ToString();
 							break;
 						}
-						case ContentType.XML:
+						case ResponseContentType.XML:
 						{
 							//System.Xml.Linq.XDocument document = System.Xml.Linq.XDocument.Parse(this.TextContent);
 							//System.IO.StringWriter writer = new System.IO.StringWriter();
@@ -97,27 +97,27 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			}
 		}
 
-		private ContentType? _ContentType;
-		public ContentType ContentType
+		private ResponseContentType? _ContentType;
+		public ResponseContentType ContentType
 		{
 			get
 			{
 				if (this._ContentType == null)
 					if (this.MediaType == null)
-						this._ContentType = Models.ContentType.Binary;
+						this._ContentType = Models.ResponseContentType.Binary;
 					else if (this.MediaType.Contains("html"))
-						this._ContentType = Models.ContentType.HTML;
+						this._ContentType = Models.ResponseContentType.HTML;
 					else if (this.MediaType.Contains("json"))
-						this._ContentType = Models.ContentType.Json;
+						this._ContentType = Models.ResponseContentType.Json;
 					else if (this.MediaType.Contains("javascript"))
-						this._ContentType = Models.ContentType.JavaScript;
+						this._ContentType = Models.ResponseContentType.JavaScript;
 					else if(this.MediaType.Contains("xml"))
-						this._ContentType = Models.ContentType.XML;
+						this._ContentType = Models.ResponseContentType.XML;
 					else if(this.MediaType.Contains("image"))
-						this._ContentType = Models.ContentType.Image;
+						this._ContentType = Models.ResponseContentType.Image;
 					else if(this.MediaType.Contains("text"))
-						this._ContentType = Models.ContentType.Image;
-					else this._ContentType = Models.ContentType.Binary;
+						this._ContentType = Models.ResponseContentType.Image;
+					else this._ContentType = Models.ResponseContentType.Binary;
 				return this._ContentType.Value;
 			}
 		}
@@ -130,11 +130,11 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 				if(this._IsCodeContent==null)
 					switch(this.ContentType)
 					{
-						case ContentType.HTML:
-						case ContentType.CSS:
-						case ContentType.JavaScript:
-						case ContentType.XML:
-						case ContentType.Json:
+						case ResponseContentType.HTML:
+						case ResponseContentType.CSS:
+						case ResponseContentType.JavaScript:
+						case ResponseContentType.XML:
+						case ResponseContentType.Json:
 							this._IsCodeContent = true;
 							break;
 						default:
