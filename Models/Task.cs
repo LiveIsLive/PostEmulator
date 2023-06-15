@@ -80,6 +80,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			if (e.NewItems != null)
 				foreach (RequestItem item in e.NewItems)
 					item.PropertyChanged += UrlParameter_PropertyChanged;
+			this.UrlParameter_PropertyChanged(sender, null);
 		}
 
 		private void UrlParameter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -138,6 +139,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 		private void HeaderItems_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
 		{
 			this._HeaderText = null;
+			this._ContentType = null;
 			//this.NotifyOfPropertyChange(() => this.HeaderText);
 			if(e.NewItems!=null)
 				foreach (RequestItem item in e.NewItems)
@@ -147,20 +149,26 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 
 			if(e.Action==System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
 				if(e.OldItems!=null)
-					if(e.OldItems.Cast<RequestItem>().Any(i=>i.IsCookieItem))
+				{
+					if(e.OldItems.Cast<RequestItem>().Any(i=>i.Type==RequestItemType.Cookie))
 					{
 						this._HeaderCookieItem = null;
-						if (this.HeaderItems.All(i => !i.IsCookieItem))
+						if (this.HeaderItems.All(i => i.Type != RequestItemType.Cookie))
 							this._CookieItems = null;
 					}
+
+					if (e.OldItems.Cast<RequestItem>().Any(i => i.Type == RequestItemType.ContentType))
+						this._HeaderContentTypeItem = null;
+				}
 		}
 
 		private void HeaderItem_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
 			this._HeaderText = null;
+			this._ContentType = null;
 			//this.NotifyOfPropertyChange(() => this.HeaderText);
 			RequestItem item = (RequestItem)sender;
-			if (item.IsCookieItem)
+			if (item.Type==RequestItemType.Cookie)
 			{
 				if (this.HeaderCookieItem != item)
 				{
@@ -184,15 +192,9 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 						foreach (Models.RequestItem cookieItem in this._CookieItems)
 							cookieItem.Selected = false;
 				}
-				//else
-				//{
-				//	int index = this.HeaderItems.IndexOf(this.HeaderCookieItem);
-				//	if (index >= 0)
-				//		this.HeaderItems.RemoveAt(index);
-				//	this._HeaderCookieItem = null;
-				//	this._CookieItems = null;
-				//}
 			}
+			if (item.Type == RequestItemType.ContentType)
+				this.NotifyOfPropertyChange(() => this.ContentType);
 		}
 
 		//public void AddHeaderItem()
@@ -227,10 +229,15 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 					this.ReplaceSelectedOldItems(this._HeaderItems, newItems);
 
 					foreach (RequestItem newItem in newItems)
-						if (newItem.IsCookieItem)
+					{
+						if (newItem.Type == RequestItemType.Cookie)
 							if (this._CookieItems != null)
 								this.ReplaceSelectedOldItems(this._CookieItems, this.StringToCookieItems(newItem.Value).ToArray());
+						if (newItem.Type == RequestItemType.ContentType)
+							this._HeaderContentTypeItem = null;
+					}
 				}
+				this._ContentType = null;
 			}
 		}
 
@@ -292,7 +299,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			{
 				if(this._HeaderCookieItem==null)
 				{
-					this._HeaderCookieItem = this.HeaderItems.FirstOrDefault(i => i.IsCookieItem);
+					this._HeaderCookieItem = this.HeaderItems.FirstOrDefault(i => i.Type==RequestItemType.Cookie);
 					if (this._HeaderCookieItem == null)
 					{
 						this._HeaderCookieItem = new RequestItem("Cookie","");
@@ -302,6 +309,35 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 				}
 				return this._HeaderCookieItem;
 			}
+		}
+
+		private RequestItem _HeaderContentTypeItem;
+		public RequestItem HeaderContentTypeItem
+		{
+			get
+			{
+				if(this._HeaderContentTypeItem==null)
+				{
+					this._HeaderContentTypeItem = this.HeaderItems.FirstOrDefault(i => i.Type==RequestItemType.ContentType);
+					if (this._HeaderContentTypeItem == null)
+					{
+						this._HeaderContentTypeItem = new RequestItem("Content-Type","");
+						this._HeaderContentTypeItem.PropertyChanged += HeaderContentTypeItem_PropertyChanged;
+					}
+				}
+				return this._HeaderContentTypeItem;
+			}
+		}
+
+		private void HeaderContentTypeItem_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (this._HeaderContentTypeItem != null)
+				if (string.IsNullOrWhiteSpace(this._HeaderContentTypeItem.Value))
+					this.HeaderItems.Remove(this._HeaderContentTypeItem);
+				else if (!this._HeaderItems.Contains(this._HeaderContentTypeItem))
+					this.HeaderItems.Add(this._HeaderContentTypeItem);
+
+			this.NotifyOfPropertyChange(() => this.ContentType);
 		}
 
 		//private void HeaderCookieItem_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -323,6 +359,37 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 		//		this._CookieItems = null;
 		//	}
 		//}
+
+		private RequestContentType? _ContentType;
+		public RequestContentType ContentType
+		{
+			get
+			{
+				if(this._ContentType==null)
+					if (string.IsNullOrWhiteSpace(this.HeaderContentTypeItem.Value))
+						this._ContentType = RequestContentType.PlainText;
+					else
+					{
+						string contentType = this.HeaderContentTypeItem.Value.Split(new char[] { ';' }, 2)[0].ToLower();
+						switch(contentType)
+						{
+							case "application/x-www-form-urlencoded":
+								this._ContentType = RequestContentType.FormUrlencoded;
+								break;
+							case "application/json":
+								this._ContentType = RequestContentType.Json;
+								break;
+							case "application/xml":
+								this._ContentType = RequestContentType.XML;
+								break;
+							default:
+								this._ContentType = RequestContentType.PlainText;
+								break;
+						}
+					}
+				return this._ContentType.Value;
+			}
+		}
 
 		private System.Collections.ObjectModel.ObservableCollection<RequestItem> _CookieItems;
 		[Newtonsoft.Json.JsonProperty(ObjectCreationHandling = Newtonsoft.Json.ObjectCreationHandling.Replace)]
@@ -394,6 +461,199 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			set
 			{
 				this._HttpMethod = value;
+				this.NotifyOfPropertyChange(() => this.HttpMethod);
+			}
+		}
+
+		public string BodyText { get; set; }
+
+		private string _FormRaw;
+		public string FormRaw
+		{
+			get
+			{
+				if(this._FormRaw==null)
+					this._FormRaw = string.Join("&", this.FormParameters.Where(p => p.Selected).Select(i => $"{i.Name}={System.Net.WebUtility.UrlEncode(i.Value)}"));
+				return this._FormRaw;
+			}
+			set
+			{
+				this._FormRaw = value;
+				if(this._FormParameters!=null)
+					this.ReplaceSelectedOldItems(this._FormParameters, this.StringToUrlParameters(this._FormRaw).ToList());
+			}
+		}
+
+
+		private System.Collections.ObjectModel.ObservableCollection<RequestItem> _FormParameters;
+		[Newtonsoft.Json.JsonProperty(ObjectCreationHandling = Newtonsoft.Json.ObjectCreationHandling.Replace)]
+		public System.Collections.ObjectModel.ObservableCollection<RequestItem> FormParameters
+		{
+			get
+			{
+				if (this._FormParameters == null)
+				{
+					if (this._FormRaw == null)
+						this._FormParameters = new System.Collections.ObjectModel.ObservableCollection<RequestItem>();
+					else
+					{
+						this._FormParameters = new System.Collections.ObjectModel.ObservableCollection<RequestItem>(this.StringToUrlParameters(this._FormRaw));
+						foreach (RequestItem item in this._FormParameters)
+							item.PropertyChanged += FormParameter_PropertyChanged;
+					}
+					if(this._FormParameters.Count==0)
+						if(!string.IsNullOrWhiteSpace(this._JsonBody))
+						{
+							try
+							{
+								this._FormParameters = new System.Collections.ObjectModel.ObservableCollection<RequestItem>(Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(this._JsonBody).Select(i => new RequestItem(i.Key, i.Value)));
+							}
+							catch
+							{
+							}
+						}
+					if(this._FormParameters.Count==0)
+						if(!string.IsNullOrWhiteSpace(this._XmlBody))
+						{
+							try
+							{
+								this._FormParameters = new System.Collections.ObjectModel.ObservableCollection<RequestItem>(System.Xml.Linq.XElement.Parse(this._XmlBody).Elements().Select(i => new RequestItem(i.Name.ToString(), i.Value)));
+							}
+							catch
+							{
+							}
+						}
+					this._FormParameters.CollectionChanged += FormParameters_CollectionChanged;
+				}
+				return this._FormParameters;
+			}
+			set
+			{
+				this._FormParameters = value;
+				foreach (RequestItem item in this._FormParameters)
+					item.PropertyChanged += FormParameter_PropertyChanged;
+				this._FormParameters.CollectionChanged += FormParameters_CollectionChanged;
+			}
+		}
+
+		private string _JsonBody;
+		public string JsonBody
+		{
+			get
+			{
+				if(this._JsonBody==null)
+				{
+					if(this._FormParameters!=null)
+					{
+						RequestItem[] formParameters = this.FormParameters.Where(p => p.Selected).ToArray();
+						if (formParameters.Length > 0)
+							this._JsonBody = Newtonsoft.Json.JsonConvert.SerializeObject(formParameters.ToDictionary(p => p.Name, p => p.Value));
+					}
+					if(this._JsonBody==null&&!string.IsNullOrWhiteSpace(this._XmlBody))
+					{
+						System.Xml.XmlDocument xmlDocument = new System.Xml.XmlDocument();
+						try
+						{
+							xmlDocument.LoadXml(this._XmlBody);
+							this._JsonBody = Newtonsoft.Json.JsonConvert.SerializeXmlNode(xmlDocument.DocumentElement);
+						}
+						catch
+						{
+						}
+					}
+				}
+				return this._JsonBody;
+			}
+			set
+			{
+				if (string.IsNullOrWhiteSpace(value))
+					this._JsonBody = null;
+				else
+				{
+					this._JsonBody = value;
+					if (string.IsNullOrWhiteSpace(this._FormRaw) && this._FormParameters?.Count == 0)
+						this._FormParameters = null;
+					if (string.IsNullOrWhiteSpace(this._XmlBody))
+						this._XmlBody = null;
+				}
+			}
+		}
+
+		private string _XmlBody;
+		public string XmlBody
+		{
+			get
+			{
+				if(this._XmlBody==null)
+				{
+					if (this._FormParameters != null)
+					{
+						RequestItem[] formParameters = this.FormParameters.Where(p => p.Selected).ToArray();
+						if (formParameters.Length > 0)
+							this._XmlBody = this.XmlDocumentToString(Newtonsoft.Json.JsonConvert.DeserializeXmlNode(Newtonsoft.Json.JsonConvert.SerializeObject(new { root = formParameters.ToDictionary(p => p.Name, p => p.Value) })));
+					}
+					if (this._XmlBody == null && !string.IsNullOrWhiteSpace(this._JsonBody))
+					{
+						try
+						{
+							this._XmlBody = this.XmlDocumentToString(Newtonsoft.Json.JsonConvert.DeserializeXmlNode($"root:{{{this._JsonBody}}}"));
+						}
+						catch
+						{
+						}
+					}
+				}
+				return this._XmlBody;
+			}
+			set
+			{
+				if (string.IsNullOrWhiteSpace(value))
+					this._XmlBody = value;
+				else
+				{
+					this._XmlBody = value;
+					if (string.IsNullOrWhiteSpace(this._FormRaw) && this._FormParameters?.Count == 0)
+						this._FormParameters = null;
+					if (string.IsNullOrWhiteSpace(this._JsonBody))
+						this._JsonBody = null;
+				}
+			}
+		}
+
+		public string PlainTextBody { get; set; }
+
+		private void FormParameters_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		{
+			if (e.NewItems != null)
+				foreach (RequestItem item in e.NewItems)
+					item.PropertyChanged += FormParameter_PropertyChanged;
+			this._FormRaw = null;
+		}
+
+		private void FormParameter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			this._FormRaw = null;
+		}
+
+		protected string XmlDocumentToString(System.Xml.XmlDocument document)
+		{
+			System.IO.StringWriter writer = new System.IO.StringWriter();
+			document.Save(writer);
+			try
+			{
+				return writer.ToString();
+			}
+			finally
+			{
+				writer.Close();
+			}
+		}
+
+		public bool AcceptsRequestBody
+		{
+			get
+			{
+				return this.HttpMethod == System.Net.Http.HttpMethod.Post || this.HttpMethod == System.Net.Http.HttpMethod.Put;
 			}
 		}
 
@@ -449,6 +709,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 				if(this._CookieContainer==null)
 				{
 					this._CookieContainer = new System.Net.CookieContainer();
+					if(this.HeaderCookieItem.Selected)
 					foreach(RequestItem item in this.CookieItems)
 						if(item.Selected)
 							this._CookieContainer.Add(new System.Net.Cookie(item.Name, item.Value) { Domain = this.Uri.Host });
@@ -485,10 +746,47 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			this._HttpClient = null;
 
 			System.Net.Http.HttpRequestMessage request = new System.Net.Http.HttpRequestMessage(this.HttpMethod, this.Url);
+			if (this.AcceptsRequestBody)
+				if (this.ContentType == RequestContentType.FormUrlencoded)
+					request.Content = new System.Net.Http.FormUrlEncodedContent(this.FormParameters.Where(p => p.Selected).ToDictionary(p => p.Name, p => p.Value));
+				else
+				{
+					string postContent;
+					switch(this.ContentType)
+					{
+						case RequestContentType.Json:
+							postContent = this.JsonBody;
+							break;
+						case RequestContentType.XML:
+							postContent = this.XmlBody;
+							break;
+						default:
+							postContent = this.PlainTextBody;
+							break;
+					}
+					request.Content = new System.Net.Http.StringContent(postContent);
+				}
+
 			foreach(RequestItem item in this.HeaderItems)
-				if(item.Selected&&!item.IsCookieItem)
-					request.Headers.Add(item.Name, item.Value);
-			this.Status = TaskStatus.Performing;
+			{
+				if (!item.Selected)
+					continue;
+				switch(item.Type)
+				{
+					case RequestItemType.Cookie:
+						continue;
+					case RequestItemType.ContentType:
+						if (request.Content != null)
+							request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(item.Value);
+						continue;
+					default:
+						request.Headers.Add(item.Name, item.Value);
+						continue;
+				}
+
+			}
+
+			this.Status = TaskStatus.Performing; 
 			System.Net.Http.HttpResponseMessage response = await this.HttpClient.SendAsync(request);
 			string headers = response.ToString();
 			headers = headers.Substring(headers.IndexOf("{") + 1);

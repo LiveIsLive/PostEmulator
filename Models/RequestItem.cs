@@ -36,7 +36,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			set
 			{
 				this._Key = value;
-				this._IsCookieItem = null;
+				this._Type = null;
 				this._ShowInRaw = null;
 				//this._ShowInEditor = null;
 				this.NotifyOfPropertyChange(() => this.Name);
@@ -79,14 +79,29 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 		//		this.ValueChanged(this.Value);
 		//}
 
-		private bool? _IsCookieItem;
-		public bool IsCookieItem
+		//private bool? _IsCookieItem;
+		//public bool IsCookieItem
+		//{
+		//	get
+		//	{
+		//		if (this._IsCookieItem == null)
+		//			this._IsCookieItem = string.Equals(this.Name, "Cookie", StringComparison.OrdinalIgnoreCase);
+		//		return this._IsCookieItem.Value;
+		//	}
+		//}
+
+		private RequestItemType? _Type;
+		public RequestItemType Type
 		{
 			get
 			{
-				if (this._IsCookieItem == null)
-					this._IsCookieItem = string.Equals(this.Name, "Cookie", StringComparison.OrdinalIgnoreCase);
-				return this._IsCookieItem.Value;
+				if (this._Type == null)
+					if (string.Equals(this.Name, "Cookie", StringComparison.OrdinalIgnoreCase))
+						this._Type = RequestItemType.Cookie;
+					else if (string.Equals(this.Name, "Content-Type", StringComparison.OrdinalIgnoreCase))
+						this._Type = RequestItemType.ContentType;
+					else this._Type = RequestItemType.Common;
+				return this._Type.Value;
 			}
 		}
 
@@ -99,7 +114,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 					if (this.Selected)
 					{
 						bool noValue = string.IsNullOrWhiteSpace(this.Value);
-						if (this.IsCookieItem && noValue)
+						if (this.Type == RequestItemType.Cookie && noValue)
 							this._ShowInRaw = false;
 						else if (string.IsNullOrWhiteSpace(this.Name) && noValue)
 							this._ShowInRaw = false;

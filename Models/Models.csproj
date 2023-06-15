@@ -76,6 +76,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RequestContentType.cs" />
+    <Compile Include="RequestItemType.cs" />
     <Compile Include="ResponseContentType.cs" />
     <Compile Include="Converters\HttpMethodConverter.cs" />
     <Compile Include="DataErrorInfos\Task.cs" />

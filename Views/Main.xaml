@@ -129,7 +129,7 @@
 				</mah:MetroTabItem.Style>
 			</mah:MetroTabItem>
 			<mah:MetroTabItem Header="Request Headers">
-				<controls:TabControl>
+				<controls:TabControl IsFocus="{Binding UpdateTabBinding}">
 					<mah:MetroTabItem Header="Raw">
 						<mah:MetroTabItem.Style>
 							<Style TargetType="mah:MetroTabItem">
@@ -176,6 +176,93 @@
 						</mah:MetroTabItem.Style>
 					</mah:MetroTabItem>
 				</controls:TabControl>
+			</mah:MetroTabItem>
+			<mah:MetroTabItem Header="Request Body" Visibility="{c:Binding 'Task.HttpMethod.Method==&quot;POST&quot;||Task.HttpMethod.Method==&quot;PUT&quot;'}">
+				<mah:MetroTabItem.Style>
+					<Style TargetType="mah:MetroTabItem">
+						<Style.Triggers>
+							<Trigger Property="IsSelected" Value="True">
+								<Setter Property="Content">
+									<Setter.Value>
+				<DockPanel Margin="5,0">
+					<WrapPanel DockPanel.Dock="Top">
+						<TextBlock VerticalAlignment="Center">Content Type：</TextBlock>
+						<ComboBox ItemsSource="{Binding CommonContentTypes}" Text="{Binding Path=Task.HeaderContentTypeItem.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEditable="True" Width="250" />
+					</WrapPanel>
+					<ContentControl Margin="0,5,0,0">
+						<ContentControl.Style>
+							<Style TargetType="ContentControl">
+								<Style.Triggers>
+									<DataTrigger Binding="{Binding Task.ContentType}" Value="{x:Static models:RequestContentType.FormUrlencoded}">
+										<Setter Property="Content">
+											<Setter.Value>
+												<controls:TabControl IsFocus="{Binding UpdateTabBinding}">
+													<mah:MetroTabItem Header="Raw">
+														<mah:MetroTabItem.Style>
+															<Style TargetType="mah:MetroTabItem">
+																<Style.Triggers>
+																	<Trigger Property="IsSelected" Value="True">
+																		<Setter Property="Content">
+																			<Setter.Value>
+																				<TextBox Text="{Binding Path=Task.FormRaw,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
+																			</Setter.Value>
+																		</Setter>
+																	</Trigger>
+																</Style.Triggers>
+															</Style>
+														</mah:MetroTabItem.Style>
+													</mah:MetroTabItem>
+													<mah:MetroTabItem Header="Form Parameters">
+														<mah:MetroTabItem.Style>
+															<Style TargetType="mah:MetroTabItem">
+																<Style.Triggers>
+																	<Trigger Property="IsSelected" Value="True">
+																		<Setter Property="Content">
+																			<Setter.Value>
+																				<widgets:RequestItemEditor Items="{Binding Task.FormParameters}" />
+																			</Setter.Value>
+																		</Setter>
+																	</Trigger>
+																</Style.Triggers>
+															</Style>
+														</mah:MetroTabItem.Style>
+													</mah:MetroTabItem>
+												</controls:TabControl>
+											</Setter.Value>
+										</Setter>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding Task.ContentType}" Value="{x:Static models:RequestContentType.Json}">
+										<Setter Property="Content">
+											<Setter.Value>
+												<widgets:TextEditor Type="{Binding Task.ContentType}" Text="{Binding Path=Task.JsonBody,Mode=TwoWay}" />
+											</Setter.Value>
+										</Setter>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding Task.ContentType}" Value="{x:Static models:RequestContentType.XML}">
+										<Setter Property="Content">
+											<Setter.Value>
+												<widgets:TextEditor Type="{Binding Task.ContentType}" Text="{Binding Path=Task.XmlBody,Mode=TwoWay}" />
+											</Setter.Value>
+										</Setter>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding Task.ContentType}" Value="{x:Static models:RequestContentType.PlainText}">
+										<Setter Property="Content">
+											<Setter.Value>
+												<TextBox Text="{Binding Path=Task.PlainTextBody,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
+											</Setter.Value>
+										</Setter>
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</ContentControl.Style>
+					</ContentControl>
+				</DockPanel>
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</mah:MetroTabItem.Style>
 			</mah:MetroTabItem>
 		</controls:TabControl>
 	</DockPanel>
