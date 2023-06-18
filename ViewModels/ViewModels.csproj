@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="About.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Code.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runner.cs" />

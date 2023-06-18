@@ -132,6 +132,15 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 
 		public string[] CommonContentTypes { get; } = new string[] { "application/x-www-form-urlencoded", "application/json", "application/xml", "multipart/form-data" };
 
+		public Models.Codes.BaseTemplate[] CodeTemplates { get; } = new Models.Codes.BaseTemplate[] { new Models.Codes.CSharp() };
+
+		public void ExportCode(Models.Codes.BaseTemplate template)
+		{
+			this.UpdateTabBinding = true;
+			template.Task = this.Task;
+			this.WindowManager.ShowDialogAsync(new Code(template));
+		}
+
 		public void Save(string path)
 		{
 			this.UpdateTabBinding = true;

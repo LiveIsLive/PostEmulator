@@ -33,7 +33,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 		}
 
 		private System.Uri _Uri;
-		private System.Uri Uri
+		public System.Uri Uri
 		{
 			get
 			{
@@ -360,6 +360,22 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 		//	}
 		//}
 
+		public string Content_Type
+		{
+			get
+			{
+				return this.HeaderContentTypeItem.Value.Split(new char[] { ';' }, 2)[0].ToLower();
+			}
+		}
+
+		public string CharSet
+		{
+			get
+			{
+				return this.HeaderContentTypeItem.Value.Split(new char[] { ';' }, 2).ElementAtOrDefault(1)?.Split('=')?.ElementAtOrDefault(1);
+			}
+		}
+
 		private RequestContentType? _ContentType;
 		public RequestContentType ContentType
 		{
@@ -368,24 +384,20 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 				if(this._ContentType==null)
 					if (string.IsNullOrWhiteSpace(this.HeaderContentTypeItem.Value))
 						this._ContentType = RequestContentType.PlainText;
-					else
+					else switch(this.Content_Type)
 					{
-						string contentType = this.HeaderContentTypeItem.Value.Split(new char[] { ';' }, 2)[0].ToLower();
-						switch(contentType)
-						{
-							case "application/x-www-form-urlencoded":
-								this._ContentType = RequestContentType.FormUrlencoded;
-								break;
-							case "application/json":
-								this._ContentType = RequestContentType.Json;
-								break;
-							case "application/xml":
-								this._ContentType = RequestContentType.XML;
-								break;
-							default:
-								this._ContentType = RequestContentType.PlainText;
-								break;
-						}
+						case "application/x-www-form-urlencoded":
+							this._ContentType = RequestContentType.FormUrlencoded;
+							break;
+						case "application/json":
+							this._ContentType = RequestContentType.Json;
+							break;
+						case "application/xml":
+							this._ContentType = RequestContentType.XML;
+							break;
+						default:
+							this._ContentType = RequestContentType.PlainText;
+							break;
 					}
 				return this._ContentType.Value;
 			}
@@ -461,6 +473,11 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			set
 			{
 				this._HttpMethod = value;
+				bool acceptsRequestBody = this.AcceptsRequestBody;
+				if (this._HeaderItems != null)
+					foreach (RequestItem item in this.HeaderItems)
+						if (item.Type == RequestItemType.ContentType)
+							item.Selected = acceptsRequestBody;
 				this.NotifyOfPropertyChange(() => this.HttpMethod);
 			}
 		}
@@ -740,33 +757,27 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			}
 		}
 
+		public string PostStringContent
+		{
+			get
+			{
+				switch (this.ContentType)
+				{
+					case RequestContentType.Json:
+						return this.JsonBody;
+					case RequestContentType.XML:
+						return this.XmlBody;
+				}
+				return this.PlainTextBody;
+			}
+		}
+
 		public async System.Threading.Tasks.Task<Response> Run()
 		{
 			this._CookieContainer = null;
 			this._HttpClient = null;
 
 			System.Net.Http.HttpRequestMessage request = new System.Net.Http.HttpRequestMessage(this.HttpMethod, this.Url);
-			if (this.AcceptsRequestBody)
-				if (this.ContentType == RequestContentType.FormUrlencoded)
-					request.Content = new System.Net.Http.FormUrlEncodedContent(this.FormParameters.Where(p => p.Selected).ToDictionary(p => p.Name, p => p.Value));
-				else
-				{
-					string postContent;
-					switch(this.ContentType)
-					{
-						case RequestContentType.Json:
-							postContent = this.JsonBody;
-							break;
-						case RequestContentType.XML:
-							postContent = this.XmlBody;
-							break;
-						default:
-							postContent = this.PlainTextBody;
-							break;
-					}
-					request.Content = new System.Net.Http.StringContent(postContent);
-				}
-
 			foreach(RequestItem item in this.HeaderItems)
 			{
 				if (!item.Selected)
@@ -776,15 +787,28 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 					case RequestItemType.Cookie:
 						continue;
 					case RequestItemType.ContentType:
-						if (request.Content != null)
-							request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(item.Value);
 						continue;
 					default:
 						request.Headers.Add(item.Name, item.Value);
 						continue;
 				}
-
 			}
+			if (this.AcceptsRequestBody)
+				if (this.ContentType == RequestContentType.FormUrlencoded)
+					request.Content = new System.Net.Http.FormUrlEncodedContent(this.FormParameters.Where(p => p.Selected).ToDictionary(p => p.Name, p => p.Value));
+				else request.Content = new System.Net.Http.StringContent(this.PostStringContent);
+			if(request.Content!=null)
+			{
+				string contentType = this.Content_Type;
+				if (string.IsNullOrWhiteSpace(contentType))
+					request.Content.Headers.ContentType = null;
+				else
+				{
+					request.Content.Headers.ContentType.MediaType = this.Content_Type;
+					request.Content.Headers.ContentType.CharSet = this.CharSet;
+				}
+			}
+
 
 			this.Status = TaskStatus.Performing; 
 			System.Net.Http.HttpResponseMessage response = await this.HttpClient.SendAsync(request);

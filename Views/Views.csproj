@@ -126,6 +126,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Code.xaml.cs">
+      <DependentUpon>Code.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Runner.xaml.cs">
       <DependentUpon>Runner.xaml</DependentUpon>
     </Compile>
@@ -168,6 +171,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Code.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

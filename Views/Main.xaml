@@ -106,6 +106,32 @@
 					</StackPanel>
 				</controls:OpenFileSplitButton.Items>
 			</controls:OpenFileSplitButton>
+			<mah:DropDownButton Content="Export Code" ItemsSource="{Binding CodeTemplates}" Margin="10,0,0,0" BorderThickness="0">
+				<mah:DropDownButton.ItemContainerStyle>
+					<Style TargetType="MenuItem">
+						<Setter Property="cal:Action.TargetWithoutContext" Value="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=Window}}" />
+						<Setter Property="cal:Message.Attach" Value="[Click]=[ExportCode($dataContext)]" />
+					</Style>
+				</mah:DropDownButton.ItemContainerStyle>
+				<mah:DropDownButton.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding Name}" />
+					</DataTemplate>
+				</mah:DropDownButton.ItemTemplate>
+			</mah:DropDownButton>
+			<!--<Menu>
+				<MenuItem Header="Export Code">
+					<MenuItem.Resources>
+						<Style TargetType="MenuItem">
+							<Setter Property="cal:Message.Attach" Value="[Click]=[ExportCode($dataContext)]" />
+						</Style>
+					</MenuItem.Resources>
+					<MenuItem.ItemTemplate>
+						<DataTemplate>
+						</DataTemplate>
+					</MenuItem.ItemTemplate>
+				</MenuItem>
+			</Menu>-->
 		</ToolBar>
 		<!--<controls:ErrorReminder DockPanel.Dock="Top" Text="{Binding Task.DataErrorInfo.Job}" />-->
 		<DockPanel DockPanel.Dock="Top">
@@ -145,7 +171,7 @@
 							</Style>
 						</mah:MetroTabItem.Style>
 					</mah:MetroTabItem>
-					<mah:MetroTabItem Header="Headers Editor">
+					<mah:MetroTabItem Header="Headers Editor" IsSelected="True">
 						<mah:MetroTabItem.Style>
 							<Style TargetType="mah:MetroTabItem">
 								<Style.Triggers>
@@ -212,7 +238,7 @@
 															</Style>
 														</mah:MetroTabItem.Style>
 													</mah:MetroTabItem>
-													<mah:MetroTabItem Header="Form Parameters">
+													<mah:MetroTabItem Header="Form Parameters" IsSelected="True">
 														<mah:MetroTabItem.Style>
 															<Style TargetType="mah:MetroTabItem">
 																<Style.Triggers>
