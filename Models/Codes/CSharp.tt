@@ -4,7 +4,6 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 
-
 <#
 RequestItem[] cookies=this.Task.CookieItems.Where(c=>c.Selected).ToArray();
 if(cookies.Length==0)
@@ -52,7 +51,7 @@ httpRequestMessage.Content = new FormUrlEncodedContent(new Dictionary<string, st
 	else
 	{
 #>
-httpRequestMessage.Content = new StringContent(@"<#= this.Task.PostStringContent.Replace("\"","\\\"") #>");
+httpRequestMessage.Content = new StringContent(@"<#= this.Task.PostStringContent.Replace("\"","\"\"") #>");
 <#
 	}
 }

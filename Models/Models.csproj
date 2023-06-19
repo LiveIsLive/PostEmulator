@@ -82,6 +82,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CSharp.tt</DependentUpon>
     </Compile>
+    <Compile Include="Codes\Java.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Java.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Codes\JavaScript.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JavaScript.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Codes\Python.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Python.tt</DependentUpon>
+    </Compile>
     <Compile Include="RequestContentType.cs" />
     <Compile Include="RequestItemType.cs" />
     <Compile Include="ResponseContentType.cs" />
@@ -111,6 +126,18 @@
     <Content Include="Codes\CSharp.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>CSharp.cs</LastGenOutput>
+    </Content>
+    <Content Include="Codes\Java.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Java.cs</LastGenOutput>
+    </Content>
+    <Content Include="Codes\JavaScript.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>JavaScript.cs</LastGenOutput>
+    </Content>
+    <Content Include="Codes\Python.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Python.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,0 +1,32 @@
+﻿<#@ template language="C#" inherits="BaseTemplate" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+URL url = new URL("<#= this.Task.Url #>");
+HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+httpURLConnection.setRequestMethod("<#= this.Task.HttpMethod.Method #>");
+<# 
+foreach(RequestItem header in this.Task.HeaderItems.Where(h=>h.Selected))
+{
+#>
+httpURLConnection.setRequestProperty("<#= header.Name #>", "<#= header.Value #>")
+<#
+}
+#>
+
+<#
+if (this.Task.AcceptsRequestBody)
+{
+#>
+httpURLConnection.setDoOutput(true);
+DataOutputStream dataOutputStream = new DataOutputStream(httpURLConnection.getOutputStream());
+dataOutputStream.writeBytes(`<#= this.Task.PostStringContent #>`);
+dataOutputStream.flush();
+dataOutputStream.close();
+<#
+}
+#>
+
+InputStream result=httpURLConnection.getInputStream();

@@ -1,0 +1,39 @@
+﻿<#@ template language="C#" inherits="BaseTemplate" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+const axios = require('axios');
+await response=axios({
+	method:"<#= this.Task.HttpMethod.Method #>",
+	url:"<#= this.Task.Url #>",
+	headers:{<#= string.Join(",",this.Task.HeaderItems.Where(h => h.Selected).Select(h=>$"'{h.Name}':'{h.Value}'")) #>},
+<#
+if (this.Task.AcceptsRequestBody)
+{
+#>
+	<#
+	switch(this.Task.ContentType)
+	{
+		case RequestContentType.FormUrlencoded:
+	#>
+	data:{<#= string.Join(",",this.Task.FormParameters.Where(p => p.Selected).Select(p=>$"'{p.Name}':'{p.Value}'")) #>}
+	<#
+			break;
+		case RequestContentType.Json:
+	#>
+	data:<#= this.Task.JsonBody #>
+	<#
+			break;
+		default:
+	#>
+	data:`<#= this.Task.PostStringContent #>`
+	<#
+			break;
+	#>
+<#
+	}
+}
+#>
+});

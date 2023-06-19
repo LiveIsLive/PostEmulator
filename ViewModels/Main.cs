@@ -132,7 +132,7 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 
 		public string[] CommonContentTypes { get; } = new string[] { "application/x-www-form-urlencoded", "application/json", "application/xml", "multipart/form-data" };
 
-		public Models.Codes.BaseTemplate[] CodeTemplates { get; } = new Models.Codes.BaseTemplate[] { new Models.Codes.CSharp() };
+		public Models.Codes.BaseTemplate[] CodeTemplates { get; } = new Models.Codes.BaseTemplate[] { new Models.Codes.CSharp(), new Models.Codes.Java(), new Models.Codes.Python(), new Models.Codes.JavaScript() };
 
 		public void ExportCode(Models.Codes.BaseTemplate template)
 		{

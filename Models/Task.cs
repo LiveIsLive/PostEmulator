@@ -763,6 +763,8 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			{
 				switch (this.ContentType)
 				{
+					case RequestContentType.FormUrlencoded:
+						return this.FormRaw;
 					case RequestContentType.Json:
 						return this.JsonBody;
 					case RequestContentType.XML:
