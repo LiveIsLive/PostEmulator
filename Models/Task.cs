@@ -241,7 +241,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			}
 		}
 
-		protected void ReplaceSelectedOldItems(IList<RequestItem>oldItems, IList<RequestItem> newItems)
+		public void ReplaceSelectedOldItems(IList<RequestItem>oldItems, IList<RequestItem> newItems)
 		{
 			List<RequestItem> addItems = new List<RequestItem>();
 			foreach (RequestItem newItem in newItems)

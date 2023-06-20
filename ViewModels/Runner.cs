@@ -77,5 +77,14 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 			//this.Task.Status = Models.TaskStatus.Standby;
 			this.TryCloseAsync();
 		}
+
+
+		public void CopyCookiesToNewTask()
+		{
+			Models.Task task = Newtonsoft.Json.JsonConvert.DeserializeObject<Models.Task>(Newtonsoft.Json.JsonConvert.SerializeObject(this.Task));
+			task.ReplaceSelectedOldItems(task.CookieItems, this.Task.CookieContainer.GetCookies(task.Uri).Cast<System.Net.Cookie>().Select(c => new Models.RequestItem(c.Name, c.Value)).ToList());
+			this.WindowManager.ShowWindowAsync(new Main { Task = task });
+		}
+
 	}
 }

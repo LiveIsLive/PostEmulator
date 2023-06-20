@@ -25,6 +25,7 @@
 				<TextBlock>：</TextBlock>
 				<controls:GetDictionaryValue Dictionary="{Binding Localization.TaskStatus}" Key="{Binding Task.Status}" />
 			</WrapPanel>
+			<controls:IconButton cal:Message.Attach="CopyCookiesToNewTask" Visibility="{c:Binding 'Task.Status==models:TaskStatus.Done'}" Icon="Export" Margin="10,0,0,0" Content="Get Cookies From Response" />
 		</ToolBar>
 		<mah:MetroTabControl Visibility="{c:Binding 'Response!=null'}">
 			<mah:MetroTabItem Header="Response Body">
