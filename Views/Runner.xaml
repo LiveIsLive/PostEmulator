@@ -19,13 +19,15 @@
 		TitleCharacterCasing="Normal" Title="{Binding Title}" cal:Message.Attach="[Loaded]=[Run];[Closed]=[Stop]">
 	<DockPanel>
 		<ToolBar DockPanel.Dock="Top" Margin="0,5">
-			<controls:IconButton cal:Message.Attach="TryCloseAsync(false)" Visibility="{c:Binding 'Task.Status!=models:TaskStatus.Standby'}" IsEnabled="{c:Binding 'Task.Status!=models:TaskStatus.Done'}" Icon="DebugStop" Margin="10,0,0,0" Content="{Binding Localization.Stop}" />
+			<!-- 不知道为什么在c:Binding里面使用models:TaskStatus会报错 -->
+			<controls:IconButton cal:Message.Attach="TryCloseAsync(false)" Visibility="{c:Binding 'Task.Status!=TaskStatus.Done'}" Icon="DebugStop" Margin="10,0,0,0" Content="{Binding Localization.Stop}" />
 			<WrapPanel VerticalAlignment="Center" Margin="20,0,0,0">
 				<TextBlock Text="{Binding Localization.Status}" />
 				<TextBlock>：</TextBlock>
 				<controls:GetDictionaryValue Dictionary="{Binding Localization.TaskStatus}" Key="{Binding Task.Status}" />
 			</WrapPanel>
-			<controls:IconButton cal:Message.Attach="CopyCookiesToNewTask" Visibility="{c:Binding 'Task.Status==models:TaskStatus.Done'}" Icon="Export" Margin="10,0,0,0" Content="Get Cookies From Response" />
+			<controls:IconButton cal:Message.Attach="CopyCookiesToNewTask" Visibility="{c:Binding 'Task.Status==TaskStatus.Done'}" Icon="Export" Margin="10,0,0,0" Content="Get Cookies From Response" />
+			<controls:SaveFileButton Content="保存" cal:Message.Attach="[SaveFile]=[SaveFile($this.SelectedFilePath)]" DefaultFileName="{Binding DeaultSaveFileName}" Margin="10,0,0,0" />
 		</ToolBar>
 		<mah:MetroTabControl Visibility="{c:Binding 'Response!=null'}">
 			<mah:MetroTabItem Header="Response Body">

@@ -8,6 +8,9 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 {
 	public class Runner:Screen
 	{
+		//不知道为什么在xaml里面c:Binding使用models:TaskStatus会报错
+		public object TaskStatus { get; } = new { Models.TaskStatus.Done };
+
 		public Models.Task Task { get; protected set; }
 
 		public string Title { get; protected set; }
@@ -25,6 +28,8 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 				this.NotifyOfPropertyChange(() => this.Response);
 				this._TextDocument = null;
 				this.NotifyOfPropertyChange(() => this.TextDocument);
+				this._DeaultSaveFileName = null;
+				this.NotifyOfPropertyChange(() => this.DeaultSaveFileName);
 			}
 		}
 
@@ -51,6 +56,50 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 				if(this._Highlighting==null)
 					this._Highlighting= ICSharpCode.AvalonEdit.Highlighting.HighlightingManager.Instance.GetDefinition(this.Response.ContentType.ToString());
 				return this._Highlighting;
+			}
+		}
+
+		private string _DeaultSaveFileName;
+		public string DeaultSaveFileName
+		{
+			get
+			{
+				if (this._DeaultSaveFileName == null)
+				{
+					if (this.Response == null)
+						return null;
+					if (string.IsNullOrWhiteSpace(this.Response.FileName))
+						switch (this.Response.ContentType)
+						{
+							case Models.ResponseContentType.PlainText:
+								this._DeaultSaveFileName = ".text";
+								break;
+							case Models.ResponseContentType.HTML:
+								this._DeaultSaveFileName = ".html";
+								break;
+							case Models.ResponseContentType.Json:
+								this._DeaultSaveFileName = ".json";
+								break;
+							case Models.ResponseContentType.JavaScript:
+								this._DeaultSaveFileName = ".js";
+								break;
+							case Models.ResponseContentType.CSS:
+								this._DeaultSaveFileName = ".css";
+								break;
+							case Models.ResponseContentType.XML:
+								this._DeaultSaveFileName = ".xml";
+								break;
+							case Models.ResponseContentType.Image:
+								if (this.Response.MediaType != null)
+									this._DeaultSaveFileName = "." + this.Response.MediaType.Split('/').Last();
+								break;
+							default:
+								this._DeaultSaveFileName = "";
+								break;
+						}
+					else this._DeaultSaveFileName = this.Response.FileName;
+				}
+				return this._DeaultSaveFileName;
 			}
 		}
 
@@ -86,5 +135,9 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 			this.WindowManager.ShowWindowAsync(new Main { Task = task });
 		}
 
+		public void SaveFile(string path)
+		{
+			System.IO.File.WriteAllBytes(path, this.Response.Content);
+		}
 	}
 }

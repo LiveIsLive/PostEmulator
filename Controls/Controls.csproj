@@ -139,6 +139,7 @@
     <Compile Include="ImageViewer.xaml.cs">
       <DependentUpon>ImageViewer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SaveFileButton.cs" />
     <Compile Include="ThemeSetter.cs" />
     <Compile Include="DirectorySelector.xaml.cs">
       <DependentUpon>DirectorySelector.xaml</DependentUpon>

@@ -12,11 +12,11 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 
 		public byte[] Content { get; protected set; }
 
-		protected readonly string MediaType;
+		public readonly string MediaType;
 
 		protected readonly string CharSet;
 
-		protected readonly string FileName;
+		public readonly string FileName;
 
 		private System.Text.Encoding _Encoding;
 		public System.Text.Encoding Encoding
