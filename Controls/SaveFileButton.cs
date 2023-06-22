@@ -8,7 +8,7 @@ namespace ColdShineSoft.HttpClientPerformer.Controls
 {
 	public class SaveFileButton : IconButton
 	{
-		private static Microsoft.WindowsAPICodePack.Dialogs.CommonSaveFileDialog _SaveFileDialog;
+		private Microsoft.WindowsAPICodePack.Dialogs.CommonSaveFileDialog _SaveFileDialog;
 		protected Microsoft.WindowsAPICodePack.Dialogs.CommonSaveFileDialog SaveFileDialog
 		{
 			get
@@ -51,6 +51,7 @@ namespace ColdShineSoft.HttpClientPerformer.Controls
 			{
 				if (this.SaveFileDialog.ShowDialog() == Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogResult.Ok)
 					this.OnSaveFile(this.SaveFileDialog.FileName);
+				this._SaveFileDialog = null;
 			}
 			else this.OnSaveFile(this.SelectedFilePath);
 		}

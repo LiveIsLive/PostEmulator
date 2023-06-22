@@ -482,8 +482,6 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			}
 		}
 
-		public string BodyText { get; set; }
-
 		private string _FormRaw;
 		public string FormRaw
 		{
@@ -519,22 +517,22 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 							item.PropertyChanged += FormParameter_PropertyChanged;
 					}
 					if(this._FormParameters.Count==0)
-						if(!string.IsNullOrWhiteSpace(this._JsonBody))
+						if(!string.IsNullOrWhiteSpace(this._JsonContent))
 						{
 							try
 							{
-								this._FormParameters = new System.Collections.ObjectModel.ObservableCollection<RequestItem>(Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(this._JsonBody).Select(i => new RequestItem(i.Key, i.Value)));
+								this._FormParameters = new System.Collections.ObjectModel.ObservableCollection<RequestItem>(Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(this._JsonContent).Select(i => new RequestItem(i.Key, i.Value)));
 							}
 							catch
 							{
 							}
 						}
 					if(this._FormParameters.Count==0)
-						if(!string.IsNullOrWhiteSpace(this._XmlBody))
+						if(!string.IsNullOrWhiteSpace(this._XmlContent))
 						{
 							try
 							{
-								this._FormParameters = new System.Collections.ObjectModel.ObservableCollection<RequestItem>(System.Xml.Linq.XElement.Parse(this._XmlBody).Elements().Select(i => new RequestItem(i.Name.ToString(), i.Value)));
+								this._FormParameters = new System.Collections.ObjectModel.ObservableCollection<RequestItem>(System.Xml.Linq.XElement.Parse(this._XmlContent).Elements().Select(i => new RequestItem(i.Name.ToString(), i.Value)));
 							}
 							catch
 							{
@@ -553,91 +551,91 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			}
 		}
 
-		private string _JsonBody;
-		public string JsonBody
+		private string _JsonContent;
+		public string JsonContent
 		{
 			get
 			{
-				if(this._JsonBody==null)
+				if(this._JsonContent==null)
 				{
 					if(this._FormParameters!=null)
 					{
 						RequestItem[] formParameters = this.FormParameters.Where(p => p.Selected).ToArray();
 						if (formParameters.Length > 0)
-							this._JsonBody = Newtonsoft.Json.JsonConvert.SerializeObject(formParameters.ToDictionary(p => p.Name, p => p.Value));
+							this._JsonContent = Newtonsoft.Json.JsonConvert.SerializeObject(formParameters.ToDictionary(p => p.Name, p => p.Value));
 					}
-					if(this._JsonBody==null&&!string.IsNullOrWhiteSpace(this._XmlBody))
+					if(this._JsonContent==null&&!string.IsNullOrWhiteSpace(this._XmlContent))
 					{
 						System.Xml.XmlDocument xmlDocument = new System.Xml.XmlDocument();
 						try
 						{
-							xmlDocument.LoadXml(this._XmlBody);
-							this._JsonBody = Newtonsoft.Json.JsonConvert.SerializeXmlNode(xmlDocument.DocumentElement);
+							xmlDocument.LoadXml(this._XmlContent);
+							this._JsonContent = Newtonsoft.Json.JsonConvert.SerializeXmlNode(xmlDocument.DocumentElement);
 						}
 						catch
 						{
 						}
 					}
 				}
-				return this._JsonBody;
+				return this._JsonContent;
 			}
 			set
 			{
 				if (string.IsNullOrWhiteSpace(value))
-					this._JsonBody = null;
+					this._JsonContent = null;
 				else
 				{
-					this._JsonBody = value;
+					this._JsonContent = value;
 					if (string.IsNullOrWhiteSpace(this._FormRaw) && this._FormParameters?.Count == 0)
 						this._FormParameters = null;
-					if (string.IsNullOrWhiteSpace(this._XmlBody))
-						this._XmlBody = null;
+					if (string.IsNullOrWhiteSpace(this._XmlContent))
+						this._XmlContent = null;
 				}
 			}
 		}
 
-		private string _XmlBody;
-		public string XmlBody
+		private string _XmlContent;
+		public string XmlContent
 		{
 			get
 			{
-				if(this._XmlBody==null)
+				if(this._XmlContent==null)
 				{
 					if (this._FormParameters != null)
 					{
 						RequestItem[] formParameters = this.FormParameters.Where(p => p.Selected).ToArray();
 						if (formParameters.Length > 0)
-							this._XmlBody = this.XmlDocumentToString(Newtonsoft.Json.JsonConvert.DeserializeXmlNode(Newtonsoft.Json.JsonConvert.SerializeObject(new { root = formParameters.ToDictionary(p => p.Name, p => p.Value) })));
+							this._XmlContent = this.XmlDocumentToString(Newtonsoft.Json.JsonConvert.DeserializeXmlNode(Newtonsoft.Json.JsonConvert.SerializeObject(new { root = formParameters.ToDictionary(p => p.Name, p => p.Value) })));
 					}
-					if (this._XmlBody == null && !string.IsNullOrWhiteSpace(this._JsonBody))
+					if (this._XmlContent == null && !string.IsNullOrWhiteSpace(this._JsonContent))
 					{
 						try
 						{
-							this._XmlBody = this.XmlDocumentToString(Newtonsoft.Json.JsonConvert.DeserializeXmlNode($"root:{{{this._JsonBody}}}"));
+							this._XmlContent = this.XmlDocumentToString(Newtonsoft.Json.JsonConvert.DeserializeXmlNode($"root:{{{this._JsonContent}}}"));
 						}
 						catch
 						{
 						}
 					}
 				}
-				return this._XmlBody;
+				return this._XmlContent;
 			}
 			set
 			{
 				if (string.IsNullOrWhiteSpace(value))
-					this._XmlBody = value;
+					this._XmlContent = value;
 				else
 				{
-					this._XmlBody = value;
+					this._XmlContent = value;
 					if (string.IsNullOrWhiteSpace(this._FormRaw) && this._FormParameters?.Count == 0)
 						this._FormParameters = null;
-					if (string.IsNullOrWhiteSpace(this._JsonBody))
-						this._JsonBody = null;
+					if (string.IsNullOrWhiteSpace(this._JsonContent))
+						this._JsonContent = null;
 				}
 			}
 		}
 
-		public string PlainTextBody { get; set; }
+		public string PlainTextContent { get; set; }
 
 		private void FormParameters_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
 		{
@@ -766,11 +764,11 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 					case RequestContentType.FormUrlencoded:
 						return this.FormRaw;
 					case RequestContentType.Json:
-						return this.JsonBody;
+						return this.JsonContent;
 					case RequestContentType.XML:
-						return this.XmlBody;
+						return this.XmlContent;
 				}
-				return this.PlainTextBody;
+				return this.PlainTextContent;
 			}
 		}
 

@@ -9,14 +9,6 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 	public enum ValidationError
 	{
 		Required,
-		InvalidFilePath,
-		InvalidFileNameCharacter,
-		InvalidDirectoryPath,
-		BracketMissing,
-		InvalidRegularExpression,
-		InvalidCsScript,
-		InvalidDateTimeFormatString,
-		FileNotInSourceDirectoy,
-		DirectoryNotInSourceDirectoy
+		InvalidFormat
 	}
 }

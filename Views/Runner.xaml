@@ -26,11 +26,11 @@
 				<TextBlock>：</TextBlock>
 				<controls:GetDictionaryValue Dictionary="{Binding Localization.TaskStatus}" Key="{Binding Task.Status}" />
 			</WrapPanel>
-			<controls:IconButton cal:Message.Attach="CopyCookiesToNewTask" Visibility="{c:Binding 'Task.Status==TaskStatus.Done'}" Icon="Export" Margin="10,0,0,0" Content="Get Cookies From Response" />
-			<controls:SaveFileButton Content="保存" cal:Message.Attach="[SaveFile]=[SaveFile($this.SelectedFilePath)]" DefaultFileName="{Binding DeaultSaveFileName}" Margin="10,0,0,0" />
+			<controls:IconButton cal:Message.Attach="CopyCookiesToNewTask" Visibility="{c:Binding 'Task.Status==TaskStatus.Done'}" Icon="Export" Margin="10,0,0,0" Content="{Binding Localization.GetCookiesFromResponse}" BorderThickness="0" />
+			<controls:SaveFileButton Content="{Binding Localization.SaveResponseBody}" cal:Message.Attach="[SaveFile]=[SaveFile($this.SelectedFilePath)]" DefaultFileName="{Binding DeaultSaveFileName}" Margin="10,0,0,0" BorderThickness="0" />
 		</ToolBar>
 		<mah:MetroTabControl Visibility="{c:Binding 'Response!=null'}">
-			<mah:MetroTabItem Header="Response Body">
+			<mah:MetroTabItem Header="{Binding Localization.RequestBody}">
 				<mah:MetroTabItem.Style>
 					<Style TargetType="mah:MetroTabItem">
 						<Style.Triggers>
@@ -38,7 +38,7 @@
 								<Setter Property="Content">
 									<Setter.Value>
 										<mah:MetroTabControl>
-											<mah:MetroTabItem Header="Plain Text" IsSelected="{c:Binding 'Response.ContentType==models:ResponseContentType.PlainText',Mode=OneWay}">
+											<mah:MetroTabItem Header="{Binding Localization.PlainText}" IsSelected="{c:Binding 'Response.ContentType==models:ResponseContentType.PlainText',Mode=OneWay}">
 												<mah:MetroTabItem.Style>
 													<Style TargetType="mah:MetroTabItem">
 														<Style.Triggers>
@@ -83,7 +83,7 @@
 													</Style>
 												</mah:MetroTabItem.Style>
 											</mah:MetroTabItem>
-											<mah:MetroTabItem Header="Code View">
+											<mah:MetroTabItem Header="{Binding Localization.CodeView}">
 												<mah:MetroTabItem.Style>
 													<Style TargetType="mah:MetroTabItem">
 														<Style.Triggers>
@@ -98,7 +98,7 @@
 													</Style>
 												</mah:MetroTabItem.Style>
 											</mah:MetroTabItem>
-											<mah:MetroTabItem Header="Image" IsSelected="{c:Binding 'Response.ContentType==models:ResponseContentType.Image',Mode=OneWay}">
+											<mah:MetroTabItem Header="{Binding Localization.Image}" IsSelected="{c:Binding 'Response.ContentType==models:ResponseContentType.Image',Mode=OneWay}">
 												<mah:MetroTabItem.Style>
 													<Style TargetType="mah:MetroTabItem">
 														<Style.Triggers>
@@ -113,7 +113,7 @@
 													</Style>
 												</mah:MetroTabItem.Style>
 											</mah:MetroTabItem>
-											<mah:MetroTabItem Header="Binary" IsSelected="{c:Binding 'Response.ContentType==models:ResponseContentType.Binary',Mode=OneWay}">
+											<mah:MetroTabItem Header="{Binding Localization.Binary}" IsSelected="{c:Binding 'Response.ContentType==models:ResponseContentType.Binary',Mode=OneWay}">
 												<mah:MetroTabItem.Style>
 													<Style TargetType="mah:MetroTabItem">
 														<Style.Triggers>

@@ -90,7 +90,7 @@ if (this.Task.AcceptsRequestBody)
             this.Write("\tdata:");
             
             #line 26 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\JavaScript.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(this.Task.JsonBody));
+            this.Write(this.ToStringHelper.ToStringWithCulture(this.Task.JsonContent));
             
             #line default
             #line hidden

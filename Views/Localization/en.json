@@ -4,7 +4,6 @@
 	"SaveAs": "Save As...",
 	"Open": "Open",
 	"RecentFiles": "Recent Files",
-	"AutoRunWhenFilesFiltered": "Run at once when all files are having been filtered",
 	"Language": "Language",
 	"FileList": "File List",
 	"Help": "Help",
@@ -12,97 +11,42 @@
 	"About": "About",
 	"Theme": "Theme",
 
-	"Job": "Job",
-	"AddJob": "Add Job",
-	"NewJob": "New Job",
 	"Run": "Start Runing",
 	"Stop": "Stop",
 	"RunTask": "Run Task",
 	"Status": "Status",
-	"CompressFilePath": "Zip File Path",
-	"CompressToZipFile": "Compress the files matched the conditions into a zip file：",
-	"AddNowToCompressFileName": "Add a time stamp to the end of the compress file name. ",
-	"NowFormatString": "Date Time Format String",
+	"ExportCode": "Export Code",
+
+	"Url": "URL Address",
+	"UrlParameters": "Url Parameters",
+
+	"RequestHeaders": "Request Headers",
+	"HeadersRaw": "Raw",
+	"HeadersEditor": "Headers Editor",
+	"CookiesEditor": "Cookies Editor",
+
+	"RequestBody": "Request Body",
+	"ContentType": "Content Type",
+	"Editor": "Editor",
 
 	"Name": "Name",
-	"SourceDirectory": "Source Directory",
-	"ResultHandler": "Target Type",
-	"TargetDirectory": "Target Directory",
-	"Server": "Server",
-	"Port": "Port",
-	"UserName": "UserName",
-	"Password": "Password",
-
-	"Condition": "Condition",
-	"AddCondition": "Add Condition",
-	"Property": "Property",
-	"Operator": "Operator",
-	"LeftBracket": "Left Bracket",
-	"RightBracket": "Right Bracket",
-	"Connective": "Connective",
 	"Value": "Value",
-	"Expression": "C# Expression",
 	"OpenFileDialog": "Browse...",
-
-	"Path": "File Path",
-	"Directory": "Directory Path",
 	"Result": "Result",
 	"Error": "Error",
 
-	"Files": "Copied File Count/Total File Count",
-	"Bytes": "Copied Bytes/Total Bytes",
+	"SaveResponseBody": "Save Response Body",
+	"GetCookiesFromResponse": "Get Cookies From Response Headers",
+	"ResponseBody": "Response Body",
+	"PlainText": "Plain Text",
+	"CodeView": "Code View",
+	"Image": "Image",
+	"Binary": "Binary",
 
 	"Confirm": "Overwrite Confirm",
 	"OK": "OK",
 	"Cancel": "Cancel",
 
-	"FilePaths": "File Paths",
-	"DirectoryPaths": "Directory Paths",
-
-	"TargetDirectoryIsNotEmpty": "The target directory “{0}”is not empty. Maybe overwrite the files which have been existed when copying. Do you want to continue?",
-	"ConditionDesignMode": "Condition Design Mode",
-	//"ExpressionLimitation": "Limitation：Not support multiline expressions. It means that the expression can not contain '{}' or ';'.",
-	"ConditionMode":
-	{
-		"Designer": "Designer",
-		"SpecifyPaths": "Specify the files or directories",
-		"Expression": "C# Expression"
-	},
-	"Properties":
-	{
-		"FileName": "File Name",
-		"FilePath": "File Path",
-		"FileSize": "File Size(Bytes)",
-		"DirectoryPath": "Directory Path(Not End With \\)",
-		"Extension": "Extension(Starts Width .)",
-		"LastWriteTime": "Last Write Time",
-		"CreationTime": "Creation Time",
-		"LastAccessTime": "Last Access Time"
-	},
-	"Operators":
-	{
-		"RegularExpression": "Regular Expression",
-		"Contains": "Contains",
-		"NotContains": "Not Contains",
-		"Equals": "Equals",
-		"NotEquals": "Not Equals",
-		"StartsWith": "Starts With",
-		"NotStartsWith": "Not Starts With",
-		"EndsWith": "Ends With",
-		"NotEndsWith": "Not Ends With"
-	},
-	"LogicalConnective":
-	{
-		"And": "And",
-		"Or": "Or"
-	},
-	"CopyResult":
-	{
-		"Waiting": "Waiting To Copy",
-		"Copying": "Copying",
-		"Success": "Success",
-		"Failure": "Failure"
-	},
 	"TaskStatus":
 	{
 		"Standby": "Standby",
@@ -112,14 +56,6 @@
 	"ValidationError":
 	{
 		"Required": "Must input the “{0}”.",
-		"InvalidFilePath": "The “{0}” is not a valid file path.",
-		"InvalidFileNameCharacter": "A file name can not contain character “{0}”.",
-		"InvalidDirectoryPath": "The “{0}” is not a valid directory path.",
-		"BracketMissing": "The count of the left brackets must equal to the count of the rihgt brackets.",
-		"InvalidRegularExpression": "The regular expression is not valid.",
-		"InvalidCsScript": "The C# expression is invaild.",
-		"InvalidDateTimeFormatString": "The “DateTime” format string is invaild.",
-		"FileNotInSourceDirectoy": "“{0}” must be in the source directory.",
-		"DirectoryNotInSourceDirectoy": "“{0}” must be in the source directory."
+		"InvalidFormat": "The “{0}” is incorrectly formatted."
 	}
 }

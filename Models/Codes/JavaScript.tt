@@ -23,7 +23,7 @@ if (this.Task.AcceptsRequestBody)
 			break;
 		case RequestContentType.Json:
 	#>
-	data:<#= this.Task.JsonBody #>
+	data:<#= this.Task.JsonContent #>
 	<#
 			break;
 		default:

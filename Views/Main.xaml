@@ -106,7 +106,10 @@
 					</StackPanel>
 				</controls:OpenFileSplitButton.Items>
 			</controls:OpenFileSplitButton>
-			<mah:DropDownButton Content="Export Code" ItemsSource="{Binding CodeTemplates}" Margin="10,0,0,0" BorderThickness="0">
+			<mah:DropDownButton ItemsSource="{Binding CodeTemplates}" Content="{Binding Localization.ExportCode}" Margin="10,0,0,0" BorderThickness="0">
+				<mah:DropDownButton.Icon>
+					<iconPacks:PackIconCodicons Kind="{x:Static iconPacks:PackIconCodiconsKind.Export}" VerticalAlignment="Center" />
+				</mah:DropDownButton.Icon>
 				<mah:DropDownButton.ItemContainerStyle>
 					<Style TargetType="MenuItem">
 						<Setter Property="cal:Action.TargetWithoutContext" Value="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=Window}}" />
@@ -136,10 +139,10 @@
 		<!--<controls:ErrorReminder DockPanel.Dock="Top" Text="{Binding Task.DataErrorInfo.Job}" />-->
 		<DockPanel DockPanel.Dock="Top">
 			<ComboBox ItemsSource="{Binding HttpMethods}" SelectedItem="{Binding Task.HttpMethod}" />
-			<TextBox Text="{Binding Path=Task.Url,Mode=TwoWay}" mah:TextBoxHelper.Watermark="Url" />
+			<TextBox Text="{Binding Path=Task.Url,Mode=TwoWay}" mah:TextBoxHelper.Watermark="{Binding Localization.Url}" />
 		</DockPanel>
 		<controls:TabControl IsFocus="{Binding UpdateTabBinding}">
-			<mah:MetroTabItem Header="Url Parameters">
+			<mah:MetroTabItem Header="{Binding Localization.UrlParameters}">
 				<mah:MetroTabItem.Style>
 					<Style TargetType="mah:MetroTabItem">
 						<Style.Triggers>
@@ -154,56 +157,68 @@
 					</Style>
 				</mah:MetroTabItem.Style>
 			</mah:MetroTabItem>
-			<mah:MetroTabItem Header="Request Headers">
-				<controls:TabControl IsFocus="{Binding UpdateTabBinding}">
-					<mah:MetroTabItem Header="Raw">
-						<mah:MetroTabItem.Style>
-							<Style TargetType="mah:MetroTabItem">
-								<Style.Triggers>
-									<Trigger Property="IsSelected" Value="True">
-										<Setter Property="Content">
-											<Setter.Value>
-												<TextBox Text="{Binding Task.HeaderText}" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
-											</Setter.Value>
-										</Setter>
-									</Trigger>
-								</Style.Triggers>
-							</Style>
-						</mah:MetroTabItem.Style>
-					</mah:MetroTabItem>
-					<mah:MetroTabItem Header="Headers Editor" IsSelected="True">
-						<mah:MetroTabItem.Style>
-							<Style TargetType="mah:MetroTabItem">
-								<Style.Triggers>
-									<Trigger Property="IsSelected" Value="True">
-										<Setter Property="Content">
-											<Setter.Value>
-												<widgets:RequestItemEditor Names="{Binding CommonHeaderNames}" Items="{Binding Task.HeaderItems}" />
-											</Setter.Value>
-										</Setter>
-									</Trigger>
-								</Style.Triggers>
-							</Style>
-						</mah:MetroTabItem.Style>
-					</mah:MetroTabItem>
-					<mah:MetroTabItem Header="Cookies Editor">
-						<mah:MetroTabItem.Style>
-							<Style TargetType="mah:MetroTabItem">
-								<Style.Triggers>
-									<Trigger Property="IsSelected" Value="True">
-										<Setter Property="Content">
-											<Setter.Value>
-												<widgets:RequestItemEditor Items="{Binding Task.CookieItems}" />
-											</Setter.Value>
-										</Setter>
-									</Trigger>
-								</Style.Triggers>
-							</Style>
-						</mah:MetroTabItem.Style>
-					</mah:MetroTabItem>
-				</controls:TabControl>
+			<mah:MetroTabItem Header="{Binding Localization.RequestHeaders}">
+				<mah:MetroTabItem.Style>
+					<Style TargetType="mah:MetroTabItem">
+						<Style.Triggers>
+							<Trigger Property="IsSelected" Value="True">
+								<Setter Property="Content">
+									<Setter.Value>
+										<controls:TabControl IsFocus="{Binding UpdateTabBinding}">
+											<mah:MetroTabItem Header="{Binding Localization.HeadersRaw}">
+												<mah:MetroTabItem.Style>
+													<Style TargetType="mah:MetroTabItem">
+														<Style.Triggers>
+															<Trigger Property="IsSelected" Value="True">
+																<Setter Property="Content">
+																	<Setter.Value>
+																		<TextBox Text="{Binding Task.HeaderText}" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
+																	</Setter.Value>
+																</Setter>
+															</Trigger>
+														</Style.Triggers>
+													</Style>
+												</mah:MetroTabItem.Style>
+											</mah:MetroTabItem>
+											<mah:MetroTabItem Header="{Binding Localization.HeadersEditor}" IsSelected="True">
+												<mah:MetroTabItem.Style>
+													<Style TargetType="mah:MetroTabItem">
+														<Style.Triggers>
+															<Trigger Property="IsSelected" Value="True">
+																<Setter Property="Content">
+																	<Setter.Value>
+																		<widgets:RequestItemEditor Names="{Binding CommonHeaderNames}" Items="{Binding Task.HeaderItems}" />
+																	</Setter.Value>
+																</Setter>
+															</Trigger>
+														</Style.Triggers>
+													</Style>
+												</mah:MetroTabItem.Style>
+											</mah:MetroTabItem>
+											<mah:MetroTabItem Header="Cookies Editor">
+												<mah:MetroTabItem.Style>
+													<Style TargetType="mah:MetroTabItem">
+														<Style.Triggers>
+															<Trigger Property="IsSelected" Value="True">
+																<Setter Property="Content">
+																	<Setter.Value>
+																		<widgets:RequestItemEditor Items="{Binding Task.CookieItems}" />
+																	</Setter.Value>
+																</Setter>
+															</Trigger>
+														</Style.Triggers>
+													</Style>
+												</mah:MetroTabItem.Style>
+											</mah:MetroTabItem>
+										</controls:TabControl>
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</mah:MetroTabItem.Style>
 			</mah:MetroTabItem>
-			<mah:MetroTabItem Header="Request Body" Visibility="{c:Binding 'Task.HttpMethod.Method==&quot;POST&quot;||Task.HttpMethod.Method==&quot;PUT&quot;'}">
+			<mah:MetroTabItem Header="{Binding Localization.RequestBody}" Visibility="{c:Binding 'Task.HttpMethod.Method==&quot;POST&quot;||Task.HttpMethod.Method==&quot;PUT&quot;'}">
 				<mah:MetroTabItem.Style>
 					<Style TargetType="mah:MetroTabItem">
 						<Style.Triggers>
@@ -212,7 +227,7 @@
 									<Setter.Value>
 				<DockPanel Margin="5,0">
 					<WrapPanel DockPanel.Dock="Top">
-						<TextBlock VerticalAlignment="Center">Content Type：</TextBlock>
+						<controls:FieldTitle Content="{Binding Localization.ContentType}" />
 						<ComboBox ItemsSource="{Binding CommonContentTypes}" Text="{Binding Path=Task.HeaderContentTypeItem.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEditable="True" Width="250" />
 					</WrapPanel>
 					<ContentControl Margin="0,5,0,0">
@@ -223,7 +238,7 @@
 										<Setter Property="Content">
 											<Setter.Value>
 												<controls:TabControl IsFocus="{Binding UpdateTabBinding}">
-													<mah:MetroTabItem Header="Raw">
+													<mah:MetroTabItem Header="{Binding Localization.HeadersRaw}">
 														<mah:MetroTabItem.Style>
 															<Style TargetType="mah:MetroTabItem">
 																<Style.Triggers>
@@ -238,7 +253,7 @@
 															</Style>
 														</mah:MetroTabItem.Style>
 													</mah:MetroTabItem>
-													<mah:MetroTabItem Header="Form Parameters" IsSelected="True">
+													<mah:MetroTabItem Header="{Binding Localization.Editor}" IsSelected="True">
 														<mah:MetroTabItem.Style>
 															<Style TargetType="mah:MetroTabItem">
 																<Style.Triggers>
@@ -260,21 +275,21 @@
 									<DataTrigger Binding="{Binding Task.ContentType}" Value="{x:Static models:RequestContentType.Json}">
 										<Setter Property="Content">
 											<Setter.Value>
-												<widgets:TextEditor Type="{Binding Task.ContentType}" Text="{Binding Path=Task.JsonBody,Mode=TwoWay}" />
+												<widgets:TextEditor Type="{Binding Task.ContentType}" Text="{Binding Path=Task.JsonContent,Mode=TwoWay}" />
 											</Setter.Value>
 										</Setter>
 									</DataTrigger>
 									<DataTrigger Binding="{Binding Task.ContentType}" Value="{x:Static models:RequestContentType.XML}">
 										<Setter Property="Content">
 											<Setter.Value>
-												<widgets:TextEditor Type="{Binding Task.ContentType}" Text="{Binding Path=Task.XmlBody,Mode=TwoWay}" />
+												<widgets:TextEditor Type="{Binding Task.ContentType}" Text="{Binding Path=Task.XmlContent,Mode=TwoWay}" />
 											</Setter.Value>
 										</Setter>
 									</DataTrigger>
 									<DataTrigger Binding="{Binding Task.ContentType}" Value="{x:Static models:RequestContentType.PlainText}">
 										<Setter Property="Content">
 											<Setter.Value>
-												<TextBox Text="{Binding Path=Task.PlainTextBody,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
+												<TextBox Text="{Binding Path=Task.PlainTextContent,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
 											</Setter.Value>
 										</Setter>
 									</DataTrigger>

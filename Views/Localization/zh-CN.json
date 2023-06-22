@@ -4,105 +4,48 @@
 	"SaveAs": "另存为...",
 	"Open": "打开",
 	"RecentFiles": "最近使用过的文件",
-	"AutoRunWhenFilesFiltered": "所有文件筛选完成后立即运行",
 	"Language": "语言/Languages",
 	"Help": "帮助",
 	"Tutorial": "入门",
 	"About": "关于",
 	"Theme": "主题",
 
-	"FileList": "文件列表",
-	"Job": "任务",
-	"AddJob": "添加任务",
-	"NewJob": "新任务",
 	"Run": "开始执行",
 	"Stop": "停止",
 	"RunTask": "执行任务",
 	"Status": "状态",
-	"CompressFilePath": "压缩文件路径",
-	"CompressToZipFile": "打包所有符合条件的文件打包到一个压缩文件：",
-	"AddNowToCompressFileName": "添加时间戳到压缩文件名。",
-	"NowFormatString": "时间格式",
+	"ExportCode": "导出代码",
+
+	"Url": "网址",
+	"UrlParameters": "网址参数",
+
+	"RequestHeaders": "请求标头",
+	"HeadersRaw": "源",
+	"HeadersEditor": "标头编辑器",
+	"CookiesEditor": "Cookies编辑器",
+
+	"RequestBody": "请求正文",
+	"ContentType": "内容类型",
+	"Editor": "编辑器",
 
 	"Name": "名称",
-	"SourceDirectory": "源目录",
-	"ResultHandler": "目标类型",
-	"TargetDirectory": "目标目录",
-	"Server": "服务器",
-	"Port": "端口",
-	"UserName": "用户名",
-	"Password": "密码",
-
-	"Condition": "条件",
-	"AddCondition": "添加条件",
-	"Property": "属性",
-	"Operator": "运算符",
-	"LeftBracket": "左括号",
-	"RightBracket": "右括号",
-	"Connective": "连接符",
 	"Value": "值",
-	"Expression": "C#表达式",
 	"OpenFileDialog": "浏览...",
-
-	"Path": "完整路径",
-	"Directory": "所在目录",
 	"Result": "处理结果",
 	"Error": "错误",
 
-	"Files": "已复制文件数/文件总数",
-	"Bytes": "已复制字节/总字节",
+	"SaveResponseBody": "保存响应正文",
+	"GetCookiesFromResponse": "从响应标头获取Cookie",
+	"ResponseBody": "响应正文",
+	"PlainText": "纯文本",
+	"CodeView": "代码视图",
+	"Image": "图片",
+	"Binary": "二进制",
 
 	"Confirm": "覆盖确认",
 	"OK": "确定",
 	"Cancel": "取消",
 
-	"FilePaths": "文件路径",
-	"DirectoryPaths": "目录路径",
-
-	"TargetDirectoryIsNotEmpty": "“{0}”是非空目录，执行过程中可能会覆盖已存在文件，是否继续？",
-	"ConditionDesignMode": "条件设置模式",
-	//"ExpressionLimitation": "限制：不支持多行表达式，也就是说表达式内不能包含'{}'或者';'。",
-	"ConditionMode":
-	{
-		"Designer": "设计器",
-		"SpecifyPaths": "指定文件或文件夹",
-		"Expression": "C# 表达式"
-	},
-	"Properties":
-	{
-		"FileName": "文件名",
-		"FilePath": "文件路径",
-		"FileSize": "文件大小(字节)",
-		"DirectoryPath": "所在目录路径(不以\\结尾)",
-		"Extension": "扩展名(包含.)",
-		"LastWriteTime": "修改时间",
-		"CreationTime": "创建时间",
-		"LastAccessTime": "访问时间"
-	},
-	"Operators":
-	{
-		"RegularExpression": "正则表达式",
-		"Contains": "包含",
-		"NotContains": "不包含",
-		"Equals": "等于",
-		"NotEquals": "不等于",
-		"StartsWith": "始于",
-		"NotStartsWith": "非始于",
-		"EndsWith": "终于",
-		"NotEndsWith": "非终于"
-	},
-	"LogicalConnective":
-	{
-		"And": "而且",
-		"Or": "或者"
-	},
-	"CopyResult":
-	{
-		"Waiting": "待复制",
-		"Copying": "复制中",
-		"Success": "复制成功",
-		"Failure": "复制失败"
-	},
 	"TaskStatus":
 	{
 		"Standby": "待执行",
@@ -112,14 +55,6 @@
 	"ValidationError":
 	{
 		"Required": "必须输入“{0}”",
-		"InvalidFilePath": "“{0}”不是有效的文件路径。",
-		"InvalidFileNameCharacter": "文件名不能包含字符“{0}”",
-		"InvalidDirectoryPath": "“{0}”不是有效的目录路径。",
-		"BracketMissing": "左括号数量必须和右括号数量相等",
-		"InvalidRegularExpression": "无效的正则表达式。",
-		"InvalidCsScript": "无效的C#表达式。",
-		"InvalidDateTimeFormatString": "无效的时间格式化字符串。",
-		"FileNotInSourceDirectoy": "文件“{0}”必须在源目录内。",
-		"DirectoryNotInSourceDirectoy": "“{0}”必须是源目录的子目录。"
+		"InvalidFormat": "“{0}”格式不正确。"
 	}
 }
