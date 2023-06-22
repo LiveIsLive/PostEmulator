@@ -26,38 +26,38 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 			{
 				this._Response = value;
 				this.NotifyOfPropertyChange(() => this.Response);
-				this._TextDocument = null;
-				this.NotifyOfPropertyChange(() => this.TextDocument);
+				//this._TextDocument = null;
+				//this.NotifyOfPropertyChange(() => this.TextDocument);
 				this._DeaultSaveFileName = null;
 				this.NotifyOfPropertyChange(() => this.DeaultSaveFileName);
 			}
 		}
 
-		private ICSharpCode.AvalonEdit.Document.TextDocument _TextDocument;
-		public ICSharpCode.AvalonEdit.Document.TextDocument TextDocument
-		{
-			get
-			{
-				if (this._TextDocument == null)
-				{
-					if (this.Response == null)
-						return null;
-					this._TextDocument = new ICSharpCode.AvalonEdit.Document.TextDocument(this.Response.FormattedContentCode);
-				}
-				return this._TextDocument;
-			}
-		}
+		//private ICSharpCode.AvalonEdit.Document.TextDocument _TextDocument;
+		//public ICSharpCode.AvalonEdit.Document.TextDocument TextDocument
+		//{
+		//	get
+		//	{
+		//		if (this._TextDocument == null)
+		//		{
+		//			if (this.Response == null)
+		//				return null;
+		//			this._TextDocument = new ICSharpCode.AvalonEdit.Document.TextDocument(this.Response.FormattedContentCode);
+		//		}
+		//		return this._TextDocument;
+		//	}
+		//}
 
-		private ICSharpCode.AvalonEdit.Highlighting.IHighlightingDefinition _Highlighting;
-		public ICSharpCode.AvalonEdit.Highlighting.IHighlightingDefinition Highlighting
-		{
-			get
-			{
-				if(this._Highlighting==null)
-					this._Highlighting= ICSharpCode.AvalonEdit.Highlighting.HighlightingManager.Instance.GetDefinition(this.Response.ContentType.ToString());
-				return this._Highlighting;
-			}
-		}
+		//private ICSharpCode.AvalonEdit.Highlighting.IHighlightingDefinition _Highlighting;
+		//public ICSharpCode.AvalonEdit.Highlighting.IHighlightingDefinition Highlighting
+		//{
+		//	get
+		//	{
+		//		if(this._Highlighting==null)
+		//			this._Highlighting= ICSharpCode.AvalonEdit.Highlighting.HighlightingManager.Instance.GetDefinition(this.Response.ContentType.ToString());
+		//		return this._Highlighting;
+		//	}
+		//}
 
 		private string _DeaultSaveFileName;
 		public string DeaultSaveFileName

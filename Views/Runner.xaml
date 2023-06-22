@@ -7,6 +7,7 @@
 		xmlns:viewModels="clr-namespace:ColdShineSoft.HttpClientPerformer.ViewModels;assembly=ColdShineSoft.HttpClientPerformer.ViewModels"
 		xmlns:models="clr-namespace:ColdShineSoft.HttpClientPerformer.Models;assembly=ColdShineSoft.HttpClientPerformer.Models"
 		xmlns:controls="clr-namespace:ColdShineSoft.HttpClientPerformer.Controls;assembly=ColdShineSoft.HttpClientPerformer.Controls"
+		xmlns:widgets="clr-namespace:ColdShineSoft.HttpClientPerformer.Widgets;assembly=ColdShineSoft.HttpClientPerformer.Widgets"
 		xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
 		xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
 		xmlns:cal="http://www.caliburnproject.org"
@@ -90,7 +91,7 @@
 															<Trigger Property="IsSelected" Value="True">
 																<Setter Property="Content">
 																	<Setter.Value>
-																		<avalonEdit:TextEditor ShowLineNumbers="True" WordWrap="False" SyntaxHighlighting="{Binding Highlighting}" Document="{Binding Path=TextDocument,Mode=OneWay}" />
+																		<widgets:TextEditor Text="{Binding Response.FormattedContentCode}" Type="{Binding Response.ContentType}" />
 																	</Setter.Value>
 																</Setter>
 															</Trigger>

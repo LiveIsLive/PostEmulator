@@ -5,5 +5,5 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 	mc:Ignorable="d" 
 	xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit">
-	<avalonEdit:TextEditor x:Name="Editor" LostFocus="Editor_LostFocus" />
+	<avalonEdit:TextEditor x:Name="Editor" LostFocus="Editor_LostFocus" ShowLineNumbers="True" WordWrap="False" />
 </UserControl>

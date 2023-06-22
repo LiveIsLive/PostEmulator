@@ -141,6 +141,7 @@
 			<ComboBox ItemsSource="{Binding HttpMethods}" SelectedItem="{Binding Task.HttpMethod}" />
 			<TextBox Text="{Binding Path=Task.Url,Mode=TwoWay}" mah:TextBoxHelper.Watermark="{Binding Localization.Url}" />
 		</DockPanel>
+		<controls:ErrorReminder DockPanel.Dock="Top" Text="{Binding Path=Task.DataErrorInfo.Url,Mode=TwoWay}" />
 		<controls:TabControl IsFocus="{Binding UpdateTabBinding}">
 			<mah:MetroTabItem Header="{Binding Localization.UrlParameters}">
 				<mah:MetroTabItem.Style>

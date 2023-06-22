@@ -11,7 +11,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 	{
 		private string _Url;
 		[Newtonsoft.Json.JsonProperty]
-		public string Url
+		public virtual string Url
 		{
 			get
 			{
@@ -876,14 +876,28 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			}
 		}
 
+		private static System.Text.RegularExpressions.Regex _UrlRegex;
+		private System.Text.RegularExpressions.Regex UrlRegex
+		{
+			get
+			{
+				if (_UrlRegex == null)
+					_UrlRegex = new System.Text.RegularExpressions.Regex(@"^https?://([\w-]+\.)+[\w-]+(/[\w-./?%&=]*)?$");
+				return _UrlRegex;
+			}
+		}
+
 		public bool ValidateData(Localization localization)
 		{
 			this.DataErrorInfo = new DataErrorInfos.Task();
 			if (string.IsNullOrWhiteSpace(this.Url))
-				this.DataErrorInfo.Url = "必须录入Url";
-			bool result = true;
+				this.DataErrorInfo.Url = string.Format(localization.ValidationError[ValidationError.Required],localization.Url);
+			else if (!this.UrlRegex.IsMatch(this.Url))
+				this.DataErrorInfo.Url = string.Format(localization.ValidationError[ValidationError.InvalidFormat],localization.Url);
 
-			return result;
+			//bool result = true;
+
+			return this.DataErrorInfo.Url == null;
 		}
 	}
 }
