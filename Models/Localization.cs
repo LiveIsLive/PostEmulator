@@ -50,6 +50,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 		public string CodeView { get; set; }
 		public string Image { get; set; }
 		public string Binary { get; set; }
+		public string MissedHeaders { get; set; }
 
 		public string Confirm { get; set; }
 		public string OK { get; set; }

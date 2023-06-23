@@ -27,10 +27,31 @@
 				<TextBlock>：</TextBlock>
 				<controls:GetDictionaryValue Dictionary="{Binding Localization.TaskStatus}" Key="{Binding Task.Status}" />
 			</WrapPanel>
-			<controls:IconButton cal:Message.Attach="CopyCookiesToNewTask" Visibility="{c:Binding 'Task.Status==TaskStatus.Done'}" Icon="Export" Margin="10,0,0,0" Content="{Binding Localization.GetCookiesFromResponse}" BorderThickness="0" />
-			<controls:SaveFileButton Content="{Binding Localization.SaveResponseBody}" cal:Message.Attach="[SaveFile]=[SaveFile($this.SelectedFilePath)]" DefaultFileName="{Binding DeaultSaveFileName}" Margin="10,0,0,0" BorderThickness="0" />
+			<WrapPanel Visibility="{c:Binding 'Response?.Error==null'}">
+				<controls:IconButton cal:Message.Attach="CopyCookiesToNewTask" Visibility="{c:Binding 'Task.Status==TaskStatus.Done'}" Icon="Export" Content="{Binding Localization.GetCookiesFromResponse}" Margin="10,0,0,0" BorderThickness="0" />
+				<controls:SaveFileButton Content="{Binding Localization.SaveResponseBody}" cal:Message.Attach="[SaveFile]=[SaveFile($this.SelectedFilePath)]" DefaultFileName="{Binding DeaultSaveFileName}" Visibility="{c:Binding 'Task.Status==TaskStatus.Done'}" Margin="10,0,0,0" BorderThickness="0" />
+			</WrapPanel>
 		</ToolBar>
-		<mah:MetroTabControl Visibility="{c:Binding 'Response!=null'}">
+		<Grid DockPanel.Dock="Top" Visibility="{c:Binding 'Response!=null'}">
+			<WrapPanel Visibility="{c:Binding 'Response?.MissedHeaders.Count>0'}">
+				<controls:FieldTitle Content="{Binding Localization.MissedHeaders}" Foreground="Red" />
+				<ItemsControl ItemsSource="{Binding Response.MissedHeaders}" Foreground="Red">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel VerticalAlignment="Center" />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding}" Margin="0,0,10,0" />
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</WrapPanel>
+		</Grid>
+		<TextBlock DockPanel.Dock="Top" Text="{Binding Response.Error}" Visibility="{c:Binding 'Response?.Error!=null'}" Foreground="Red" />
+		<Grid DockPanel.Dock="Top" Visibility="{c:Binding 'Response!=null'}">
+		<mah:MetroTabControl Visibility="{c:Binding 'Response?.Error==null'}">
 			<mah:MetroTabItem Header="{Binding Localization.RequestBody}">
 				<mah:MetroTabItem.Style>
 					<Style TargetType="mah:MetroTabItem">
@@ -84,14 +105,14 @@
 													</Style>
 												</mah:MetroTabItem.Style>
 											</mah:MetroTabItem>
-											<mah:MetroTabItem Header="{Binding Localization.CodeView}">
+											<mah:MetroTabItem Header="{Binding Localization.CodeView}" IsSelected="{c:Binding 'Response.ContentType==models:ResponseContentType.HTML||Response.ContentType==models:ResponseContentType.JavaScript',Mode=OneWay}">
 												<mah:MetroTabItem.Style>
 													<Style TargetType="mah:MetroTabItem">
 														<Style.Triggers>
 															<Trigger Property="IsSelected" Value="True">
 																<Setter Property="Content">
 																	<Setter.Value>
-																		<widgets:TextEditor Text="{Binding Response.FormattedContentCode}" Type="{Binding Response.ContentType}" />
+																		<widgets:TextEditor Text="{Binding Path=Response.FormattedContentCode,Mode=OneTime}" Type="{Binding Response.ContentType}" />
 																	</Setter.Value>
 																</Setter>
 															</Trigger>
@@ -158,5 +179,6 @@
 				</mah:MetroTabItem.Style>
 			</mah:MetroTabItem>
 		</mah:MetroTabControl>
+		</Grid>
 	</DockPanel>
 </mah:MetroWindow>

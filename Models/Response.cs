@@ -18,6 +18,10 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 
 		public readonly string FileName;
 
+		public System.Collections.Generic.IList<string> MissedHeaders { get; protected set; }
+
+		public string Error { get; protected set; }
+
 		private System.Text.Encoding _Encoding;
 		public System.Text.Encoding Encoding
 		{
@@ -116,7 +120,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 					else if(this.MediaType.Contains("image"))
 						this._ContentType = Models.ResponseContentType.Image;
 					else if(this.MediaType.Contains("text"))
-						this._ContentType = Models.ResponseContentType.Image;
+						this._ContentType = Models.ResponseContentType.PlainText;
 					else this._ContentType = Models.ResponseContentType.Binary;
 				return this._ContentType.Value;
 			}
@@ -145,13 +149,15 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			}
 		}
 
-		public Response(string headers, byte[] content,string mediaType,string charSet,string fileName)
+		public Response(string headers, byte[] content,string mediaType,string charSet,string fileName, IList<string> missedHeaders, string error)
 		{
 			this.Headers = headers;
 			this.Content = content;
 			this.MediaType = mediaType?.ToLower();
 			this.CharSet = charSet;
 			this.FileName = fileName;
+			this.MissedHeaders = missedHeaders;
+			this.Error = error;
 		}
 	}
 }

@@ -42,6 +42,7 @@
 	"CodeView": "Code View",
 	"Image": "Image",
 	"Binary": "Binary",
+	"MissedHeaders": "Can not add the headers to the request headers",
 
 	"Confirm": "Overwrite Confirm",
 	"OK": "OK",

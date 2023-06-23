@@ -41,6 +41,7 @@
 	"CodeView": "代码视图",
 	"Image": "图片",
 	"Binary": "二进制",
+	"MissedHeaders": "无法添加标头到请求标头",
 
 	"Confirm": "覆盖确认",
 	"OK": "确定",

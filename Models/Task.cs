@@ -777,6 +777,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			this._CookieContainer = null;
 			this._HttpClient = null;
 
+			System.Collections.Generic.List<string> missHeaders = new List<string>();
 			System.Net.Http.HttpRequestMessage request = new System.Net.Http.HttpRequestMessage(this.HttpMethod, this.Url);
 			foreach(RequestItem item in this.HeaderItems)
 			{
@@ -785,11 +786,11 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 				switch(item.Type)
 				{
 					case RequestItemType.Cookie:
-						continue;
 					case RequestItemType.ContentType:
 						continue;
 					default:
-						request.Headers.Add(item.Name, item.Value);
+						if(!request.Headers.TryAddWithoutValidation(item.Name, item.Value))
+							missHeaders.Add(item.Name);
 						continue;
 				}
 			}
@@ -804,14 +805,32 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 					request.Content.Headers.ContentType = null;
 				else
 				{
-					request.Content.Headers.ContentType.MediaType = this.Content_Type;
+					try
+					{
+						request.Content.Headers.ContentType.MediaType = this.Content_Type;
+					}
+					catch
+					{
+						missHeaders.Add(this.HeaderContentTypeItem.Name);
+					}
 					request.Content.Headers.ContentType.CharSet = this.CharSet;
 				}
 			}
 
 
-			this.Status = TaskStatus.Performing; 
-			System.Net.Http.HttpResponseMessage response = await this.HttpClient.SendAsync(request);
+			this.Status = TaskStatus.Performing;
+			string error = null;
+			System.Net.Http.HttpResponseMessage response = null;
+			try
+			{
+				response = await this.HttpClient.SendAsync(request);
+			}
+			catch(System.Exception exception)
+			{
+				error = exception.InnerException?.Message ?? exception.Message;
+				this.Status = TaskStatus.Done;
+				return new Response("", new byte[0], "", "", "", missHeaders, error);
+			}
 			string headers = response.ToString();
 			headers = headers.Substring(headers.IndexOf("{") + 1);
 			headers = headers.Substring(0, headers.LastIndexOf("}"));
@@ -838,7 +857,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 					fileName = null;
 				}
 
-				return new Response(headers, content, response.Content.Headers.ContentType?.MediaType, response.Content.Headers.ContentType?.CharSet, fileName);
+				return new Response(headers, content, response.Content.Headers.ContentType?.MediaType, response.Content.Headers.ContentType?.CharSet, fileName, missHeaders, error);
 			}
 			finally
 			{
