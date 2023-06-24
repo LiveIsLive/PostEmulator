@@ -1,10 +1,10 @@
-﻿<mah:MetroWindow x:Class="ColdShineSoft.HttpClientPerformer.Views.About"
+﻿<mah:MetroWindow x:Class="ColdShineSoft.PostEmulator.Views.About"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:local="clr-namespace:ColdShineSoft.HttpClientPerformer.Views"
-		xmlns:viewModels="clr-namespace:ColdShineSoft.HttpClientPerformer.ViewModels;assembly=ColdShineSoft.HttpClientPerformer.ViewModels"
+		xmlns:local="clr-namespace:ColdShineSoft.PostEmulator.Views"
+		xmlns:viewModels="clr-namespace:ColdShineSoft.PostEmulator.ViewModels;assembly=ColdShineSoft.PostEmulator.ViewModels"
 		xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
 		mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=viewModels:About,IsDesignTimeCreatable=True}"
 		TitleCharacterCasing="Normal" Title="{Binding Localization.About}" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" FontSize="16">

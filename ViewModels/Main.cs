@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ColdShineSoft.HttpClientPerformer.ViewModels
+namespace ColdShineSoft.PostEmulator.ViewModels
 {
 	public class Main : Screen, GongSolutions.Wpf.DragDrop.IDropTarget
 	{
@@ -81,7 +81,7 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 			}
 		}
 
-		protected const string ProgramName = "Http Client Performer";
+		protected const string ProgramName = "Post Emulator";
 
 		private bool _UpdateTabBinding;
 		public bool UpdateTabBinding
@@ -286,7 +286,7 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 		//}
 		public void ShowTutorial()
 		{
-			System.Diagnostics.Process.Start("https://github.com/LiveIsLive/HttpClientPerformer/");
+			System.Diagnostics.Process.Start("https://github.com/LiveIsLive/PostEmulator/");
 		}
 
 		public void ShowAboutWindow()

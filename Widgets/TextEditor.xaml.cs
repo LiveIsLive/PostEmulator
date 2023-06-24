@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ColdShineSoft.HttpClientPerformer.Widgets
+namespace ColdShineSoft.PostEmulator.Widgets
 {
 	/// <summary>
 	/// TextEditor.xaml 的交互逻辑
@@ -26,6 +26,11 @@ namespace ColdShineSoft.HttpClientPerformer.Widgets
 		[Bindables.DependencyProperty]
 		public object Type { get; set; }
 
+		public TextEditor()
+		{
+			InitializeComponent();
+		}
+
 		protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
 		{
 			if(e.Property.Name==nameof(this.Text))
@@ -36,9 +41,9 @@ namespace ColdShineSoft.HttpClientPerformer.Widgets
 			base.OnPropertyChanged(e);
 		}
 
-		public TextEditor()
+		protected override void OnInitialized(EventArgs e)
 		{
-			InitializeComponent();
+			base.OnInitialized(e);
 		}
 
 		private void Editor_LostFocus(object sender, RoutedEventArgs e)

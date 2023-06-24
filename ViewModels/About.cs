@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ColdShineSoft.HttpClientPerformer.ViewModels
+namespace ColdShineSoft.PostEmulator.ViewModels
 {
 	public class About : Screen
 	{

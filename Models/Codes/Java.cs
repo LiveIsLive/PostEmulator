@@ -7,7 +7,7 @@
 //     重新生成代码，这些更改将会丢失。
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace ColdShineSoft.HttpClientPerformer.Models.Codes
+namespace ColdShineSoft.PostEmulator.Models.Codes
 {
     using System.Linq;
     using System.Text;
@@ -18,7 +18,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models.Codes
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\Java.tt"
+    #line 1 "G:\WindowsApplications\PostEmulator\Models\Codes\Java.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "17.0.0.0")]
     public partial class Java : BaseTemplate
     {
@@ -30,7 +30,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models.Codes
         {
             this.Write("\r\nURL url = new URL(\"");
             
-            #line 7 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\Java.tt"
+            #line 7 "G:\WindowsApplications\PostEmulator\Models\Codes\Java.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.Task.Url));
             
             #line default
@@ -38,14 +38,14 @@ namespace ColdShineSoft.HttpClientPerformer.Models.Codes
             this.Write("\");\r\nHttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection" +
                     "();\r\nhttpURLConnection.setRequestMethod(\"");
             
-            #line 9 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\Java.tt"
+            #line 9 "G:\WindowsApplications\PostEmulator\Models\Codes\Java.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.Task.HttpMethod.Method));
             
             #line default
             #line hidden
             this.Write("\");\r\n");
             
-            #line 10 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\Java.tt"
+            #line 10 "G:\WindowsApplications\PostEmulator\Models\Codes\Java.tt"
  
 foreach(RequestItem header in this.Task.HeaderItems.Where(h=>h.Selected))
 {
@@ -55,21 +55,21 @@ foreach(RequestItem header in this.Task.HeaderItems.Where(h=>h.Selected))
             #line hidden
             this.Write("httpURLConnection.setRequestProperty(\"");
             
-            #line 14 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\Java.tt"
+            #line 14 "G:\WindowsApplications\PostEmulator\Models\Codes\Java.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(header.Name));
             
             #line default
             #line hidden
             this.Write("\", \"");
             
-            #line 14 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\Java.tt"
+            #line 14 "G:\WindowsApplications\PostEmulator\Models\Codes\Java.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(header.Value));
             
             #line default
             #line hidden
             this.Write("\")\r\n");
             
-            #line 15 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\Java.tt"
+            #line 15 "G:\WindowsApplications\PostEmulator\Models\Codes\Java.tt"
 
 }
 
@@ -78,7 +78,7 @@ foreach(RequestItem header in this.Task.HeaderItems.Where(h=>h.Selected))
             #line hidden
             this.Write("\r\n");
             
-            #line 19 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\Java.tt"
+            #line 19 "G:\WindowsApplications\PostEmulator\Models\Codes\Java.tt"
 
 if (this.Task.AcceptsRequestBody)
 {
@@ -90,14 +90,14 @@ if (this.Task.AcceptsRequestBody)
                     "aOutputStream(httpURLConnection.getOutputStream());\r\ndataOutputStream.writeBytes" +
                     "(`");
             
-            #line 25 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\Java.tt"
+            #line 25 "G:\WindowsApplications\PostEmulator\Models\Codes\Java.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.Task.PostStringContent));
             
             #line default
             #line hidden
             this.Write("`);\r\ndataOutputStream.flush();\r\ndataOutputStream.close();\r\n");
             
-            #line 28 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\Java.tt"
+            #line 28 "G:\WindowsApplications\PostEmulator\Models\Codes\Java.tt"
 
 }
 

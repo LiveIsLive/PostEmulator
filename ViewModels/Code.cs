@@ -1,11 +1,11 @@
-﻿using ColdShineSoft.HttpClientPerformer.Models.Codes;
+﻿using ColdShineSoft.PostEmulator.Models.Codes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ColdShineSoft.HttpClientPerformer.ViewModels
+namespace ColdShineSoft.PostEmulator.ViewModels
 {
 	public class Code : Screen
 	{

@@ -1,13 +1,13 @@
-﻿<mah:MetroWindow x:Class="ColdShineSoft.HttpClientPerformer.Views.Runner"
+﻿<mah:MetroWindow x:Class="ColdShineSoft.PostEmulator.Views.Runner"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:local="clr-namespace:ColdShineSoft.HttpClientPerformer.Views"
-		xmlns:viewModels="clr-namespace:ColdShineSoft.HttpClientPerformer.ViewModels;assembly=ColdShineSoft.HttpClientPerformer.ViewModels"
-		xmlns:models="clr-namespace:ColdShineSoft.HttpClientPerformer.Models;assembly=ColdShineSoft.HttpClientPerformer.Models"
-		xmlns:controls="clr-namespace:ColdShineSoft.HttpClientPerformer.Controls;assembly=ColdShineSoft.HttpClientPerformer.Controls"
-		xmlns:widgets="clr-namespace:ColdShineSoft.HttpClientPerformer.Widgets;assembly=ColdShineSoft.HttpClientPerformer.Widgets"
+		xmlns:local="clr-namespace:ColdShineSoft.PostEmulator.Views"
+		xmlns:viewModels="clr-namespace:ColdShineSoft.PostEmulator.ViewModels;assembly=ColdShineSoft.PostEmulator.ViewModels"
+		xmlns:models="clr-namespace:ColdShineSoft.PostEmulator.Models;assembly=ColdShineSoft.PostEmulator.Models"
+		xmlns:controls="clr-namespace:ColdShineSoft.PostEmulator.Controls;assembly=ColdShineSoft.PostEmulator.Controls"
+		xmlns:widgets="clr-namespace:ColdShineSoft.PostEmulator.Widgets;assembly=ColdShineSoft.PostEmulator.Widgets"
 		xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
 		xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
 		xmlns:cal="http://www.caliburnproject.org"
@@ -50,9 +50,10 @@
 			</WrapPanel>
 		</Grid>
 		<TextBlock DockPanel.Dock="Top" Text="{Binding Response.Error}" Visibility="{c:Binding 'Response?.Error!=null'}" Foreground="Red" />
+		<!--不知道为什么不外包一层Grid并设置Visibility绑定，里面的avalonEdit就无法绑定值-->
 		<Grid DockPanel.Dock="Top" Visibility="{c:Binding 'Response!=null'}">
-		<mah:MetroTabControl Visibility="{c:Binding 'Response?.Error==null'}">
-			<mah:MetroTabItem Header="{Binding Localization.RequestBody}">
+		<mah:MetroTabControl Visibility="{c:Binding 'Response!=null &amp;&amp; Response.Error==null'}">
+			<mah:MetroTabItem Header="{Binding Localization.RequestBody}" IsSelected="True">
 				<mah:MetroTabItem.Style>
 					<Style TargetType="mah:MetroTabItem">
 						<Style.Triggers>

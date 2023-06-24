@@ -1,4 +1,4 @@
-﻿namespace ColdShineSoft.HttpClientPerformer.Controls
+﻿namespace ColdShineSoft.PostEmulator.Controls
 {
 	public partial class SaveFileMenuItem : System.Windows.Controls.MenuItem
 	{

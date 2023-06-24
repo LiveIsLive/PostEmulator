@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ColdShineSoft.HttpClientPerformer.Models
+namespace ColdShineSoft.PostEmulator.Models
 {
 	public class Setting:Caliburn.Micro.PropertyChangedBase
 	{
@@ -93,7 +93,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			}
 		}
 
-		protected static readonly string SavePath = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Cold-Shine-Soft.Com" , "HttpClient Performer", "Setting.json");
+		protected static readonly string SavePath = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Cold-Shine-Soft.Com" , "Post Emulator", "Setting.json");
 
 		private static Setting _Instance;
 		public static Setting Instance

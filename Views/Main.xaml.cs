@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 
 
 
-namespace ColdShineSoft.HttpClientPerformer.Views
+namespace ColdShineSoft.PostEmulator.Views
 {
 	/// <summary>
 	/// Main.xaml 的交互逻辑

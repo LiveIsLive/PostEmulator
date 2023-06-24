@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace ColdShineSoft.HttpClientPerformer.Controls
+namespace ColdShineSoft.PostEmulator.Controls
 {
 	public class TabControl : MahApps.Metro.Controls.MetroTabControl
 	{

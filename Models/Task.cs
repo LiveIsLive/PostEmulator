@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO.Compression;
 
-namespace ColdShineSoft.HttpClientPerformer.Models
+namespace ColdShineSoft.PostEmulator.Models
 {
 	public class Task : Caliburn.Micro.PropertyChangedBase
 	{
@@ -901,7 +901,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models
 			get
 			{
 				if (_UrlRegex == null)
-					_UrlRegex = new System.Text.RegularExpressions.Regex(@"^https?://([\w-]+\.)+[\w-]+(/[\w-./?%&=]*)?$");
+					_UrlRegex = new System.Text.RegularExpressions.Regex(@"^(https?):\/\/[^\s\/?\.#-]+\.?[^\s\/?\.#-]+\.?[^\s\/?\.#-]+\S*(:[0-9]+)?$");
 				return _UrlRegex;
 			}
 		}

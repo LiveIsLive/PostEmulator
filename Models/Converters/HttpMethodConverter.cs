@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ColdShineSoft.HttpClientPerformer.Models.Converters
+namespace ColdShineSoft.PostEmulator.Models.Converters
 {
 	public class HttpMethodConverter : Newtonsoft.Json.JsonConverter
 	{

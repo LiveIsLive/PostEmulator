@@ -7,7 +7,7 @@
 //     重新生成代码，这些更改将会丢失。
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace ColdShineSoft.HttpClientPerformer.Models.Codes
+namespace ColdShineSoft.PostEmulator.Models.Codes
 {
     using System.Linq;
     using System.Text;
@@ -18,7 +18,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models.Codes
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\JavaScript.tt"
+    #line 1 "G:\WindowsApplications\PostEmulator\Models\Codes\JavaScript.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "17.0.0.0")]
     public partial class JavaScript : BaseTemplate
     {
@@ -30,28 +30,28 @@ namespace ColdShineSoft.HttpClientPerformer.Models.Codes
         {
             this.Write("\r\nconst axios = require(\'axios\');\r\nawait response=axios({\r\n\tmethod:\"");
             
-            #line 9 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\JavaScript.tt"
+            #line 9 "G:\WindowsApplications\PostEmulator\Models\Codes\JavaScript.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.Task.HttpMethod.Method));
             
             #line default
             #line hidden
             this.Write("\",\r\n\turl:\"");
             
-            #line 10 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\JavaScript.tt"
+            #line 10 "G:\WindowsApplications\PostEmulator\Models\Codes\JavaScript.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.Task.Url));
             
             #line default
             #line hidden
             this.Write("\",\r\n\theaders:{");
             
-            #line 11 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\JavaScript.tt"
+            #line 11 "G:\WindowsApplications\PostEmulator\Models\Codes\JavaScript.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(",",this.Task.HeaderItems.Where(h => h.Selected).Select(h=>$"'{h.Name}':'{h.Value}'"))));
             
             #line default
             #line hidden
             this.Write("},\r\n");
             
-            #line 12 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\JavaScript.tt"
+            #line 12 "G:\WindowsApplications\PostEmulator\Models\Codes\JavaScript.tt"
 
 if (this.Task.AcceptsRequestBody)
 {
@@ -61,7 +61,7 @@ if (this.Task.AcceptsRequestBody)
             #line hidden
             this.Write("\t");
             
-            #line 16 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\JavaScript.tt"
+            #line 16 "G:\WindowsApplications\PostEmulator\Models\Codes\JavaScript.tt"
 
 	switch(this.Task.ContentType)
 	{
@@ -72,14 +72,14 @@ if (this.Task.AcceptsRequestBody)
             #line hidden
             this.Write("\tdata:{");
             
-            #line 21 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\JavaScript.tt"
+            #line 21 "G:\WindowsApplications\PostEmulator\Models\Codes\JavaScript.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(",",this.Task.FormParameters.Where(p => p.Selected).Select(p=>$"'{p.Name}':'{p.Value}'"))));
             
             #line default
             #line hidden
             this.Write("}\r\n\t");
             
-            #line 22 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\JavaScript.tt"
+            #line 22 "G:\WindowsApplications\PostEmulator\Models\Codes\JavaScript.tt"
 
 			break;
 		case RequestContentType.Json:
@@ -89,14 +89,14 @@ if (this.Task.AcceptsRequestBody)
             #line hidden
             this.Write("\tdata:");
             
-            #line 26 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\JavaScript.tt"
+            #line 26 "G:\WindowsApplications\PostEmulator\Models\Codes\JavaScript.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.Task.JsonContent));
             
             #line default
             #line hidden
             this.Write("\r\n\t");
             
-            #line 27 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\JavaScript.tt"
+            #line 27 "G:\WindowsApplications\PostEmulator\Models\Codes\JavaScript.tt"
 
 			break;
 		default:
@@ -106,14 +106,14 @@ if (this.Task.AcceptsRequestBody)
             #line hidden
             this.Write("\tdata:`");
             
-            #line 31 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\JavaScript.tt"
+            #line 31 "G:\WindowsApplications\PostEmulator\Models\Codes\JavaScript.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.Task.PostStringContent));
             
             #line default
             #line hidden
             this.Write("`\r\n\t");
             
-            #line 32 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\JavaScript.tt"
+            #line 32 "G:\WindowsApplications\PostEmulator\Models\Codes\JavaScript.tt"
 
 			break;
 	
@@ -121,7 +121,7 @@ if (this.Task.AcceptsRequestBody)
             #line default
             #line hidden
             
-            #line 35 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\JavaScript.tt"
+            #line 35 "G:\WindowsApplications\PostEmulator\Models\Codes\JavaScript.tt"
 
 	}
 }

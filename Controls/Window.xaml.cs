@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace ColdShineSoft.HttpClientPerformer.Controls
+namespace ColdShineSoft.PostEmulator.Controls
 {
 	/// <summary>
 	/// Window.xaml 的交互逻辑

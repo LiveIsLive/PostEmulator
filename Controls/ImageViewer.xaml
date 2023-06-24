@@ -1,9 +1,9 @@
-﻿<DockPanel x:Class="ColdShineSoft.HttpClientPerformer.Controls.ImageViewer"
+﻿<DockPanel x:Class="ColdShineSoft.PostEmulator.Controls.ImageViewer"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ColdShineSoft.HttpClientPerformer.Controls"
+             xmlns:local="clr-namespace:ColdShineSoft.PostEmulator.Controls"
              mc:Ignorable="d">
 	<WrapPanel DockPanel.Dock="Top">
 		<local:IconButton Icon="ScreenFull" Click="Full_Click" />

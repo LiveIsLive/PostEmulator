@@ -1,9 +1,9 @@
-﻿ <Button x:Class="ColdShineSoft.HttpClientPerformer.Controls.IconButton"
+﻿ <Button x:Class="ColdShineSoft.PostEmulator.Controls.IconButton"
 			xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 			xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-			xmlns:controls="clr-namespace:ColdShineSoft.HttpClientPerformer.Controls"
+			xmlns:controls="clr-namespace:ColdShineSoft.PostEmulator.Controls"
 			xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
 			mc:Ignorable="d" FontFamily="微软雅黑" FontSize="12" Padding="10,5,10,5">
 	<Button.Style>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ColdShineSoft.HttpClientPerformer.ViewModels
+namespace ColdShineSoft.PostEmulator.ViewModels
 {
 	public class Runner:Screen
 	{
@@ -115,6 +115,7 @@ namespace ColdShineSoft.HttpClientPerformer.ViewModels
 		public async Task Run()
 		{
 			this.Response = await this.Task.Run();
+			this.Response.NotifyOfPropertyChange(() => this.Response.FormattedContentCode);
 			//this.Thread.Start();
 		}
 

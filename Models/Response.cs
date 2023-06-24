@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ColdShineSoft.HttpClientPerformer.Models
+namespace ColdShineSoft.PostEmulator.Models
 {
-	public class Response
+	public class Response : Caliburn.Micro.PropertyChangedBase
 	{
 		public string Headers { get; protected set; }
 

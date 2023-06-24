@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ColdShineSoft.HttpClientPerformer.Models.Codes
+namespace ColdShineSoft.PostEmulator.Models.Codes
 {
     public partial class CSharp
 	{

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ColdShineSoft.HttpClientPerformer.Controls
+namespace ColdShineSoft.PostEmulator.Controls
 {
 	/// <summary>
 	/// FileSelector.xaml 的交互逻辑

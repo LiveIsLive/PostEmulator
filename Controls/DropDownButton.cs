@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace ColdShineSoft.HttpClientPerformer.Controls
+namespace ColdShineSoft.PostEmulator.Controls
 {
 	public class DropDownButton : MahApps.Metro.Controls.SplitButton
 	{

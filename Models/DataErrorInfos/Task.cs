@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ColdShineSoft.HttpClientPerformer.Models.DataErrorInfos
+namespace ColdShineSoft.PostEmulator.Models.DataErrorInfos
 {
 	public class Task : Models.Task
 	{

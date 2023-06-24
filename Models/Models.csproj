@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ColdShineSoft.HttpClientPerformer.Models</RootNamespace>
-    <AssemblyName>ColdShineSoft.HttpClientPerformer.Models</AssemblyName>
+    <AssemblyName>ColdShineSoft.PostEmulator.Models</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

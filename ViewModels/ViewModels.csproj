@@ -7,8 +7,8 @@
     <ProjectGuid>{0C7296AA-3D93-40C4-A791-F70B367DC0E9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ColdShineSoft.HttpClientPerformer.ViewModels</RootNamespace>
-    <AssemblyName>ColdShineSoft.HttpClientPerformer.ViewModels</AssemblyName>
+    <RootNamespace>ColdShineSoft.PostEmulator.ViewModels</RootNamespace>
+    <AssemblyName>ColdShineSoft.PostEmulator.ViewModels</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

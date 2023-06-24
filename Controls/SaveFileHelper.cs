@@ -4,7 +4,7 @@
 //using System.Text;
 //using System.Threading.Tasks;
 
-//namespace ColdShineSoft.HttpClientPerformer.Controls
+//namespace ColdShineSoft.PostEmulator.Controls
 //{
 //	public class SaveFileHelper: System.Windows.DependencyObject
 //	{

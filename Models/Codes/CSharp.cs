@@ -7,7 +7,7 @@
 //     重新生成代码，这些更改将会丢失。
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace ColdShineSoft.HttpClientPerformer.Models.Codes
+namespace ColdShineSoft.PostEmulator.Models.Codes
 {
     using System.Linq;
     using System.Text;
@@ -18,7 +18,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models.Codes
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+    #line 1 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "17.0.0.0")]
     public partial class CSharp : BaseTemplate
     {
@@ -30,7 +30,7 @@ namespace ColdShineSoft.HttpClientPerformer.Models.Codes
         {
             this.Write("\r\n");
             
-            #line 7 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 7 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
 
 RequestItem[] cookies=this.Task.CookieItems.Where(c=>c.Selected).ToArray();
 if(cookies.Length==0)
@@ -40,7 +40,7 @@ if(cookies.Length==0)
             #line hidden
             this.Write("var httpClient=new HttpClient();\r\n");
             
-            #line 12 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 12 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
 
 else
 {
@@ -50,7 +50,7 @@ else
             #line hidden
             this.Write("var cookieContainer = new System.Net.CookieContainer();\r\n");
             
-            #line 17 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 17 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
 
 	foreach(RequestItem cookie in cookies)
 	{
@@ -60,28 +60,28 @@ else
             #line hidden
             this.Write("cookieContainer.Add(new Cookie(\"");
             
-            #line 21 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 21 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cookie.Name));
             
             #line default
             #line hidden
             this.Write("\", \"");
             
-            #line 21 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 21 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(cookie.Value));
             
             #line default
             #line hidden
             this.Write("\") { Domain = \"");
             
-            #line 21 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 21 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.Task.Uri.Host));
             
             #line default
             #line hidden
             this.Write("\" });\r\n");
             
-            #line 22 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 22 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
 
 	}
 
@@ -91,7 +91,7 @@ else
             this.Write("var httpClient = new HttpClient(new Http.HttpClientHandler\r\n{\r\n\tCookieContainer =" +
                     " cookieContainer,\r\n\tUseCookies = true\r\n});\r\n");
             
-            #line 30 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 30 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
 
 }
 
@@ -100,27 +100,27 @@ else
             #line hidden
             this.Write("var httpRequestMessage = new HttpRequestMessage(HttpMethod.");
             
-            #line 33 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 33 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.Task.HttpMethod.Method[0]));
             
             #line default
             #line hidden
             
-            #line 33 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 33 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(new string(this.Task.HttpMethod.Method.Skip(1).ToArray()).ToLower()));
             
             #line default
             #line hidden
             this.Write(", \"");
             
-            #line 33 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 33 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.Task.Url));
             
             #line default
             #line hidden
             this.Write("\");\r\n");
             
-            #line 34 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 34 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
  
 foreach(RequestItem header in this.Task.HeaderItems.Where(h=>h.Selected&&h.Type==RequestItemType.Common))
 {
@@ -130,21 +130,21 @@ foreach(RequestItem header in this.Task.HeaderItems.Where(h=>h.Selected&&h.Type=
             #line hidden
             this.Write("httpRequestMessage.Headers.Add(\"");
             
-            #line 38 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 38 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(header.Name));
             
             #line default
             #line hidden
             this.Write("\", \"");
             
-            #line 38 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 38 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(header.Value));
             
             #line default
             #line hidden
             this.Write("\")\r\n");
             
-            #line 39 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 39 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
 
 }
 
@@ -152,7 +152,7 @@ foreach(RequestItem header in this.Task.HeaderItems.Where(h=>h.Selected&&h.Type=
             #line default
             #line hidden
             
-            #line 42 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 42 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
 
 if(this.Task.AcceptsRequestBody)
 {
@@ -165,14 +165,14 @@ if(this.Task.AcceptsRequestBody)
             this.Write("httpRequestMessage.Content = new FormUrlEncodedContent(new Dictionary<string, str" +
                     "ing>(){");
             
-            #line 48 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 48 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(string.Join(",",this.Task.FormParameters.Where(p => p.Selected).Select(p=>$"{{\"{p.Name}\",\"{p.Value}\"}}"))));
             
             #line default
             #line hidden
             this.Write(")};\r\n");
             
-            #line 49 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 49 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
 
 	}
 	else
@@ -183,14 +183,14 @@ if(this.Task.AcceptsRequestBody)
             #line hidden
             this.Write("httpRequestMessage.Content = new StringContent(@\"");
             
-            #line 54 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 54 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.Task.PostStringContent.Replace("\"","\"\"")));
             
             #line default
             #line hidden
             this.Write("\");\r\n");
             
-            #line 55 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 55 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
 
 	}
 }
@@ -199,7 +199,7 @@ if(this.Task.AcceptsRequestBody)
             #line default
             #line hidden
             
-            #line 59 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 59 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
 
 if (this.Task.AcceptsRequestBody)
 {
@@ -209,14 +209,14 @@ if (this.Task.AcceptsRequestBody)
             #line hidden
             this.Write("httpRequestMessage.Content.Headers.ContentType.MediaType = \"");
             
-            #line 63 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 63 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.Task.Content_Type));
             
             #line default
             #line hidden
             this.Write("\";\r\n\t");
             
-            #line 64 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 64 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
 
 	if(!string.IsNullOrWhiteSpace(this.Task.CharSet))
 	{
@@ -226,14 +226,14 @@ if (this.Task.AcceptsRequestBody)
             #line hidden
             this.Write("httpRequestMessage.Content.Headers.ContentType.CharSet = \"");
             
-            #line 68 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 68 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.Task.CharSet));
             
             #line default
             #line hidden
             this.Write("\";\r\n\t");
             
-            #line 69 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 69 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
 
 	}
 	
@@ -241,7 +241,7 @@ if (this.Task.AcceptsRequestBody)
             #line default
             #line hidden
             
-            #line 72 "G:\WindowsApplications\HttpClientPerformer\Models\Codes\CSharp.tt"
+            #line 72 "G:\WindowsApplications\PostEmulator\Models\Codes\CSharp.tt"
 
 }
 
