@@ -92,7 +92,7 @@
 							</ItemsControl.ItemsPanel>
 							<ItemsControl.ItemTemplate>
 								<DataTemplate>
-									<MenuItem cal:Message.Attach="Open($dataContext)" cal:Action.TargetWithoutContext="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=Window}}">
+									<MenuItem cal:Message.Attach="Open($dataContext)" cal:Action.TargetWithoutContext="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=Window}}" MaxHeight="200">
 										<MenuItem.Header>
 											<DockPanel>
 												<controls:IconButton DockPanel.Dock="Right" cal:Message.Attach="RemoveRecentFile($dataContext)" Icon="Close" Margin="20,0,0,0" Padding="0" BorderThickness="0" Background="Transparent" />
