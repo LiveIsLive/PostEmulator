@@ -10,7 +10,7 @@ namespace ColdShineSoft.PostEmulator.Models
 	public class Task : Caliburn.Micro.PropertyChangedBase
 	{
 		private string _Url;
-		[Newtonsoft.Json.JsonProperty]
+		[Newtonsoft.Json.JsonProperty()]
 		public virtual string Url
 		{
 			get
