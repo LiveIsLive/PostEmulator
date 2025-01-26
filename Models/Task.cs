@@ -272,18 +272,15 @@ namespace ColdShineSoft.PostEmulator.Models
 			return this.StringToRequestItems(s, new char[] { '\r', '\n' }, ':');
 		}
 
-		protected System.Collections.Generic.IEnumerable<RequestItem>StringToRequestItems(string s, char[] itemSeparator,char valueSeparator)
+		protected System.Collections.Generic.IEnumerable<RequestItem>StringToRequestItems(string s, char[] itemSeparator,char vluaeSeparator)
 		{
 			foreach(string line in s.Split(itemSeparator, StringSplitOptions.RemoveEmptyEntries))
 			{
-				string[] parameters = line.Split(new char[] { valueSeparator }, 2);
-				//string[] parameters = line.Split(valueSeparator);
+				string[] parameters = line.Split(new char[] { vluaeSeparator },2);
 				RequestItem item = new RequestItem();
-				//item.Name = string.Join(valueSeparator.ToString(), parameters.Take(parameters.Length - 1).Select(p=>p.Trim()));
 				item.Name = parameters[0].Trim();
 				if (parameters.Length > 1)
 					item.Value = parameters[1].Trim();
-					//item.Value = parameters.Last().Trim();
 				if (item.Name == "" && item.Value == "")
 					continue;
 				yield return item;
@@ -555,7 +552,6 @@ namespace ColdShineSoft.PostEmulator.Models
 		}
 
 		private string _JsonContent;
-		[Newtonsoft.Json.JsonProperty]
 		public string JsonContent
 		{
 			get
@@ -599,7 +595,6 @@ namespace ColdShineSoft.PostEmulator.Models
 		}
 
 		private string _XmlContent;
-		[Newtonsoft.Json.JsonProperty]
 		public string XmlContent
 		{
 			get
@@ -640,7 +635,6 @@ namespace ColdShineSoft.PostEmulator.Models
 			}
 		}
 
-		[Newtonsoft.Json.JsonProperty]
 		public string PlainTextContent { get; set; }
 
 		private void FormParameters_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
