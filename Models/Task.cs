@@ -552,7 +552,8 @@ namespace ColdShineSoft.PostEmulator.Models
 		}
 
 		private string _JsonContent;
-		public string JsonContent
+        [Newtonsoft.Json.JsonProperty]
+        public string JsonContent
 		{
 			get
 			{
@@ -595,7 +596,8 @@ namespace ColdShineSoft.PostEmulator.Models
 		}
 
 		private string _XmlContent;
-		public string XmlContent
+        [Newtonsoft.Json.JsonProperty]
+        public string XmlContent
 		{
 			get
 			{
@@ -635,7 +637,8 @@ namespace ColdShineSoft.PostEmulator.Models
 			}
 		}
 
-		public string PlainTextContent { get; set; }
+        [Newtonsoft.Json.JsonProperty]
+        public string PlainTextContent { get; set; }
 
 		private void FormParameters_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
 		{
